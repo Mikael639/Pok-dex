@@ -1,0 +1,4 @@
+Le Pokédex est un dispositif électronique utilisé par les dresseurs de Pokémon pour recueillir des informations sur différentes espèces de Pokémon
+Il fonctionne comme une encyclopédie portative de Pokémon
+Les dresseurs de Pokémon utilisent le Pokédex pour suivre leur progression dans la collecte de Pokémon
+Ils peuvent consulter les informations sur les Pokémon qu'ils possèdent déjà et découvrir de nouvelles espèces à capturer

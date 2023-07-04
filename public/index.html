@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <link rel="icon" href="images/ball.png" type="image/x-icon">
+</head>
+
+<body>
+    <script src = "https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="./js/pokemons.js"></script>
+    <div id ="app">
+        <v-app>
+                <v-btn color="emerald green" @click="playPokemonSong" v-if="!isPlaying">
+                <v-icon left>mdi-music</v-icon> PLAY
+                </v-btn>
+                <v-btn color="emerald red" @click="stopPokemonSong" v-else>
+                <v-icon left>mdi-music-off</v-icon> STOP
+                </v-btn>
+                <v-tabs  align-with-title background-color="light gray" >
+                    <v-tabs-slider color="red"></v-tabs-slider>
+                    <v-tab>
+                        <v-icon left>
+                            mdi-home
+                          </v-icon>
+                        <h4><strong><em>ACCEUIL</em></strong></h4>
+                    </v-tab>
+                    <v-tab>
+                        <v-icon left>
+                            mdi-pokeball
+                          </v-icon>
+                        <h4><strong>POKEMONS</strong></h4>
+                    </v-tab>
+                    <v-btn icon @click="$vuetify.theme.dark = !$vuetify.theme.dark" class="ml-auto">
+                        <v-icon>mdi-theme-light-dark</v-icon>
+                    </v-btn>
+                                                    
+                    <v-tab-item>
+                        <v-row align="center" justify="center" class="pa-10">
+                          <v-col cols="12" sm="6" md="4">
+                            <h1 class="display-1 text-center">
+                              <!-- <em>BIENVENUE SUR MA PAGE POKEDEX</em> -->
+                              <v-img height="180"  src="images/Logo.png" width="900"></v-img>
+                              <v-img height="100"  src="images/ball.png" width="100" class="mx-auto" ></v-img>
+                            </h1>  
+                          </v-col>
+                          <v-col cols="12">
+                            <v-card >
+                              <v-img  src="images/worldpokemon.jpg" width="5000" class="mr-auto"></v-img>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                      </v-tab-item>                      
+                    <v-tab-item>
+                        <v-container fluid class="orange">
+                            <v-row class="justify-space-between">
+                                <v-col class=" d-flex" cols="20" sm="4">                                   
+                                    <v-select v-model="selectedType" :items="typespokemons" label="Types Pokemons" outlined @change="filterPokemons"></v-select>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="3">
+                                    <v-text-field label="Search Pokemon" v-model="searchQuery" type="text" filled @input="searchPokemon"></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                        <pokemons :pokemons="pokemonsAffiches"></pokemons>
+                        <v-pagination 
+                                @input="majPage"
+                                v-model="page"
+                                :length="17"
+                                circle
+                                class="justify-center"
+                                >
+                            </v-pagination>
+                    </v-tab-item>
+                </v-tabs>     
+        </v-app>
+    </div>
+    <script src="js/app.js"></script>    
+</body>
+</html>
