@@ -48,7 +48,7 @@ app.get('/pokemons/:types',function(req,res)
 
 // Jouer la chanson Pokémon
 app.get('/play', function(req, res) {
-  var file = path.join(__dirname, 'public', 'Pokémon.mp3');
+  var file = path.join(__dirname, 'public', 'pokemon.mp3');
   res.sendFile(file);
 });
 
