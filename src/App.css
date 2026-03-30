@@ -1,21 +1,202 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ==========================================
+   POKÉMON CARD ANIMATIONS
+   ========================================== */
 
-  &:hover {
-    border-color: var(--accent-border);
+/* Floating bob animation for Pokémon sprites */
+@keyframes pokemon-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
   }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+  25% {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(1deg);
   }
 }
+
+/* Pulsing glow for type color aura */
+@keyframes aura-pulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.15);
+  }
+}
+
+/* Shimmer effect on card hover */
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Entrance pop animation */
+@keyframes card-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  60% {
+    transform: scale(1.03) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Pokéball spin */
+@keyframes pokeball-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Caught heart pulse */
+@keyframes heart-beat {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.35); }
+  60% { transform: scale(0.9); }
+}
+
+/* Apply floating to Pokémon images inside cards */
+.pokemon-float-img {
+  animation: pokemon-float 3s ease-in-out infinite;
+}
+
+/* Stagger delays for grid cards */
+.pokemon-card-0 { animation-delay: 0s; }
+.pokemon-card-1 { animation-delay: 0.05s; }
+.pokemon-card-2 { animation-delay: 0.10s; }
+.pokemon-card-3 { animation-delay: 0.15s; }
+.pokemon-card-4 { animation-delay: 0.20s; }
+.pokemon-card-5 { animation-delay: 0.25s; }
+.pokemon-card-6 { animation-delay: 0.30s; }
+.pokemon-card-7 { animation-delay: 0.35s; }
+.pokemon-card-8 { animation-delay: 0.40s; }
+.pokemon-card-9 { animation-delay: 0.45s; }
+.pokemon-card-10 { animation-delay: 0.50s; }
+.pokemon-card-11 { animation-delay: 0.55s; }
+
+/* Type aura glow under Pokémon sprite */
+.pokemon-aura {
+  animation: aura-pulse 2.5s ease-in-out infinite;
+}
+
+/* Card entrance animation */
+.pokemon-card-enter {
+  animation: card-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+/* Shimmer overlay on hover */
+.card-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.card-shimmer:hover::after {
+  opacity: 1;
+  animation: shimmer-sweep 0.8s ease-in-out;
+}
+
+/* Heart beat on catch */
+.caught-heart {
+  animation: heart-beat 0.4s ease-in-out;
+}
+
+/* Hover glow border for caught Pokémon */
+.card-caught {
+  box-shadow: 0 0 0 3px #f43f5e, 0 20px 60px rgba(244, 63, 94, 0.25) !important;
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .pokemon-float-img,
+  .pokemon-aura,
+  .pokemon-card-enter,
+  .card-shimmer::after,
+  .holographic::before {
+    animation: none !important;
+  }
+}
+
+/* Holographic Effect for Rare Cards */
+@keyframes holo-shimmer {
+  0% { background-position: 0% 50%; opacity: 0.3; }
+  50% { background-position: 100% 50%; opacity: 0.6; }
+  100% { background-position: 0% 50%; opacity: 0.3; }
+}
+
+.holographic {
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.2) 30%,
+    rgba(255, 100, 100, 0.2) 40%,
+    rgba(100, 255, 100, 0.2) 50%,
+    rgba(100, 100, 255, 0.2) 60%,
+    transparent 80%
+  );
+  background-size: 200% 200%;
+  animation: holo-shimmer 6s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Glassmorphism Utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Premium Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
 
 .hero {
   position: relative;
