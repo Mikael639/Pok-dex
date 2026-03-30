@@ -645,7 +645,9 @@ function App() {
             <PokemonDetails 
               pokemon={selectedPokemon} 
               isDarkMode={isDarkMode} 
+              pokemons={pokemons}
               onClose={() => setSelectedPokemon(null)} 
+              onNavigate={(p) => setSelectedPokemon(p)}
               onCatch={() => toggleTeam(selectedPokemon)} 
               isCaught={team.some(t => t.id === selectedPokemon.id)} 
               onCompare={(p) => { setComparedPokemon(p); setSelectedPokemon(null); }}
@@ -724,13 +726,66 @@ function PokemonCard({ pokemon, isCaught, isDarkMode, onClick, onCatch, index = 
   );
 }
 
-function PokemonDetails({ pokemon, isDarkMode, onClose, onCatch, isCaught, onCompare }) {
+function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, onCatch, isCaught, onCompare }) {
   const [isShiny, setIsShiny] = useState(false);
+  const [evoChain, setEvoChain] = useState([]);
+  const [loadingEvo, setLoadingEvo] = useState(false);
   const [playCry] = useState(() => new Audio(`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`));
 
   const imageUrl = isShiny 
     ? pokemon.image.replace('official-artwork', 'official-artwork/shiny')
     : pokemon.image;
+
+  useEffect(() => {
+    setLoadingEvo(true);
+    const fetchEvo = async () => {
+      try {
+        const speciesRes = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}/`);
+        const evoRes = await axios.get(speciesRes.data.evolution_chain.url);
+        
+        const chain = [];
+        let curr = evoRes.data.chain;
+
+        const getTriggerLabel = (details) => {
+          if (!details) return null;
+          const d = details[0];
+          if (!d) return null;
+          if (d.trigger.name === 'level-up') {
+            if (d.min_level) return `Niv. ${d.min_level}`;
+            if (d.min_happiness) return `Bonheur`;
+            if (d.known_move) return `Capacité`;
+            return `Niveau`;
+          }
+          if (d.trigger.name === 'use-item') return d.item.name.replace('-', ' ');
+          if (d.trigger.name === 'trade') return `Échange`;
+          return d.trigger.name;
+        };
+
+        const processNode = async (node) => {
+          const id = parseInt(node.species.url.split('/').filter(Boolean).pop());
+          // On cherche le nom français dans notre liste locale si possible
+          const localP = pokemons.find(p => p.id === id);
+          chain.push({
+            id,
+            nom: localP ? localP.nom : node.species.name,
+            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            condition: getTriggerLabel(node.evolution_details)
+          });
+          if (node.evolves_to.length > 0) {
+            await processNode(node.evolves_to[0]); // On prend la ligne principale
+          }
+        };
+
+        await processNode(curr);
+        setEvoChain(chain);
+      } catch (err) {
+        console.error("Evo fetch error:", err);
+      } finally {
+        setLoadingEvo(false);
+      }
+    };
+    fetchEvo();
+  }, [pokemon.id, pokemons]);
 
   const weaknesses = useMemo(() => {
     const list = {};
@@ -808,8 +863,8 @@ function PokemonDetails({ pokemon, isDarkMode, onClose, onCatch, isCaught, onCom
              </div>
 
              {/* EFFICACITÉ SUBIE */}
-             <div className="mt-4">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Efficacité subie</h4>
+             <div className="mt-6">
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Efficacité subie</h4>
                 <div className="flex flex-wrap gap-2">
                     {Object.entries(weaknesses).sort((a,b) => b[1] - a[1]).map(([t, m]) => (
                        <div key={t} className={`px-2 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-sm ${m > 1 ? 'bg-rose-500/10 text-rose-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
@@ -818,6 +873,41 @@ function PokemonDetails({ pokemon, isDarkMode, onClose, onCatch, isCaught, onCom
                        </div>
                     ))}
                 </div>
+             </div>
+
+             {/* LIGNÉE ÉVOLUTIVE */}
+             <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800">
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Lignée Évolutive</h4>
+                {loadingEvo ? (
+                  <div className="flex gap-4 animate-pulse">
+                    {[1,2,3].map(i => <div key={i} className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl" />)}
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap items-center gap-4">
+                    {evoChain.map((evo, i) => (
+                      <React.Fragment key={evo.id}>
+                        {i > 0 && (
+                          <div className="flex flex-col items-center">
+                            <ChevronRight size={16} className="text-slate-300" />
+                            {evo.condition && <span className="text-[7px] font-black uppercase text-rose-500 mt-1 whitespace-nowrap">{evo.condition}</span>}
+                          </div>
+                        )}
+                        <div 
+                          onClick={() => {
+                            const p = pokemons.find(x => x.id === evo.id);
+                            if (p) onNavigate(p);
+                          }}
+                          className={`relative group cursor-pointer p-2 rounded-2xl border-2 transition-all ${evo.id === pokemon.id ? 'border-rose-500 bg-rose-50' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                        >
+                           <img src={evo.image} className="w-14 h-14 object-contain group-hover:scale-110 transition-transform" />
+                           <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-slate-900 text-white text-[6px] font-black rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                              {evo.nom}
+                           </div>
+                        </div>
+                      </React.Fragment>
+                    ))}
+                  </div>
+                )}
              </div>
           </div>
        </motion.div>
