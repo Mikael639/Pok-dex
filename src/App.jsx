@@ -119,12 +119,15 @@ function App() {
 
   const toggleMusic = () => {
     if (!isPlaying) {
-      const newAudio = new Audio('/play');
+      // Use direct path from /public for better reliability in Vite
+      const newAudio = new Audio('/pokemon.mp3');
       newAudio.loop = true;
-      newAudio.play().catch(err => {
-        console.error("Audio playback error:", err);
-        alert("Cliquez n'importe où sur la page pour autoriser la lecture audio.");
-      });
+      newAudio.play()
+        .then(() => console.log("Musique lancée avec succès"))
+        .catch(err => {
+          console.error("Audio playback error:", err);
+          alert("Le navigateur demande une interaction utilisateur. Cliquez n'importe où puis réessayez.");
+        });
       setAudio(newAudio);
       setIsPlaying(true);
     } else {
