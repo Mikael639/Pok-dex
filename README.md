@@ -1,22 +1,27 @@
-# ⚡ Pokédex Modernisé - React 19 & Node.js
+# ⚡ Pokédex Premium - l'Aventure de Hoenn (Gens 1, 2 & 3)
 
-Bienvenue dans le **Pokédex de l'Aventure Moderne**, une application web haute performance permettant d'explorer les 251 premiers Pokémon (Générations 1 & 2).
+Bienvenue dans le **Pokédex de l'Aventure Moderne**, une plateforme d'exploration Pokémon haut de gamme couvrant les **386 espèces** des trois premières générations (Kanto, Johto & Hoenn).
 
 > [!NOTE]
-> Ce projet a été entièrement restructuré pour être "GitHub Ready" : une architecture simplifiée, unifiée et extrêmement rapide.
+> Ce projet propose une interface "Premium" avec un Tableau de Bord dynamique, des filtres personnalisés et une base de données étendue.
 
-## ✨ Fonctionnalités
-- **Générations 1 & 2** : Les 251 Pokémon avec noms, types et descriptions en français.
-- **UI Premium** : Design moderne avec **Tailwind CSS 4** et animations fluides via **Framer Motion**.
-- **Mini-Jeu "Qui est-ce ?"** : Teste tes connaissances avec un système de score et de records.
-- **Mode Sombre** : Interface s'adaptant à tes préférences (persistante via localStorage).
-- **Filtrage Avancé** : Menu déroulant élégant pour filtrer par type et barre de recherche instantanée.
-- **Audio Immersif** : Thème musical officiel intégré.
+## ✨ Nouvelles Fonctionnalités (v2.0)
+
+- **Archives 386** : Base de données complète incluant la Génération 3 (Hoenn), avec noms et types entièrement traduits en français.
+- **Tableau de Bord "Maître Pokémon"** : Une vue d'accueil esthétique avec suivi de progression de collection, profil de dresseur et accès rapide.
+- **Lignée Évolutive Interactive** : Visualisez l'histoire de chaque Pokémon avec ses **conditions d'évolution** (Niveaux, Objets, Bonheur, Échanges).
+- **Filtres Dynamiques Animés** : Menus déroulants personnalisés avec indicateurs de types colorés et transitions fluides.
+- **Modes de Jeux Étendus** :
+    - **Arène Battle** : Combattez avec votre équipe de 6.
+    - **Master Type** : Testez vos connaissances sur l'efficacité des types.
+    - **Silhouette** : Le classique "Qui est ce Pokémon ?".
+- **Design Glassmorphism** : Interface moderne utilisant des effets de flou, des halos de couleurs et des animations **Framer Motion**.
 
 ## 🛠️ Stack Technique
-- **Frontend** : React 19, Vite, Tailwind CSS 4, Framer Motion, Lucide React.
+
+- **Frontend** : React 19, Vite, Tailwind CSS 4, Framer Motion, Axios (PokeAPI Integration).
 - **Backend** : Node.js, Express, Morgan (Logging).
-- **Données** : JSON local pour une portabilité maximale.
+- **Données** : Système hybride (Base locale de 386 Pokémon + Fetching dynamique PokeAPI pour les évolutions).
 
 ## 🚀 Installation & Lancement
 
@@ -35,13 +40,15 @@ Bienvenue dans le **Pokédex de l'Aventure Moderne**, une application web haute 
 ## 📂 Structure du Projet
 ```text
 POKEDEX/
-├── public/          # Assets statiques (Vidéos, Audio, Favicon)
-├── src/             # Code source React (Interface)
-├── pokedex.json     # Base de données Pokémon
+├── public/          # Assets statiques (Vidéos, Audio, Images)
+├── src/             # Code source React (Composants & Logique)
+│   ├── App.jsx      # Application principale & Composants
+│   ├── App.css      # Design & Keyframes (Glassmorphism, Holo)
+│   └── main.jsx     # Point d'entrée React
+├── pokedex.json     # Base de données (386 Pokémon)
 ├── server.js        # Serveur API (Express)
-├── package.json     # Configuration unique du projet
-└── vite.config.js   # Configuration Vite
+└── package.json     # Configuration & Scripts
 ```
 
 ---
-*Développé avec passion pour la communauté Pokémon.*
+*Écrit avec passion par Antigravity pour la communauté des dresseurs.*
