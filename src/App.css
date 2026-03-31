@@ -65,6 +65,24 @@
   60% { transform: scale(0.9); }
 }
 
+/* Fade In */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Spin Slow */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Bounce Slow */
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 /* Apply floating to Pokémon images inside cards */
 .pokemon-float-img {
   animation: pokemon-float 3s ease-in-out infinite;
@@ -119,6 +137,18 @@
 /* Heart beat on catch */
 .caught-heart {
   animation: heart-beat 0.4s ease-in-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
 }
 
 /* Hover glow border for caught Pokémon */
@@ -195,6 +225,31 @@
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.4);
+}
+
+/* Skeleton Animation */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-box {
+  background: linear-gradient(90deg, 
+    rgba(226, 232, 240, 0.1) 25%, 
+    rgba(226, 232, 240, 0.2) 50%, 
+    rgba(226, 232, 240, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+.dark .skeleton-box {
+  background: linear-gradient(90deg, 
+    rgba(30, 41, 59, 0.5) 25%, 
+    rgba(51, 65, 85, 0.5) 50%, 
+    rgba(30, 41, 59, 0.5) 75%
+  );
+  background-size: 200% 100%;
 }
 
 
@@ -361,5 +416,49 @@
   &::after {
     right: 0;
     border-right-color: var(--border);
+  }
+}
+
+/* ==========================================
+   MEMORY GAME UTILITIES
+   ========================================== */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+/* Custom scrollbar for better appearance */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(244, 63, 94, 0.2);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(244, 63, 94, 0.4);
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+  .hero-responsive {
+    min-height: 200px;
   }
 }

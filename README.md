@@ -1,54 +1,77 @@
-# ⚡ Pokédex Premium - l'Aventure de Hoenn (Gens 1, 2 & 3)
+# ⚡ Pokém-Master - L'Arène Élite
 
-Bienvenue dans le **Pokédex de l'Aventure Moderne**, une plateforme d'exploration Pokémon haut de gamme couvrant les **386 espèces** des trois premières générations (Kanto, Johto & Hoenn).
+Bienvenue dans l'expérience Pokédex ultime. Une plateforme premium conçue pour les dresseurs exigeants, alliant une gestion complète de collection (V1-V5) et une arène de combat tactique interactive.
 
-> [!NOTE]
-> Ce projet propose une interface "Premium" avec un Tableau de Bord dynamique, des filtres personnalisés et une base de données étendue.
+---
 
-## ✨ Nouvelles Fonctionnalités (v2.0)
+## 🎨 Aperçu de l'Interface
 
-- **Archives 386** : Base de données complète incluant la Génération 3 (Hoenn), avec noms et types entièrement traduits en français.
-- **Tableau de Bord "Maître Pokémon"** : Une vue d'accueil esthétique avec suivi de progression de collection, profil de dresseur et accès rapide.
-- **Lignée Évolutive Interactive** : Visualisez l'histoire de chaque Pokémon avec ses **conditions d'évolution** (Niveaux, Objets, Bonheur, Échanges).
-- **Filtres Dynamiques Animés** : Menus déroulants personnalisés avec indicateurs de types colorés et transitions fluides.
-- **Modes de Jeux Étendus** :
-    - **Arène Battle** : Combattez avec votre équipe de 6.
-    - **Master Type** : Testez vos connaissances sur l'efficacité des types.
-    - **Silhouette** : Le classique "Qui est ce Pokémon ?".
-- **Design Glassmorphism** : Interface moderne utilisant des effets de flou, des halos de couleurs et des animations **Framer Motion**.
+![Dashboard](screenshots/github_dashboard.png)
+
+### 📂 Collection & Tactique
+Une base de données exhaustive couvrant **649 Pokémon** des générations 1 à 5. Filtrez par type, triez par statistiques et composez votre équipe de rêve avec des analyses en temps réel.
+
+![Archives](screenshots/github_archives.png)
+
+### ⚔️ Arène Master
+Passez à l'action avec un système de combat manuel au tour par tour. 
+
+*   **Mode J1 vs IA** : Testez vos limites contre l'ordinateur.
+*   **Mode Local PvP** : Défiez vos amis sur la même machine.
+*   **Mode Spectateur** : Admirez deux IA s'affronter.
+
+![Menu de l'Arène](screenshots/github_battle_menu.png)
+
+### 🔍 Sélection & Combat
+Une interface de sélection intelligente avec barre de recherche pour préparer vos duels rapidement.
+
+![Sélection](screenshots/github_battle_selection.png)
+![Combat](screenshots/github_battle_action.png)
+
+### 🏆 Gloire & Célébration
+Chaque victoire est récompensée par une animation premium célébrant vos exploits.
+
+![Victoire](screenshots/github_winner.png)
+
+---
+
+## 🚀 Fonctionnalités Clés
+
+*   **Gestion d'Équipe (6/6)** : Choisissez vos champions parmi 649 espèces.
+*   **Système de Combat Manuel** : Choisissez entre attaques classiques et capacités spéciales liées au Type.
+*   **Design Premium** : Glassmorphism, animations fluides, thèmes clair et sombre automatiques.
+*   **Utilitaires Intégrés** : Quiz sur les forces/faiblesses de types et jeu des silhouettes.
 
 ## 🛠️ Stack Technique
 
-- **Frontend** : React 19, Vite, Tailwind CSS 4, Framer Motion, Axios (PokeAPI Integration).
-- **Backend** : Node.js, Express, Morgan (Logging).
-- **Données** : Système hybride (Base locale de 386 Pokémon + Fetching dynamique PokeAPI pour les évolutions).
+*   **Frontend** : [React 19](https://react.dev/), [Framer Motion](https://www.framer.com/motion/), [Tailwind CSS](https://tailwindcss.com/)
+*   **Backend** : Node.js, Express (API Pokémon locale)
+*   **Données** : Poké-API complétée jusqu'à la Génération 5.
 
-## 🚀 Installation & Lancement
+## 📦 Installation & Démarrage
 
-1. **Installer les dépendances** :
+1. Clonez le projet :
+   ```bash
+   git clone https://github.com/votre-user/pokedex-master.git
+   ```
+
+2. Installez les dépendances :
    ```bash
    npm install
    ```
 
-2. **Lancer l'application (Client + Serveur)** :
+3. Lancez le serveur de données :
+   ```bash
+   node server.js
+   ```
+
+4. Lancez l'application :
    ```bash
    npm run dev
    ```
-   - L'interface sera disponible sur **[http://localhost:3201](http://localhost:3201)**.
-   - L'API backend tourne sur le port `8080`.
 
-## 📂 Structure du Projet
-```text
-POKEDEX/
-├── public/          # Assets statiques (Vidéos, Audio, Images)
-├── src/             # Code source React (Composants & Logique)
-│   ├── App.jsx      # Application principale & Composants
-│   ├── App.css      # Design & Keyframes (Glassmorphism, Holo)
-│   └── main.jsx     # Point d'entrée React
-├── pokedex.json     # Base de données (386 Pokémon)
-├── server.js        # Serveur API (Express)
-└── package.json     # Configuration & Scripts
-```
+Accédez à l'application sur [http://localhost:3201](http://localhost:3201) (ou le port indiqué par Vite).
 
 ---
-*Écrit avec passion par Antigravity pour la communauté des dresseurs.*
+
+Conçu avec passion pour la communauté Pokémon. 🔴⚪

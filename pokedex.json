@@ -8111,6 +8111,5511 @@
         "Speed": 150
       },
       "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/386.png"
+    },
+    {
+      "id": 387,
+      "nom": "Tortipouss",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 68,
+        "Defense": 64,
+        "Sp. Attack": 45,
+        "Sp. Defense": 55,
+        "Speed": 31
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/387.png"
+    },
+    {
+      "id": 388,
+      "nom": "Boskara",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 89,
+        "Defense": 85,
+        "Sp. Attack": 55,
+        "Sp. Defense": 65,
+        "Speed": 36
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/388.png"
+    },
+    {
+      "id": 389,
+      "nom": "Torterra",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 95,
+        "Attack": 109,
+        "Defense": 105,
+        "Sp. Attack": 75,
+        "Sp. Defense": 85,
+        "Speed": 56
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/389.png"
+    },
+    {
+      "id": 390,
+      "nom": "Ouisticram",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 44,
+        "Attack": 58,
+        "Defense": 44,
+        "Sp. Attack": 58,
+        "Sp. Defense": 44,
+        "Speed": 61
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/390.png"
+    },
+    {
+      "id": 391,
+      "nom": "Chimpenfeu",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 64,
+        "Attack": 78,
+        "Defense": 52,
+        "Sp. Attack": 78,
+        "Sp. Defense": 52,
+        "Speed": 81
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/391.png"
+    },
+    {
+      "id": 392,
+      "nom": "Simiabraz",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 76,
+        "Attack": 104,
+        "Defense": 71,
+        "Sp. Attack": 104,
+        "Sp. Defense": 71,
+        "Speed": 108
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/392.png"
+    },
+    {
+      "id": 393,
+      "nom": "Tiplouf",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 53,
+        "Attack": 51,
+        "Defense": 53,
+        "Sp. Attack": 61,
+        "Sp. Defense": 56,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/393.png"
+    },
+    {
+      "id": 394,
+      "nom": "Prinplouf",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 64,
+        "Attack": 66,
+        "Defense": 68,
+        "Sp. Attack": 81,
+        "Sp. Defense": 76,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/394.png"
+    },
+    {
+      "id": 395,
+      "nom": "Pingoléon",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 84,
+        "Attack": 86,
+        "Defense": 88,
+        "Sp. Attack": 111,
+        "Sp. Defense": 101,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/395.png"
+    },
+    {
+      "id": 396,
+      "nom": "Étourmi",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 55,
+        "Defense": 30,
+        "Sp. Attack": 30,
+        "Sp. Defense": 30,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/396.png"
+    },
+    {
+      "id": 397,
+      "nom": "Étourvol",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 75,
+        "Defense": 50,
+        "Sp. Attack": 40,
+        "Sp. Defense": 40,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/397.png"
+    },
+    {
+      "id": 398,
+      "nom": "Étouraptor",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 120,
+        "Defense": 70,
+        "Sp. Attack": 50,
+        "Sp. Defense": 60,
+        "Speed": 100
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/398.png"
+    },
+    {
+      "id": 399,
+      "nom": "Keunotor",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 59,
+        "Attack": 45,
+        "Defense": 40,
+        "Sp. Attack": 35,
+        "Sp. Defense": 40,
+        "Speed": 31
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/399.png"
+    },
+    {
+      "id": 400,
+      "nom": "Castorno",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 79,
+        "Attack": 85,
+        "Defense": 60,
+        "Sp. Attack": 55,
+        "Sp. Defense": 60,
+        "Speed": 71
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/400.png"
+    },
+    {
+      "id": 401,
+      "nom": "Crikzik",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 37,
+        "Attack": 25,
+        "Defense": 41,
+        "Sp. Attack": 25,
+        "Sp. Defense": 41,
+        "Speed": 25
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/401.png"
+    },
+    {
+      "id": 402,
+      "nom": "Mélokrik",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 77,
+        "Attack": 85,
+        "Defense": 51,
+        "Sp. Attack": 55,
+        "Sp. Defense": 51,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/402.png"
+    },
+    {
+      "id": 403,
+      "nom": "Lixy",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 65,
+        "Defense": 34,
+        "Sp. Attack": 40,
+        "Sp. Defense": 34,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/403.png"
+    },
+    {
+      "id": 404,
+      "nom": "Luxio",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 85,
+        "Defense": 49,
+        "Sp. Attack": 60,
+        "Sp. Defense": 49,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/404.png"
+    },
+    {
+      "id": 405,
+      "nom": "Luxray",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 120,
+        "Defense": 79,
+        "Sp. Attack": 95,
+        "Sp. Defense": 79,
+        "Speed": 70
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/405.png"
+    },
+    {
+      "id": 406,
+      "nom": "Rozbouton",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 30,
+        "Defense": 35,
+        "Sp. Attack": 50,
+        "Sp. Defense": 70,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/406.png"
+    },
+    {
+      "id": 407,
+      "nom": "Roserade",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 70,
+        "Defense": 65,
+        "Sp. Attack": 125,
+        "Sp. Defense": 105,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/407.png"
+    },
+    {
+      "id": 408,
+      "nom": "Kranidos",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 67,
+        "Attack": 125,
+        "Defense": 40,
+        "Sp. Attack": 30,
+        "Sp. Defense": 30,
+        "Speed": 58
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/408.png"
+    },
+    {
+      "id": 409,
+      "nom": "Charkos",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 97,
+        "Attack": 165,
+        "Defense": 60,
+        "Sp. Attack": 65,
+        "Sp. Defense": 50,
+        "Speed": 58
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/409.png"
+    },
+    {
+      "id": 410,
+      "nom": "Dinoclier",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 30,
+        "Attack": 42,
+        "Defense": 118,
+        "Sp. Attack": 42,
+        "Sp. Defense": 88,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/410.png"
+    },
+    {
+      "id": 411,
+      "nom": "Bastiodon",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 52,
+        "Defense": 168,
+        "Sp. Attack": 47,
+        "Sp. Defense": 138,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/411.png"
+    },
+    {
+      "id": 412,
+      "nom": "Cheniti",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 29,
+        "Defense": 45,
+        "Sp. Attack": 29,
+        "Sp. Defense": 45,
+        "Speed": 36
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/412.png"
+    },
+    {
+      "id": 413,
+      "nom": "Cheniselle",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 59,
+        "Defense": 85,
+        "Sp. Attack": 79,
+        "Sp. Defense": 105,
+        "Speed": 36
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/413.png"
+    },
+    {
+      "id": 414,
+      "nom": "Papilord",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 94,
+        "Defense": 50,
+        "Sp. Attack": 94,
+        "Sp. Defense": 50,
+        "Speed": 66
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/414.png"
+    },
+    {
+      "id": 415,
+      "nom": "Apitrini",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 30,
+        "Attack": 30,
+        "Defense": 42,
+        "Sp. Attack": 30,
+        "Sp. Defense": 42,
+        "Speed": 70
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/415.png"
+    },
+    {
+      "id": 416,
+      "nom": "Apireine",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 80,
+        "Defense": 102,
+        "Sp. Attack": 80,
+        "Sp. Defense": 102,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/416.png"
+    },
+    {
+      "id": 417,
+      "nom": "Pachirisu",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 45,
+        "Defense": 70,
+        "Sp. Attack": 45,
+        "Sp. Defense": 90,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/417.png"
+    },
+    {
+      "id": 418,
+      "nom": "Mustébouée",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 65,
+        "Defense": 35,
+        "Sp. Attack": 60,
+        "Sp. Defense": 30,
+        "Speed": 85
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/418.png"
+    },
+    {
+      "id": 419,
+      "nom": "Mustéflott",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 105,
+        "Defense": 55,
+        "Sp. Attack": 85,
+        "Sp. Defense": 50,
+        "Speed": 115
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/419.png"
+    },
+    {
+      "id": 420,
+      "nom": "Ceribou",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 35,
+        "Defense": 45,
+        "Sp. Attack": 62,
+        "Sp. Defense": 53,
+        "Speed": 35
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/420.png"
+    },
+    {
+      "id": 421,
+      "nom": "Ceriflor",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 60,
+        "Defense": 70,
+        "Sp. Attack": 87,
+        "Sp. Defense": 78,
+        "Speed": 85
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/421.png"
+    },
+    {
+      "id": 422,
+      "nom": "Sancoki",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 76,
+        "Attack": 48,
+        "Defense": 48,
+        "Sp. Attack": 57,
+        "Sp. Defense": 62,
+        "Speed": 34
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/422.png"
+    },
+    {
+      "id": 423,
+      "nom": "Tritosor",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 111,
+        "Attack": 83,
+        "Defense": 68,
+        "Sp. Attack": 92,
+        "Sp. Defense": 82,
+        "Speed": 39
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/423.png"
+    },
+    {
+      "id": 424,
+      "nom": "Capidextre",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 100,
+        "Defense": 66,
+        "Sp. Attack": 60,
+        "Sp. Defense": 66,
+        "Speed": 115
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/424.png"
+    },
+    {
+      "id": 425,
+      "nom": "Baudrive",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 90,
+        "Attack": 50,
+        "Defense": 34,
+        "Sp. Attack": 60,
+        "Sp. Defense": 44,
+        "Speed": 70
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/425.png"
+    },
+    {
+      "id": 426,
+      "nom": "Grodrive",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 150,
+        "Attack": 80,
+        "Defense": 44,
+        "Sp. Attack": 90,
+        "Sp. Defense": 54,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/426.png"
+    },
+    {
+      "id": 427,
+      "nom": "Laporeille",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 66,
+        "Defense": 44,
+        "Sp. Attack": 44,
+        "Sp. Defense": 56,
+        "Speed": 85
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/427.png"
+    },
+    {
+      "id": 428,
+      "nom": "Lockpin",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 76,
+        "Defense": 84,
+        "Sp. Attack": 54,
+        "Sp. Defense": 96,
+        "Speed": 105
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/428.png"
+    },
+    {
+      "id": 429,
+      "nom": "Magirêve",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 60,
+        "Defense": 60,
+        "Sp. Attack": 105,
+        "Sp. Defense": 105,
+        "Speed": 105
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/429.png"
+    },
+    {
+      "id": 430,
+      "nom": "Corboss",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 125,
+        "Defense": 52,
+        "Sp. Attack": 105,
+        "Sp. Defense": 52,
+        "Speed": 71
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/430.png"
+    },
+    {
+      "id": 431,
+      "nom": "Chaglam",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 49,
+        "Attack": 55,
+        "Defense": 42,
+        "Sp. Attack": 42,
+        "Sp. Defense": 37,
+        "Speed": 85
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/431.png"
+    },
+    {
+      "id": 432,
+      "nom": "Chaffreux",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 71,
+        "Attack": 82,
+        "Defense": 64,
+        "Sp. Attack": 64,
+        "Sp. Defense": 59,
+        "Speed": 112
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/432.png"
+    },
+    {
+      "id": 433,
+      "nom": "Korillon",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 30,
+        "Defense": 50,
+        "Sp. Attack": 65,
+        "Sp. Defense": 50,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/433.png"
+    },
+    {
+      "id": 434,
+      "nom": "Moufouette",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 63,
+        "Attack": 63,
+        "Defense": 47,
+        "Sp. Attack": 41,
+        "Sp. Defense": 41,
+        "Speed": 74
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/434.png"
+    },
+    {
+      "id": 435,
+      "nom": "Moufflair",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 103,
+        "Attack": 93,
+        "Defense": 67,
+        "Sp. Attack": 71,
+        "Sp. Defense": 61,
+        "Speed": 84
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/435.png"
+    },
+    {
+      "id": 436,
+      "nom": "Archéomire",
+      "types": [
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 57,
+        "Attack": 24,
+        "Defense": 86,
+        "Sp. Attack": 24,
+        "Sp. Defense": 86,
+        "Speed": 23
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/436.png"
+    },
+    {
+      "id": 437,
+      "nom": "Archéodong",
+      "types": [
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 67,
+        "Attack": 89,
+        "Defense": 116,
+        "Sp. Attack": 79,
+        "Sp. Defense": 116,
+        "Speed": 33
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/437.png"
+    },
+    {
+      "id": 438,
+      "nom": "Manzaï",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 80,
+        "Defense": 95,
+        "Sp. Attack": 10,
+        "Sp. Defense": 45,
+        "Speed": 10
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/438.png"
+    },
+    {
+      "id": 439,
+      "nom": "Mime Jr.",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Fée",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 20,
+        "Attack": 25,
+        "Defense": 45,
+        "Sp. Attack": 70,
+        "Sp. Defense": 90,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/439.png"
+    },
+    {
+      "id": 440,
+      "nom": "Ptiravi",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 5,
+        "Defense": 5,
+        "Sp. Attack": 15,
+        "Sp. Defense": 65,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/440.png"
+    },
+    {
+      "id": 441,
+      "nom": "Pijako",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 76,
+        "Attack": 65,
+        "Defense": 45,
+        "Sp. Attack": 92,
+        "Sp. Defense": 42,
+        "Speed": 91
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/441.png"
+    },
+    {
+      "id": 442,
+      "nom": "Spiritomb",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 92,
+        "Defense": 108,
+        "Sp. Attack": 92,
+        "Sp. Defense": 108,
+        "Speed": 35
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/442.png"
+    },
+    {
+      "id": 443,
+      "nom": "Griknot",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 58,
+        "Attack": 70,
+        "Defense": 45,
+        "Sp. Attack": 40,
+        "Sp. Defense": 45,
+        "Speed": 42
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/443.png"
+    },
+    {
+      "id": 444,
+      "nom": "Carmache",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 68,
+        "Attack": 90,
+        "Defense": 65,
+        "Sp. Attack": 50,
+        "Sp. Defense": 55,
+        "Speed": 82
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/444.png"
+    },
+    {
+      "id": 445,
+      "nom": "Carchacrok",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 108,
+        "Attack": 130,
+        "Defense": 95,
+        "Sp. Attack": 80,
+        "Sp. Defense": 85,
+        "Speed": 102
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png"
+    },
+    {
+      "id": 446,
+      "nom": "Goinfrex",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 135,
+        "Attack": 85,
+        "Defense": 40,
+        "Sp. Attack": 40,
+        "Sp. Defense": 85,
+        "Speed": 5
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/446.png"
+    },
+    {
+      "id": 447,
+      "nom": "Riolu",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 70,
+        "Defense": 40,
+        "Sp. Attack": 35,
+        "Sp. Defense": 40,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/447.png"
+    },
+    {
+      "id": 448,
+      "nom": "Lucario",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 110,
+        "Defense": 70,
+        "Sp. Attack": 115,
+        "Sp. Defense": 70,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png"
+    },
+    {
+      "id": 449,
+      "nom": "Hippopotas",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 68,
+        "Attack": 72,
+        "Defense": 78,
+        "Sp. Attack": 38,
+        "Sp. Defense": 42,
+        "Speed": 32
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/449.png"
+    },
+    {
+      "id": 450,
+      "nom": "Hippodocus",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 108,
+        "Attack": 112,
+        "Defense": 118,
+        "Sp. Attack": 68,
+        "Sp. Defense": 72,
+        "Speed": 47
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/450.png"
+    },
+    {
+      "id": 451,
+      "nom": "Rapion",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 50,
+        "Defense": 90,
+        "Sp. Attack": 30,
+        "Sp. Defense": 55,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/451.png"
+    },
+    {
+      "id": 452,
+      "nom": "Drascore",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 90,
+        "Defense": 110,
+        "Sp. Attack": 60,
+        "Sp. Defense": 75,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/452.png"
+    },
+    {
+      "id": 453,
+      "nom": "Cradopaud",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 48,
+        "Attack": 61,
+        "Defense": 40,
+        "Sp. Attack": 61,
+        "Sp. Defense": 40,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/453.png"
+    },
+    {
+      "id": 454,
+      "nom": "Coatox",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 83,
+        "Attack": 106,
+        "Defense": 65,
+        "Sp. Attack": 86,
+        "Sp. Defense": 65,
+        "Speed": 85
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/454.png"
+    },
+    {
+      "id": 455,
+      "nom": "Vortente",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 74,
+        "Attack": 100,
+        "Defense": 72,
+        "Sp. Attack": 90,
+        "Sp. Defense": 72,
+        "Speed": 46
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/455.png"
+    },
+    {
+      "id": 456,
+      "nom": "Écayon",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 49,
+        "Attack": 49,
+        "Defense": 56,
+        "Sp. Attack": 49,
+        "Sp. Defense": 61,
+        "Speed": 66
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/456.png"
+    },
+    {
+      "id": 457,
+      "nom": "Luminéon",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 69,
+        "Attack": 69,
+        "Defense": 76,
+        "Sp. Attack": 69,
+        "Sp. Defense": 86,
+        "Speed": 91
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/457.png"
+    },
+    {
+      "id": 458,
+      "nom": "Babimanta",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 20,
+        "Defense": 50,
+        "Sp. Attack": 60,
+        "Sp. Defense": 120,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/458.png"
+    },
+    {
+      "id": 459,
+      "nom": "Blizzi",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 62,
+        "Defense": 50,
+        "Sp. Attack": 62,
+        "Sp. Defense": 60,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/459.png"
+    },
+    {
+      "id": 460,
+      "nom": "Blizzaroi",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 90,
+        "Attack": 92,
+        "Defense": 75,
+        "Sp. Attack": 92,
+        "Sp. Defense": 85,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/460.png"
+    },
+    {
+      "id": 461,
+      "nom": "Dimoret",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 120,
+        "Defense": 65,
+        "Sp. Attack": 45,
+        "Sp. Defense": 85,
+        "Speed": 125
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png"
+    },
+    {
+      "id": 462,
+      "nom": "Magnézone",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 70,
+        "Defense": 115,
+        "Sp. Attack": 130,
+        "Sp. Defense": 90,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/462.png"
+    },
+    {
+      "id": 463,
+      "nom": "Coudlangue",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 110,
+        "Attack": 85,
+        "Defense": 95,
+        "Sp. Attack": 80,
+        "Sp. Defense": 95,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/463.png"
+    },
+    {
+      "id": 464,
+      "nom": "Rhinastoc",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 115,
+        "Attack": 140,
+        "Defense": 130,
+        "Sp. Attack": 55,
+        "Sp. Defense": 55,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/464.png"
+    },
+    {
+      "id": 465,
+      "nom": "Bouldeneu",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 100,
+        "Defense": 125,
+        "Sp. Attack": 110,
+        "Sp. Defense": 50,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/465.png"
+    },
+    {
+      "id": 466,
+      "nom": "Élekable",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 123,
+        "Defense": 67,
+        "Sp. Attack": 95,
+        "Sp. Defense": 85,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/466.png"
+    },
+    {
+      "id": 467,
+      "nom": "Maganon",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 95,
+        "Defense": 67,
+        "Sp. Attack": 125,
+        "Sp. Defense": 95,
+        "Speed": 83
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/467.png"
+    },
+    {
+      "id": 468,
+      "nom": "Togekiss",
+      "types": [
+        {
+          "nom": "Fée",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 50,
+        "Defense": 95,
+        "Sp. Attack": 120,
+        "Sp. Defense": 115,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/468.png"
+    },
+    {
+      "id": 469,
+      "nom": "Yanmega",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 86,
+        "Attack": 76,
+        "Defense": 86,
+        "Sp. Attack": 116,
+        "Sp. Defense": 56,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/469.png"
+    },
+    {
+      "id": 470,
+      "nom": "Phyllali",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 110,
+        "Defense": 130,
+        "Sp. Attack": 60,
+        "Sp. Defense": 65,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/470.png"
+    },
+    {
+      "id": 471,
+      "nom": "Givrali",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 60,
+        "Defense": 110,
+        "Sp. Attack": 130,
+        "Sp. Defense": 95,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/471.png"
+    },
+    {
+      "id": 472,
+      "nom": "Scorvol",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 95,
+        "Defense": 125,
+        "Sp. Attack": 45,
+        "Sp. Defense": 75,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/472.png"
+    },
+    {
+      "id": 473,
+      "nom": "Mammochon",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 110,
+        "Attack": 130,
+        "Defense": 80,
+        "Sp. Attack": 70,
+        "Sp. Defense": 60,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/473.png"
+    },
+    {
+      "id": 474,
+      "nom": "Porygon-Z",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 80,
+        "Defense": 70,
+        "Sp. Attack": 135,
+        "Sp. Defense": 75,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/474.png"
+    },
+    {
+      "id": 475,
+      "nom": "Gallame",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 68,
+        "Attack": 125,
+        "Defense": 65,
+        "Sp. Attack": 65,
+        "Sp. Defense": 115,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/475.png"
+    },
+    {
+      "id": 476,
+      "nom": "Tarinorme",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 55,
+        "Defense": 145,
+        "Sp. Attack": 75,
+        "Sp. Defense": 150,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/476.png"
+    },
+    {
+      "id": 477,
+      "nom": "Noctunoir",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 100,
+        "Defense": 135,
+        "Sp. Attack": 65,
+        "Sp. Defense": 135,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/477.png"
+    },
+    {
+      "id": 478,
+      "nom": "Momartik",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 80,
+        "Defense": 70,
+        "Sp. Attack": 80,
+        "Sp. Defense": 70,
+        "Speed": 110
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/478.png"
+    },
+    {
+      "id": 479,
+      "nom": "Motisma",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 50,
+        "Defense": 77,
+        "Sp. Attack": 95,
+        "Sp. Defense": 77,
+        "Speed": 91
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/479.png"
+    },
+    {
+      "id": 480,
+      "nom": "Créhelf",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 75,
+        "Defense": 130,
+        "Sp. Attack": 75,
+        "Sp. Defense": 130,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/480.png"
+    },
+    {
+      "id": 481,
+      "nom": "Créfollet",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 105,
+        "Defense": 105,
+        "Sp. Attack": 105,
+        "Sp. Defense": 105,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/481.png"
+    },
+    {
+      "id": 482,
+      "nom": "Créfadet",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 125,
+        "Defense": 70,
+        "Sp. Attack": 125,
+        "Sp. Defense": 70,
+        "Speed": 115
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/482.png"
+    },
+    {
+      "id": 483,
+      "nom": "Dialga",
+      "types": [
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 120,
+        "Defense": 120,
+        "Sp. Attack": 150,
+        "Sp. Defense": 100,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/483.png"
+    },
+    {
+      "id": 484,
+      "nom": "Palkia",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 90,
+        "Attack": 120,
+        "Defense": 100,
+        "Sp. Attack": 150,
+        "Sp. Defense": 120,
+        "Speed": 100
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/484.png"
+    },
+    {
+      "id": 485,
+      "nom": "Heatran",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 91,
+        "Attack": 90,
+        "Defense": 106,
+        "Sp. Attack": 130,
+        "Sp. Defense": 106,
+        "Speed": 77
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/485.png"
+    },
+    {
+      "id": 486,
+      "nom": "Regigigas",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 110,
+        "Attack": 160,
+        "Defense": 110,
+        "Sp. Attack": 80,
+        "Sp. Defense": 110,
+        "Speed": 100
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/486.png"
+    },
+    {
+      "id": 487,
+      "nom": "Giratina",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 150,
+        "Attack": 100,
+        "Defense": 120,
+        "Sp. Attack": 100,
+        "Sp. Defense": 120,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/487.png"
+    },
+    {
+      "id": 488,
+      "nom": "Cresselia",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 120,
+        "Attack": 70,
+        "Defense": 110,
+        "Sp. Attack": 75,
+        "Sp. Defense": 120,
+        "Speed": 85
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/488.png"
+    },
+    {
+      "id": 489,
+      "nom": "Phione",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 80,
+        "Defense": 80,
+        "Sp. Attack": 80,
+        "Sp. Defense": 80,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/489.png"
+    },
+    {
+      "id": 490,
+      "nom": "Manaphy",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 100,
+        "Defense": 100,
+        "Sp. Attack": 100,
+        "Sp. Defense": 100,
+        "Speed": 100
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/490.png"
+    },
+    {
+      "id": 491,
+      "nom": "Darkrai",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 90,
+        "Defense": 90,
+        "Sp. Attack": 135,
+        "Sp. Defense": 90,
+        "Speed": 125
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png"
+    },
+    {
+      "id": 492,
+      "nom": "Shaymin",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 100,
+        "Defense": 100,
+        "Sp. Attack": 100,
+        "Sp. Defense": 100,
+        "Speed": 100
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/492.png"
+    },
+    {
+      "id": 493,
+      "nom": "Arceus",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 120,
+        "Attack": 120,
+        "Defense": 120,
+        "Sp. Attack": 120,
+        "Sp. Defense": 120,
+        "Speed": 120
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png"
+    },
+    {
+      "id": 494,
+      "nom": "Victini",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 100,
+        "Defense": 100,
+        "Sp. Attack": 100,
+        "Sp. Defense": 100,
+        "Speed": 100
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/494.png"
+    },
+    {
+      "id": 495,
+      "nom": "Vipélierre",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 45,
+        "Defense": 55,
+        "Sp. Attack": 45,
+        "Sp. Defense": 55,
+        "Speed": 63
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/495.png"
+    },
+    {
+      "id": 496,
+      "nom": "Lianaja",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 60,
+        "Defense": 75,
+        "Sp. Attack": 60,
+        "Sp. Defense": 75,
+        "Speed": 83
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/496.png"
+    },
+    {
+      "id": 497,
+      "nom": "Majaspic",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 75,
+        "Defense": 95,
+        "Sp. Attack": 75,
+        "Sp. Defense": 95,
+        "Speed": 113
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/497.png"
+    },
+    {
+      "id": 498,
+      "nom": "Gruikui",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 63,
+        "Defense": 45,
+        "Sp. Attack": 45,
+        "Sp. Defense": 45,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/498.png"
+    },
+    {
+      "id": 499,
+      "nom": "Grotichon",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 90,
+        "Attack": 93,
+        "Defense": 55,
+        "Sp. Attack": 70,
+        "Sp. Defense": 55,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/499.png"
+    },
+    {
+      "id": 500,
+      "nom": "Roitiflam",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 110,
+        "Attack": 123,
+        "Defense": 65,
+        "Sp. Attack": 100,
+        "Sp. Defense": 65,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/500.png"
+    },
+    {
+      "id": 501,
+      "nom": "Moustillon",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 55,
+        "Defense": 45,
+        "Sp. Attack": 63,
+        "Sp. Defense": 45,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/501.png"
+    },
+    {
+      "id": 502,
+      "nom": "Mateloutre",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 75,
+        "Defense": 60,
+        "Sp. Attack": 83,
+        "Sp. Defense": 60,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/502.png"
+    },
+    {
+      "id": 503,
+      "nom": "Clamiral",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 95,
+        "Attack": 100,
+        "Defense": 85,
+        "Sp. Attack": 108,
+        "Sp. Defense": 70,
+        "Speed": 70
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/503.png"
+    },
+    {
+      "id": 504,
+      "nom": "Ratentif",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 55,
+        "Defense": 39,
+        "Sp. Attack": 35,
+        "Sp. Defense": 39,
+        "Speed": 42
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/504.png"
+    },
+    {
+      "id": 505,
+      "nom": "Miradar",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 85,
+        "Defense": 69,
+        "Sp. Attack": 60,
+        "Sp. Defense": 69,
+        "Speed": 77
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/505.png"
+    },
+    {
+      "id": 506,
+      "nom": "Ponchiot",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 60,
+        "Defense": 45,
+        "Sp. Attack": 25,
+        "Sp. Defense": 45,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/506.png"
+    },
+    {
+      "id": 507,
+      "nom": "Ponchien",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 80,
+        "Defense": 65,
+        "Sp. Attack": 35,
+        "Sp. Defense": 65,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/507.png"
+    },
+    {
+      "id": 508,
+      "nom": "Mastouffe",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 110,
+        "Defense": 90,
+        "Sp. Attack": 45,
+        "Sp. Defense": 90,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/508.png"
+    },
+    {
+      "id": 509,
+      "nom": "Chacripan",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 41,
+        "Attack": 50,
+        "Defense": 37,
+        "Sp. Attack": 50,
+        "Sp. Defense": 37,
+        "Speed": 66
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/509.png"
+    },
+    {
+      "id": 510,
+      "nom": "Léopardus",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 64,
+        "Attack": 88,
+        "Defense": 50,
+        "Sp. Attack": 88,
+        "Sp. Defense": 50,
+        "Speed": 106
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/510.png"
+    },
+    {
+      "id": 511,
+      "nom": "Feuillajou",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 53,
+        "Defense": 48,
+        "Sp. Attack": 53,
+        "Sp. Defense": 48,
+        "Speed": 64
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/511.png"
+    },
+    {
+      "id": 512,
+      "nom": "Feuiloutan",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 98,
+        "Defense": 63,
+        "Sp. Attack": 98,
+        "Sp. Defense": 63,
+        "Speed": 101
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/512.png"
+    },
+    {
+      "id": 513,
+      "nom": "Flamajou",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 53,
+        "Defense": 48,
+        "Sp. Attack": 53,
+        "Sp. Defense": 48,
+        "Speed": 64
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/513.png"
+    },
+    {
+      "id": 514,
+      "nom": "Flamoutan",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 98,
+        "Defense": 63,
+        "Sp. Attack": 98,
+        "Sp. Defense": 63,
+        "Speed": 101
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/514.png"
+    },
+    {
+      "id": 515,
+      "nom": "Flotajou",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 53,
+        "Defense": 48,
+        "Sp. Attack": 53,
+        "Sp. Defense": 48,
+        "Speed": 64
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/515.png"
+    },
+    {
+      "id": 516,
+      "nom": "Flotoutan",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 98,
+        "Defense": 63,
+        "Sp. Attack": 98,
+        "Sp. Defense": 63,
+        "Speed": 101
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/516.png"
+    },
+    {
+      "id": 517,
+      "nom": "Munna",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 76,
+        "Attack": 25,
+        "Defense": 45,
+        "Sp. Attack": 67,
+        "Sp. Defense": 55,
+        "Speed": 24
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/517.png"
+    },
+    {
+      "id": 518,
+      "nom": "Mushana",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 116,
+        "Attack": 55,
+        "Defense": 85,
+        "Sp. Attack": 107,
+        "Sp. Defense": 95,
+        "Speed": 29
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/518.png"
+    },
+    {
+      "id": 519,
+      "nom": "Poichigeon",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 55,
+        "Defense": 50,
+        "Sp. Attack": 36,
+        "Sp. Defense": 30,
+        "Speed": 43
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/519.png"
+    },
+    {
+      "id": 520,
+      "nom": "Colombeau",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 62,
+        "Attack": 77,
+        "Defense": 62,
+        "Sp. Attack": 50,
+        "Sp. Defense": 42,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/520.png"
+    },
+    {
+      "id": 521,
+      "nom": "Déflaisan",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 115,
+        "Defense": 80,
+        "Sp. Attack": 65,
+        "Sp. Defense": 55,
+        "Speed": 93
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/521.png"
+    },
+    {
+      "id": 522,
+      "nom": "Zébibron",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 60,
+        "Defense": 32,
+        "Sp. Attack": 50,
+        "Sp. Defense": 32,
+        "Speed": 76
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/522.png"
+    },
+    {
+      "id": 523,
+      "nom": "Zéblitz",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 100,
+        "Defense": 63,
+        "Sp. Attack": 80,
+        "Sp. Defense": 63,
+        "Speed": 116
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/523.png"
+    },
+    {
+      "id": 524,
+      "nom": "Nodulithe",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 75,
+        "Defense": 85,
+        "Sp. Attack": 25,
+        "Sp. Defense": 25,
+        "Speed": 15
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/524.png"
+    },
+    {
+      "id": 525,
+      "nom": "Géolithe",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 105,
+        "Defense": 105,
+        "Sp. Attack": 50,
+        "Sp. Defense": 40,
+        "Speed": 20
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/525.png"
+    },
+    {
+      "id": 526,
+      "nom": "Gigalithe",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 135,
+        "Defense": 130,
+        "Sp. Attack": 60,
+        "Sp. Defense": 80,
+        "Speed": 25
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/526.png"
+    },
+    {
+      "id": 527,
+      "nom": "Chovsourir",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 45,
+        "Defense": 43,
+        "Sp. Attack": 55,
+        "Sp. Defense": 43,
+        "Speed": 72
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/527.png"
+    },
+    {
+      "id": 528,
+      "nom": "Rhinolove",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 67,
+        "Attack": 57,
+        "Defense": 55,
+        "Sp. Attack": 77,
+        "Sp. Defense": 55,
+        "Speed": 114
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/528.png"
+    },
+    {
+      "id": 529,
+      "nom": "Rototaupe",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 85,
+        "Defense": 40,
+        "Sp. Attack": 30,
+        "Sp. Defense": 45,
+        "Speed": 68
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/529.png"
+    },
+    {
+      "id": 530,
+      "nom": "Minotaupe",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 110,
+        "Attack": 135,
+        "Defense": 60,
+        "Sp. Attack": 50,
+        "Sp. Defense": 65,
+        "Speed": 88
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/530.png"
+    },
+    {
+      "id": 531,
+      "nom": "Nanméouïe",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 103,
+        "Attack": 60,
+        "Defense": 86,
+        "Sp. Attack": 60,
+        "Sp. Defense": 86,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/531.png"
+    },
+    {
+      "id": 532,
+      "nom": "Charpenti",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 80,
+        "Defense": 55,
+        "Sp. Attack": 25,
+        "Sp. Defense": 35,
+        "Speed": 35
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/532.png"
+    },
+    {
+      "id": 533,
+      "nom": "Ouvrifier",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 105,
+        "Defense": 85,
+        "Sp. Attack": 40,
+        "Sp. Defense": 50,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/533.png"
+    },
+    {
+      "id": 534,
+      "nom": "Bétochef",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 105,
+        "Attack": 140,
+        "Defense": 95,
+        "Sp. Attack": 55,
+        "Sp. Defense": 65,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/534.png"
+    },
+    {
+      "id": 535,
+      "nom": "Tritonde",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 50,
+        "Defense": 40,
+        "Sp. Attack": 50,
+        "Sp. Defense": 40,
+        "Speed": 64
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/535.png"
+    },
+    {
+      "id": 536,
+      "nom": "Batracné",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 65,
+        "Defense": 55,
+        "Sp. Attack": 65,
+        "Sp. Defense": 55,
+        "Speed": 69
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/536.png"
+    },
+    {
+      "id": 537,
+      "nom": "Crapustule",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 105,
+        "Attack": 95,
+        "Defense": 75,
+        "Sp. Attack": 85,
+        "Sp. Defense": 75,
+        "Speed": 74
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/537.png"
+    },
+    {
+      "id": 538,
+      "nom": "Judokrak",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 120,
+        "Attack": 100,
+        "Defense": 85,
+        "Sp. Attack": 30,
+        "Sp. Defense": 85,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/538.png"
+    },
+    {
+      "id": 539,
+      "nom": "Karaclée",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 125,
+        "Defense": 75,
+        "Sp. Attack": 30,
+        "Sp. Defense": 75,
+        "Speed": 85
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/539.png"
+    },
+    {
+      "id": 540,
+      "nom": "Larveyette",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 53,
+        "Defense": 70,
+        "Sp. Attack": 40,
+        "Sp. Defense": 60,
+        "Speed": 42
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/540.png"
+    },
+    {
+      "id": 541,
+      "nom": "Couverdure",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 63,
+        "Defense": 90,
+        "Sp. Attack": 50,
+        "Sp. Defense": 80,
+        "Speed": 42
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/541.png"
+    },
+    {
+      "id": 542,
+      "nom": "Manternel",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 103,
+        "Defense": 80,
+        "Sp. Attack": 70,
+        "Sp. Defense": 80,
+        "Speed": 92
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/542.png"
+    },
+    {
+      "id": 543,
+      "nom": "Venipatte",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 30,
+        "Attack": 45,
+        "Defense": 59,
+        "Sp. Attack": 30,
+        "Sp. Defense": 39,
+        "Speed": 57
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/543.png"
+    },
+    {
+      "id": 544,
+      "nom": "Scobolide",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 55,
+        "Defense": 99,
+        "Sp. Attack": 40,
+        "Sp. Defense": 79,
+        "Speed": 47
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/544.png"
+    },
+    {
+      "id": 545,
+      "nom": "Brutapode",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 100,
+        "Defense": 89,
+        "Sp. Attack": 55,
+        "Sp. Defense": 69,
+        "Speed": 112
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/545.png"
+    },
+    {
+      "id": 546,
+      "nom": "Doudouvet",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Fée",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 27,
+        "Defense": 60,
+        "Sp. Attack": 37,
+        "Sp. Defense": 50,
+        "Speed": 66
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/546.png"
+    },
+    {
+      "id": 547,
+      "nom": "Farfaduvet",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Fée",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 67,
+        "Defense": 85,
+        "Sp. Attack": 77,
+        "Sp. Defense": 75,
+        "Speed": 116
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/547.png"
+    },
+    {
+      "id": 548,
+      "nom": "Chlorobule",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 35,
+        "Defense": 50,
+        "Sp. Attack": 70,
+        "Sp. Defense": 50,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/548.png"
+    },
+    {
+      "id": 549,
+      "nom": "Fragilady",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 60,
+        "Defense": 75,
+        "Sp. Attack": 110,
+        "Sp. Defense": 75,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/549.png"
+    },
+    {
+      "id": 550,
+      "nom": "Bargantua",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 92,
+        "Defense": 65,
+        "Sp. Attack": 80,
+        "Sp. Defense": 55,
+        "Speed": 98
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/550.png"
+    },
+    {
+      "id": 551,
+      "nom": "Mascaïman",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 72,
+        "Defense": 35,
+        "Sp. Attack": 35,
+        "Sp. Defense": 35,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/551.png"
+    },
+    {
+      "id": 552,
+      "nom": "Escroco",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 82,
+        "Defense": 45,
+        "Sp. Attack": 45,
+        "Sp. Defense": 45,
+        "Speed": 74
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/552.png"
+    },
+    {
+      "id": 553,
+      "nom": "Crocorible",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 95,
+        "Attack": 117,
+        "Defense": 80,
+        "Sp. Attack": 65,
+        "Sp. Defense": 70,
+        "Speed": 92
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/553.png"
+    },
+    {
+      "id": 554,
+      "nom": "Darumarond",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 90,
+        "Defense": 45,
+        "Sp. Attack": 15,
+        "Sp. Defense": 45,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/554.png"
+    },
+    {
+      "id": 555,
+      "nom": "Darumacho",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 105,
+        "Attack": 140,
+        "Defense": 55,
+        "Sp. Attack": 30,
+        "Sp. Defense": 55,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/555.png"
+    },
+    {
+      "id": 556,
+      "nom": "Maracachi",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 86,
+        "Defense": 67,
+        "Sp. Attack": 106,
+        "Sp. Defense": 67,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/556.png"
+    },
+    {
+      "id": 557,
+      "nom": "Crabicoque",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 65,
+        "Defense": 85,
+        "Sp. Attack": 35,
+        "Sp. Defense": 35,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/557.png"
+    },
+    {
+      "id": 558,
+      "nom": "Crabaraque",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 105,
+        "Defense": 125,
+        "Sp. Attack": 65,
+        "Sp. Defense": 75,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/558.png"
+    },
+    {
+      "id": 559,
+      "nom": "Baggiguane",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 75,
+        "Defense": 70,
+        "Sp. Attack": 35,
+        "Sp. Defense": 70,
+        "Speed": 48
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/559.png"
+    },
+    {
+      "id": 560,
+      "nom": "Baggaïd",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 90,
+        "Defense": 115,
+        "Sp. Attack": 45,
+        "Sp. Defense": 115,
+        "Speed": 58
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/560.png"
+    },
+    {
+      "id": 561,
+      "nom": "Cryptéro",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 72,
+        "Attack": 58,
+        "Defense": 80,
+        "Sp. Attack": 103,
+        "Sp. Defense": 80,
+        "Speed": 97
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/561.png"
+    },
+    {
+      "id": 562,
+      "nom": "Tutafeh",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 38,
+        "Attack": 30,
+        "Defense": 85,
+        "Sp. Attack": 55,
+        "Sp. Defense": 65,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/562.png"
+    },
+    {
+      "id": 563,
+      "nom": "Tutankafer",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 58,
+        "Attack": 50,
+        "Defense": 145,
+        "Sp. Attack": 95,
+        "Sp. Defense": 105,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/563.png"
+    },
+    {
+      "id": 564,
+      "nom": "Carapagos",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 54,
+        "Attack": 78,
+        "Defense": 103,
+        "Sp. Attack": 53,
+        "Sp. Defense": 45,
+        "Speed": 22
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/564.png"
+    },
+    {
+      "id": 565,
+      "nom": "Mégapagos",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 74,
+        "Attack": 108,
+        "Defense": 133,
+        "Sp. Attack": 83,
+        "Sp. Defense": 65,
+        "Speed": 32
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/565.png"
+    },
+    {
+      "id": 566,
+      "nom": "Arkéapti",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 112,
+        "Defense": 45,
+        "Sp. Attack": 74,
+        "Sp. Defense": 45,
+        "Speed": 70
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/566.png"
+    },
+    {
+      "id": 567,
+      "nom": "Aéroptéryx",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 140,
+        "Defense": 65,
+        "Sp. Attack": 112,
+        "Sp. Defense": 65,
+        "Speed": 110
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/567.png"
+    },
+    {
+      "id": 568,
+      "nom": "Miamiasme",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 50,
+        "Defense": 62,
+        "Sp. Attack": 40,
+        "Sp. Defense": 62,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/568.png"
+    },
+    {
+      "id": 569,
+      "nom": "Miasmax",
+      "types": [
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 95,
+        "Defense": 82,
+        "Sp. Attack": 60,
+        "Sp. Defense": 82,
+        "Speed": 75
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/569.png"
+    },
+    {
+      "id": 570,
+      "nom": "Zorua",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 65,
+        "Defense": 40,
+        "Sp. Attack": 80,
+        "Sp. Defense": 40,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/570.png"
+    },
+    {
+      "id": 571,
+      "nom": "Zoroark",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 105,
+        "Defense": 60,
+        "Sp. Attack": 120,
+        "Sp. Defense": 60,
+        "Speed": 105
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/571.png"
+    },
+    {
+      "id": 572,
+      "nom": "Chinchidou",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 50,
+        "Defense": 40,
+        "Sp. Attack": 40,
+        "Sp. Defense": 40,
+        "Speed": 75
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/572.png"
+    },
+    {
+      "id": 573,
+      "nom": "Pashmilla",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 95,
+        "Defense": 60,
+        "Sp. Attack": 65,
+        "Sp. Defense": 60,
+        "Speed": 115
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/573.png"
+    },
+    {
+      "id": 574,
+      "nom": "Scrutella",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 30,
+        "Defense": 50,
+        "Sp. Attack": 55,
+        "Sp. Defense": 65,
+        "Speed": 45
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/574.png"
+    },
+    {
+      "id": 575,
+      "nom": "Mesmérella",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 45,
+        "Defense": 70,
+        "Sp. Attack": 75,
+        "Sp. Defense": 85,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/575.png"
+    },
+    {
+      "id": 576,
+      "nom": "Sidérella",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 55,
+        "Defense": 95,
+        "Sp. Attack": 95,
+        "Sp. Defense": 110,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/576.png"
+    },
+    {
+      "id": 577,
+      "nom": "Nucléos",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 30,
+        "Defense": 40,
+        "Sp. Attack": 105,
+        "Sp. Defense": 50,
+        "Speed": 20
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/577.png"
+    },
+    {
+      "id": 578,
+      "nom": "Méios",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 40,
+        "Defense": 50,
+        "Sp. Attack": 125,
+        "Sp. Defense": 60,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/578.png"
+    },
+    {
+      "id": 579,
+      "nom": "Symbios",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 110,
+        "Attack": 65,
+        "Defense": 75,
+        "Sp. Attack": 125,
+        "Sp. Defense": 85,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/579.png"
+    },
+    {
+      "id": 580,
+      "nom": "Couaneton",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 62,
+        "Attack": 44,
+        "Defense": 50,
+        "Sp. Attack": 44,
+        "Sp. Defense": 50,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/580.png"
+    },
+    {
+      "id": 581,
+      "nom": "Lakmécygne",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 87,
+        "Defense": 63,
+        "Sp. Attack": 87,
+        "Sp. Defense": 63,
+        "Speed": 98
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/581.png"
+    },
+    {
+      "id": 582,
+      "nom": "Sorbébé",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 36,
+        "Attack": 50,
+        "Defense": 50,
+        "Sp. Attack": 65,
+        "Sp. Defense": 60,
+        "Speed": 44
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/582.png"
+    },
+    {
+      "id": 583,
+      "nom": "Sorboul",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 51,
+        "Attack": 65,
+        "Defense": 65,
+        "Sp. Attack": 80,
+        "Sp. Defense": 75,
+        "Speed": 59
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/583.png"
+    },
+    {
+      "id": 584,
+      "nom": "Sorbouboul",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 71,
+        "Attack": 95,
+        "Defense": 85,
+        "Sp. Attack": 110,
+        "Sp. Defense": 95,
+        "Speed": 79
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/584.png"
+    },
+    {
+      "id": 585,
+      "nom": "Vivaldaim",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 60,
+        "Defense": 50,
+        "Sp. Attack": 40,
+        "Sp. Defense": 50,
+        "Speed": 75
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/585.png"
+    },
+    {
+      "id": 586,
+      "nom": "Haydaim",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 100,
+        "Defense": 70,
+        "Sp. Attack": 60,
+        "Sp. Defense": 70,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/586.png"
+    },
+    {
+      "id": 587,
+      "nom": "Emolga",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 75,
+        "Defense": 60,
+        "Sp. Attack": 75,
+        "Sp. Defense": 60,
+        "Speed": 103
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/587.png"
+    },
+    {
+      "id": 588,
+      "nom": "Carabing",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 75,
+        "Defense": 45,
+        "Sp. Attack": 40,
+        "Sp. Defense": 45,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/588.png"
+    },
+    {
+      "id": 589,
+      "nom": "Lançargot",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 135,
+        "Defense": 105,
+        "Sp. Attack": 60,
+        "Sp. Defense": 105,
+        "Speed": 20
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/589.png"
+    },
+    {
+      "id": 590,
+      "nom": "Trompignon",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 69,
+        "Attack": 55,
+        "Defense": 45,
+        "Sp. Attack": 55,
+        "Sp. Defense": 55,
+        "Speed": 15
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/590.png"
+    },
+    {
+      "id": 591,
+      "nom": "Gaulet",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Poison",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 114,
+        "Attack": 85,
+        "Defense": 70,
+        "Sp. Attack": 85,
+        "Sp. Defense": 80,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/591.png"
+    },
+    {
+      "id": 592,
+      "nom": "Viskuse",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 40,
+        "Defense": 50,
+        "Sp. Attack": 65,
+        "Sp. Defense": 85,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/592.png"
+    },
+    {
+      "id": 593,
+      "nom": "Moyade",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 60,
+        "Defense": 70,
+        "Sp. Attack": 85,
+        "Sp. Defense": 105,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/593.png"
+    },
+    {
+      "id": 594,
+      "nom": "Mamanbo",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 165,
+        "Attack": 75,
+        "Defense": 80,
+        "Sp. Attack": 40,
+        "Sp. Defense": 45,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/594.png"
+    },
+    {
+      "id": 595,
+      "nom": "Statitik",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 47,
+        "Defense": 50,
+        "Sp. Attack": 57,
+        "Sp. Defense": 50,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/595.png"
+    },
+    {
+      "id": 596,
+      "nom": "Mygavolt",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 77,
+        "Defense": 60,
+        "Sp. Attack": 97,
+        "Sp. Defense": 60,
+        "Speed": 108
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/596.png"
+    },
+    {
+      "id": 597,
+      "nom": "Grindur",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 44,
+        "Attack": 50,
+        "Defense": 91,
+        "Sp. Attack": 24,
+        "Sp. Defense": 86,
+        "Speed": 10
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/597.png"
+    },
+    {
+      "id": 598,
+      "nom": "Noacier",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 74,
+        "Attack": 94,
+        "Defense": 131,
+        "Sp. Attack": 54,
+        "Sp. Defense": 116,
+        "Speed": 20
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/598.png"
+    },
+    {
+      "id": 599,
+      "nom": "Tic",
+      "types": [
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 40,
+        "Attack": 55,
+        "Defense": 70,
+        "Sp. Attack": 45,
+        "Sp. Defense": 60,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/599.png"
+    },
+    {
+      "id": 600,
+      "nom": "Clic",
+      "types": [
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 80,
+        "Defense": 95,
+        "Sp. Attack": 70,
+        "Sp. Defense": 85,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/600.png"
+    },
+    {
+      "id": 601,
+      "nom": "Cliticlic",
+      "types": [
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 100,
+        "Defense": 115,
+        "Sp. Attack": 70,
+        "Sp. Defense": 85,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/601.png"
+    },
+    {
+      "id": 602,
+      "nom": "Anchwatt",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 35,
+        "Attack": 55,
+        "Defense": 40,
+        "Sp. Attack": 45,
+        "Sp. Defense": 40,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/602.png"
+    },
+    {
+      "id": 603,
+      "nom": "Lampéroie",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 85,
+        "Defense": 70,
+        "Sp. Attack": 75,
+        "Sp. Defense": 70,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/603.png"
+    },
+    {
+      "id": 604,
+      "nom": "Ohmassacre",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 115,
+        "Defense": 80,
+        "Sp. Attack": 105,
+        "Sp. Defense": 80,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/604.png"
+    },
+    {
+      "id": 605,
+      "nom": "Lewsor",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 55,
+        "Defense": 55,
+        "Sp. Attack": 85,
+        "Sp. Defense": 55,
+        "Speed": 30
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/605.png"
+    },
+    {
+      "id": 606,
+      "nom": "Neitram",
+      "types": [
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 75,
+        "Attack": 75,
+        "Defense": 75,
+        "Sp. Attack": 125,
+        "Sp. Defense": 95,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/606.png"
+    },
+    {
+      "id": 607,
+      "nom": "Funécire",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 30,
+        "Defense": 55,
+        "Sp. Attack": 65,
+        "Sp. Defense": 55,
+        "Speed": 20
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/607.png"
+    },
+    {
+      "id": 608,
+      "nom": "Mélancolux",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 40,
+        "Defense": 60,
+        "Sp. Attack": 95,
+        "Sp. Defense": 60,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/608.png"
+    },
+    {
+      "id": 609,
+      "nom": "Lugulabre",
+      "types": [
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 60,
+        "Attack": 55,
+        "Defense": 90,
+        "Sp. Attack": 145,
+        "Sp. Defense": 90,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/609.png"
+    },
+    {
+      "id": 610,
+      "nom": "Coupenotte",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 46,
+        "Attack": 87,
+        "Defense": 60,
+        "Sp. Attack": 30,
+        "Sp. Defense": 40,
+        "Speed": 57
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/610.png"
+    },
+    {
+      "id": 611,
+      "nom": "Incisache",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 66,
+        "Attack": 117,
+        "Defense": 70,
+        "Sp. Attack": 40,
+        "Sp. Defense": 50,
+        "Speed": 67
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/611.png"
+    },
+    {
+      "id": 612,
+      "nom": "Tranchodon",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 76,
+        "Attack": 147,
+        "Defense": 90,
+        "Sp. Attack": 60,
+        "Sp. Defense": 70,
+        "Speed": 97
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/612.png"
+    },
+    {
+      "id": 613,
+      "nom": "Polarhume",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 70,
+        "Defense": 40,
+        "Sp. Attack": 60,
+        "Sp. Defense": 40,
+        "Speed": 40
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/613.png"
+    },
+    {
+      "id": 614,
+      "nom": "Polagriffe",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 95,
+        "Attack": 130,
+        "Defense": 80,
+        "Sp. Attack": 70,
+        "Sp. Defense": 80,
+        "Speed": 50
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/614.png"
+    },
+    {
+      "id": 615,
+      "nom": "Hexagel",
+      "types": [
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 50,
+        "Defense": 50,
+        "Sp. Attack": 95,
+        "Sp. Defense": 135,
+        "Speed": 105
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/615.png"
+    },
+    {
+      "id": 616,
+      "nom": "Escargaume",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 50,
+        "Attack": 40,
+        "Defense": 85,
+        "Sp. Attack": 40,
+        "Sp. Defense": 65,
+        "Speed": 25
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/616.png"
+    },
+    {
+      "id": 617,
+      "nom": "Limaspeed",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 80,
+        "Attack": 70,
+        "Defense": 40,
+        "Sp. Attack": 100,
+        "Sp. Defense": 60,
+        "Speed": 145
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/617.png"
+    },
+    {
+      "id": 618,
+      "nom": "Limonde",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 109,
+        "Attack": 66,
+        "Defense": 84,
+        "Sp. Attack": 81,
+        "Sp. Defense": 99,
+        "Speed": 32
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/618.png"
+    },
+    {
+      "id": 619,
+      "nom": "Kungfouine",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 85,
+        "Defense": 50,
+        "Sp. Attack": 55,
+        "Sp. Defense": 50,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/619.png"
+    },
+    {
+      "id": 620,
+      "nom": "Shaofouine",
+      "types": [
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 125,
+        "Defense": 60,
+        "Sp. Attack": 95,
+        "Sp. Defense": 60,
+        "Speed": 105
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/620.png"
+    },
+    {
+      "id": 621,
+      "nom": "Drakkarmin",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 77,
+        "Attack": 120,
+        "Defense": 90,
+        "Sp. Attack": 60,
+        "Sp. Defense": 90,
+        "Speed": 48
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/621.png"
+    },
+    {
+      "id": 622,
+      "nom": "Gringolem",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 59,
+        "Attack": 74,
+        "Defense": 50,
+        "Sp. Attack": 35,
+        "Sp. Defense": 50,
+        "Speed": 35
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/622.png"
+    },
+    {
+      "id": 623,
+      "nom": "Golemastoc",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Spectre",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 89,
+        "Attack": 124,
+        "Defense": 80,
+        "Sp. Attack": 55,
+        "Sp. Defense": 80,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/623.png"
+    },
+    {
+      "id": 624,
+      "nom": "Scalpion",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 45,
+        "Attack": 85,
+        "Defense": 70,
+        "Sp. Attack": 40,
+        "Sp. Defense": 40,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/624.png"
+    },
+    {
+      "id": 625,
+      "nom": "Scalproie",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 65,
+        "Attack": 125,
+        "Defense": 100,
+        "Sp. Attack": 60,
+        "Sp. Defense": 70,
+        "Speed": 70
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/625.png"
+    },
+    {
+      "id": 626,
+      "nom": "Frison",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 95,
+        "Attack": 110,
+        "Defense": 95,
+        "Sp. Attack": 40,
+        "Sp. Defense": 95,
+        "Speed": 55
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/626.png"
+    },
+    {
+      "id": 627,
+      "nom": "Furaiglon",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 83,
+        "Defense": 50,
+        "Sp. Attack": 37,
+        "Sp. Defense": 50,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/627.png"
+    },
+    {
+      "id": 628,
+      "nom": "Gueriaigle",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 123,
+        "Defense": 75,
+        "Sp. Attack": 57,
+        "Sp. Defense": 75,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/628.png"
+    },
+    {
+      "id": 629,
+      "nom": "Vostourno",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 70,
+        "Attack": 55,
+        "Defense": 75,
+        "Sp. Attack": 45,
+        "Sp. Defense": 65,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/629.png"
+    },
+    {
+      "id": 630,
+      "nom": "Vaututrice",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 110,
+        "Attack": 65,
+        "Defense": 105,
+        "Sp. Attack": 55,
+        "Sp. Defense": 95,
+        "Speed": 80
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/630.png"
+    },
+    {
+      "id": 631,
+      "nom": "Aflamanoir",
+      "types": [
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 97,
+        "Defense": 66,
+        "Sp. Attack": 105,
+        "Sp. Defense": 66,
+        "Speed": 65
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/631.png"
+    },
+    {
+      "id": 632,
+      "nom": "Fermite",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 58,
+        "Attack": 109,
+        "Defense": 112,
+        "Sp. Attack": 48,
+        "Sp. Defense": 48,
+        "Speed": 109
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/632.png"
+    },
+    {
+      "id": 633,
+      "nom": "Solochi",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 52,
+        "Attack": 65,
+        "Defense": 50,
+        "Sp. Attack": 45,
+        "Sp. Defense": 50,
+        "Speed": 38
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/633.png"
+    },
+    {
+      "id": 634,
+      "nom": "Diamat",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 72,
+        "Attack": 85,
+        "Defense": 70,
+        "Sp. Attack": 65,
+        "Sp. Defense": 70,
+        "Speed": 58
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/634.png"
+    },
+    {
+      "id": 635,
+      "nom": "Trioxhydre",
+      "types": [
+        {
+          "nom": "Ténèbres",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 92,
+        "Attack": 105,
+        "Defense": 90,
+        "Sp. Attack": 125,
+        "Sp. Defense": 90,
+        "Speed": 98
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/635.png"
+    },
+    {
+      "id": 636,
+      "nom": "Pyronille",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 55,
+        "Attack": 85,
+        "Defense": 55,
+        "Sp. Attack": 50,
+        "Sp. Defense": 55,
+        "Speed": 60
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/636.png"
+    },
+    {
+      "id": 637,
+      "nom": "Pyrax",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 85,
+        "Attack": 60,
+        "Defense": 65,
+        "Sp. Attack": 135,
+        "Sp. Defense": 105,
+        "Speed": 100
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/637.png"
+    },
+    {
+      "id": 638,
+      "nom": "Cobaltium",
+      "types": [
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 91,
+        "Attack": 90,
+        "Defense": 129,
+        "Sp. Attack": 90,
+        "Sp. Defense": 72,
+        "Speed": 108
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/638.png"
+    },
+    {
+      "id": 639,
+      "nom": "Terrakium",
+      "types": [
+        {
+          "nom": "Roche",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 91,
+        "Attack": 129,
+        "Defense": 90,
+        "Sp. Attack": 72,
+        "Sp. Defense": 90,
+        "Speed": 108
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/639.png"
+    },
+    {
+      "id": 640,
+      "nom": "Viridium",
+      "types": [
+        {
+          "nom": "Plante",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 91,
+        "Attack": 90,
+        "Defense": 72,
+        "Sp. Attack": 90,
+        "Sp. Defense": 129,
+        "Speed": 108
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/640.png"
+    },
+    {
+      "id": 641,
+      "nom": "Boréas",
+      "types": [
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 79,
+        "Attack": 115,
+        "Defense": 70,
+        "Sp. Attack": 125,
+        "Sp. Defense": 80,
+        "Speed": 111
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/641.png"
+    },
+    {
+      "id": 642,
+      "nom": "Fulguris",
+      "types": [
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 79,
+        "Attack": 115,
+        "Defense": 70,
+        "Sp. Attack": 125,
+        "Sp. Defense": 80,
+        "Speed": 111
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/642.png"
+    },
+    {
+      "id": 643,
+      "nom": "Reshiram",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Feu",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 120,
+        "Defense": 100,
+        "Sp. Attack": 150,
+        "Sp. Defense": 120,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/643.png"
+    },
+    {
+      "id": 644,
+      "nom": "Zekrom",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Électrique",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 150,
+        "Defense": 120,
+        "Sp. Attack": 120,
+        "Sp. Defense": 100,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png"
+    },
+    {
+      "id": 645,
+      "nom": "Démétéros",
+      "types": [
+        {
+          "nom": "Sol",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Vol",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 89,
+        "Attack": 125,
+        "Defense": 90,
+        "Sp. Attack": 115,
+        "Sp. Defense": 80,
+        "Speed": 101
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/645.png"
+    },
+    {
+      "id": 646,
+      "nom": "Kyurem",
+      "types": [
+        {
+          "nom": "Dragon",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Glace",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 125,
+        "Attack": 130,
+        "Defense": 90,
+        "Sp. Attack": 130,
+        "Sp. Defense": 90,
+        "Speed": 95
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/646.png"
+    },
+    {
+      "id": 647,
+      "nom": "Keldeo",
+      "types": [
+        {
+          "nom": "Eau",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Combat",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 91,
+        "Attack": 72,
+        "Defense": 90,
+        "Sp. Attack": 129,
+        "Sp. Defense": 90,
+        "Speed": 108
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/647.png"
+    },
+    {
+      "id": 648,
+      "nom": "Meloetta",
+      "types": [
+        {
+          "nom": "Normal",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Psy",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 100,
+        "Attack": 77,
+        "Defense": 77,
+        "Sp. Attack": 128,
+        "Sp. Defense": 128,
+        "Speed": 90
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/648.png"
+    },
+    {
+      "id": 649,
+      "nom": "Genesect",
+      "types": [
+        {
+          "nom": "Insecte",
+          "couleur": "grey"
+        },
+        {
+          "nom": "Acier",
+          "couleur": "grey"
+        }
+      ],
+      "base": {
+        "HP": 71,
+        "Attack": 120,
+        "Defense": 95,
+        "Sp. Attack": 120,
+        "Sp. Defense": 95,
+        "Speed": 99
+      },
+      "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png"
     }
   ],
   "types": [

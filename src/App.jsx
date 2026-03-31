@@ -97,6 +97,19 @@ const TYPE_CHART = {
 };
 
 // --- MAIN APP COMPONENT ---
+function PokemonSkeleton() {
+  return (
+    <div className="p-8 rounded-[3rem] bg-white dark:bg-slate-900 border-4 border-transparent shadow-xl relative overflow-hidden">
+       <div className="relative mb-8 mt-4 h-48 bg-slate-100 dark:bg-slate-800 rounded-full w-48 mx-auto skeleton-box" />
+       <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-3/4 mb-4 skeleton-box" />
+       <div className="flex gap-2">
+          <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-16 skeleton-box" />
+          <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-16 skeleton-box" />
+       </div>
+    </div>
+  );
+}
+
 function App() {
   const [pokemons, setPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -107,12 +120,21 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('Tous');
   const [sortBy, setSortBy] = useState('id');
-  const [page, setPage] = useState(1);
-  const [activeTab, setActiveTab] = useState('accueil');
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(new Audio('/pokemon.mp3'));
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [shareMsg, setShareMsg] = useState('');
+  const [activeTab, setActiveTab] = useState('accueil');
+  const [page, setPage] = useState(1);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [memoryState, setMemoryState] = useState({
+    cards: [],
+    flipped: [],
+    solved: [],
+    moves: 0,
+    startTime: null,
+    endTime: null
+  });
+  const [audio] = useState(new Audio(`${API_BASE}/play`));
 
   // --- JEUX STATES ---
   const [gameState, setGameState] = useState({
@@ -125,7 +147,7 @@ function App() {
   const [battleState, setBattleState] = useState({
     playerTeam: [], enemyTeam: [], logs: [], turn: 0,
     winner: null, isFighting: false, playerActive: 0, enemyActive: 0,
-    attackAnim: null
+    attackAnim: null, mode: 'menu', currentTurn: 'player' // 'player' or 'enemy'
   });
 
   const [quizState, setQuizState] = useState({
@@ -258,48 +280,112 @@ function App() {
     });
   };
 
-  // --- GAME LOGIC: BATTLE ---
-  const startBattle = () => {
-    if (team.length < 6) return;
-    const playerTeam = team.map(p => ({ ...p, currentHP: 100 }));
-    const enemyTeam = Array.from({ length: 6 }).map(() => ({
-      ...pokemons[Math.floor(Math.random() * pokemons.length)], currentHP: 100
-    }));
-    setBattleState({
-      playerTeam, enemyTeam, logs: ['Le combat commence !'], turn: 0, 
-      winner: null, isFighting: true, playerActive: 0, enemyActive: 0
+  // --- GAME LOGIC: MEMORY ---
+  const startMemoryGame = () => {
+    if (pokemons.length < 6) return;
+    
+    // Sélectionner 6 Pokémon uniques au hasard (pour 12 cartes total)
+    const shuffled = [...pokemons].sort(() => 0.5 - Math.random());
+    const subset = shuffled.slice(0, 6);
+    
+    // Créer les paires (12 cartes)
+    const cards = [];
+    subset.forEach((p, i) => {
+      cards.push({ ...p, uniqueId: `mem-${p.id}-a` });
+      cards.push({ ...p, uniqueId: `mem-${p.id}-b` });
     });
+    
+    // Mélanger les 12 cartes
+    const finalCards = cards.sort(() => 0.5 - Math.random());
+
+    setMemoryState({
+      cards: finalCards,
+      flipped: [],
+      solved: [],
+      moves: 0,
+      startTime: Date.now(),
+      endTime: null
+    });
+    setActiveTab('memory');
   };
 
-  const nextTurn = () => {
-    const { playerTeam, enemyTeam, playerActive, enemyActive, logs, turn } = battleState;
-    if (battleState.winner) return;
+  const handleMemoryClick = (index) => {
+    if (memoryState.flipped.length === 2 || memoryState.solved.includes(index) || memoryState.flipped.includes(index)) return;
+    
+    const newFlipped = [...memoryState.flipped, index];
+    setMemoryState(s => ({ ...s, flipped: newFlipped }));
 
-    const attacker = turn % 2 === 0 ? playerTeam[playerActive] : enemyTeam[enemyActive];
-    const defender = turn % 2 === 0 ? enemyTeam[enemyActive] : playerTeam[playerActive];
+    if (newFlipped.length === 2) {
+      setMemoryState(s => ({ ...s, moves: s.moves + 1 }));
+      const [i1, i2] = newFlipped;
+      if (memoryState.cards[i1].id === memoryState.cards[i2].id) {
+        const newSolved = [...memoryState.solved, i1, i2];
+        setTimeout(() => {
+          setMemoryState(s => ({ ...s, solved: newSolved, flipped: [] }));
+          if (newSolved.length === memoryState.cards.length) {
+            setMemoryState(s => ({ ...s, endTime: Date.now() }));
+          }
+        }, 600);
+      } else {
+        setTimeout(() => {
+          setMemoryState(s => ({ ...s, flipped: [] }));
+        }, 1200);
+      }
+    }
+  };
+
+  // --- GAME LOGIC: BATTLE ---
+  const startBattle = (mode = 'ia') => {
+    if (team.length < 6) return;
+    const playerTeam = team.map(p => ({ ...p, currentHP: 100 }));
     
-    const attackerTypes = attacker.types.map(t => t.nom);
-    const defenderTypes = defender.types.map(t => t.nom);
+    if (mode === 'ia' || mode === 'auto') {
+      const enemyTeam = Array.from({ length: 6 }).map(() => ({
+        ...pokemons[Math.floor(Math.random() * pokemons.length)], currentHP: 100
+      }));
+      setBattleState({
+        playerTeam, enemyTeam, logs: ['Préparez-vous au combat !'], turn: 0, 
+        winner: null, isFighting: true, playerActive: 0, enemyActive: 0,
+        mode: mode, currentTurn: 'player'
+      });
+    } else if (mode === 'pvp') {
+      setBattleState(s => ({ ...s, playerTeam, mode: 'selection', enemyTeam: [] }));
+    }
+  };
+
+  const handleManualMove = (moveType) => {
+    if (!battleState.isFighting || battleState.winner) return;
+    const { playerTeam, enemyTeam, playerActive, enemyActive, currentTurn, logs, mode } = battleState;
     
-    // Simplification: on prend le premier type pour le multiplicateur de base
-    const typeMult = (TYPE_CHART[attackerTypes[0]] && TYPE_CHART[attackerTypes[0]][defenderTypes[0]]) ?? 1;
-    const damage = Math.floor((attacker.base.Attack / defender.base.Defense) * 25 * typeMult);
+    const isPlayerTurn = currentTurn === 'player';
+    const attacker = isPlayerTurn ? playerTeam[playerActive] : enemyTeam[enemyActive];
+    const defender = isPlayerTurn ? enemyTeam[enemyActive] : playerTeam[playerActive];
+    
+    // Type Multiplier
+    const atkType = attacker.types[0].nom;
+    const defType = defender.types[0].nom;
+    const typeMult = (TYPE_CHART[atkType] && TYPE_CHART[atkType][defType]) ?? 1;
+    
+    const baseDamage = moveType === 'special' ? 40 : 25;
+    const damage = Math.floor((attacker.base.Attack / defender.base.Defense) * baseDamage * typeMult);
     
     const newDefenderHP = Math.max(0, defender.currentHP - damage);
-    const newLogs = [`${attacker.nom} utilise une attaque ! -${damage} HP`, ...logs.slice(0, 4)];
+    const logMsg = `${attacker.nom} utilise ${moveType === 'special' ? 'une CAPACITÉ SPÉCIALE' : 'ATTACK'} ! -${damage} HP ${typeMult > 1 ? '(Super efficace !)' : ''}`;
     
-    if (turn % 2 === 0) {
+    const newLogs = [logMsg, ...logs.slice(0, 4)];
+    
+    if (isPlayerTurn) {
       const newEnemyTeam = [...enemyTeam];
       newEnemyTeam[enemyActive].currentHP = newDefenderHP;
       if (newDefenderHP <= 0) {
         newLogs.unshift(`${defender.nom} est K.O. !`);
         if (enemyActive + 1 >= 6) {
-          setBattleState(s => ({ ...s, enemyTeam: newEnemyTeam, winner: 'player', isFighting: false, logs: ['VICTOIRE !', ...newLogs] }));
+          setBattleState(s => ({ ...s, enemyTeam: newEnemyTeam, winner: 'Joueur 1', isFighting: false, logs: ['VICTOIRE DE JOUEUR 1 !'] }));
           return;
         }
-        setBattleState(s => ({ ...s, enemyTeam: newEnemyTeam, enemyActive: s.enemyActive + 1, turn: s.turn + 1, logs: newLogs }));
+        setBattleState(s => ({ ...s, enemyTeam: newEnemyTeam, enemyActive: s.enemyActive + 1, currentTurn: mode === 'pvp' ? 'enemy' : 'ia_move', logs: newLogs }));
       } else {
-        setBattleState(s => ({ ...s, enemyTeam: newEnemyTeam, turn: s.turn + 1, logs: newLogs }));
+        setBattleState(s => ({ ...s, enemyTeam: newEnemyTeam, currentTurn: mode === 'pvp' ? 'enemy' : 'ia_move', logs: newLogs }));
       }
     } else {
       const newPlayerTeam = [...playerTeam];
@@ -307,20 +393,30 @@ function App() {
       if (newDefenderHP <= 0) {
         newLogs.unshift(`${defender.nom} est K.O. !`);
         if (playerActive + 1 >= 6) {
-          setBattleState(s => ({ ...s, playerTeam: newPlayerTeam, winner: 'enemy', isFighting: false, logs: ['DÉFAITE...', ...newLogs] }));
+          setBattleState(s => ({ ...s, playerTeam: newPlayerTeam, winner: mode === 'pvp' ? 'Joueur 2' : 'L\'Ordinateur', isFighting: false, logs: ['DÉFAITE...'] }));
           return;
         }
-        setBattleState(s => ({ ...s, playerTeam: newPlayerTeam, playerActive: s.playerActive + 1, turn: s.turn + 1, logs: newLogs }));
+        setBattleState(s => ({ ...s, playerTeam: newPlayerTeam, playerActive: s.playerActive + 1, currentTurn: 'player', logs: newLogs }));
       } else {
-        setBattleState(s => ({ ...s, playerTeam: newPlayerTeam, turn: s.turn + 1, logs: newLogs }));
+        setBattleState(s => ({ ...s, playerTeam: newPlayerTeam, currentTurn: 'player', logs: newLogs }));
       }
     }
+  };
+
+  const nextTurnAuto = () => {
+    if (battleState.mode !== 'auto' || battleState.winner) return;
+    const { currentTurn } = battleState;
+    handleManualMove('normal');
   };
 
   useEffect(() => {
     let timer;
     if (battleState.isFighting && !battleState.winner) {
-      timer = setTimeout(nextTurn, 1200);
+      if (battleState.mode === 'auto') {
+        timer = setTimeout(nextTurnAuto, 1200);
+      } else if (battleState.mode === 'ia' && battleState.currentTurn === 'ia_move') {
+        timer = setTimeout(() => handleManualMove('normal'), 1000);
+      }
     }
     return () => clearTimeout(timer);
   }, [battleState]);
@@ -329,6 +425,7 @@ function App() {
     if (pokemons.length > 0) {
       if (activeTab === 'jeu' && !gameState.target) startNewGame();
       if (activeTab === 'quiz' && !quizState.typeA) startNewQuiz();
+      if (activeTab === 'memory' && memoryState.cards.length === 0) startMemoryGame();
     }
   }, [activeTab, pokemons.length]);
 
@@ -364,8 +461,8 @@ function App() {
     return covered;
   }, [team]);
 
-  const totalPages = Math.ceil(filteredPokemons.length / 12);
-  const paginatedPokemons = filteredPokemons.slice((page - 1) * 12, page * 12);
+  const totalPages = Math.ceil(filteredPokemons.length / 32);
+  const paginatedPokemons = filteredPokemons.slice((page - 1) * 32, page * 32);
 
   return (
     <div className={`min-h-screen flex transition-all duration-500 ${isDarkMode ? 'dark bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
@@ -382,9 +479,10 @@ function App() {
         <nav className="p-4 space-y-1">
             {[
               { id: 'accueil', icon: Home, label: 'Tableau de Bord' },
-              { id: 'collection', icon: Archive, label: 'Archives 386' },
+              { id: 'collection', icon: Archive, label: 'Archives 649' },
               { id: 'equipe', icon: Users, label: 'Mon Équipe', count: team.length },
               { id: 'combat', icon: Activity, label: 'Arène Battle' },
+              { id: 'memory', icon: Brain, label: 'Poké-Memory' },
               { id: 'quiz', icon: Trophy, label: 'Master Type' },
               { id: 'jeu', icon: Gamepad2, label: 'Silhouette' }
             ].map((item) => (
@@ -426,10 +524,10 @@ function App() {
         {/* HEADER */}
         <header className="flex items-center justify-between mb-16">
           <div>
-            <h2 className="text-4xl font-black uppercase tracking-tighter">
+            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter">
               {activeTab === 'accueil' ? 'Bienvenue, Champion' : activeTab.toUpperCase()}
             </h2>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Kanto, Johto & Hoenn • {pokemons.length} espèces</p>
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Gens 1 à 5 • {pokemons.length} espèces</p>
           </div>
           
           <div className="flex flex-wrap items-center gap-4">
@@ -463,13 +561,49 @@ function App() {
                   ]}
                 />
 
-                <div className="relative">
+                <div className="relative group">
                   <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                   <input 
                     type="text" placeholder="Rechercher..." 
-                    className="bg-white dark:bg-slate-900 border-none rounded-[2rem] pl-14 pr-8 py-3 text-sm font-bold shadow-xl w-48 lg:w-64 focus:ring-4 ring-rose-500/20"
-                    value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
+                    onFocus={() => setShowSuggestions(true)}
+                    className="bg-white dark:bg-slate-900 border-none rounded-[2rem] pl-14 pr-12 py-3 text-sm font-bold shadow-xl w-48 lg:w-64 focus:ring-4 ring-rose-500/20"
+                    value={searchQuery} 
+                    onChange={(e) => { setSearchQuery(e.target.value); setPage(1); setShowSuggestions(true); }}
                   />
+                  
+                  {/* SUGGESTIONS DROPDOWN */}
+                  <AnimatePresence>
+                    {showSuggestions && searchQuery.length >= 2 && (
+                      <>
+                        <div className="fixed inset-0 z-40" onClick={() => setShowSuggestions(false)} />
+                        <motion.div 
+                          initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:10}}
+                          className={`absolute top-full right-0 mt-3 w-72 rounded-[2.5rem] shadow-2xl border-2 overflow-hidden z-50 backdrop-blur-2xl ${isDarkMode ? 'bg-slate-900/95 border-slate-800' : 'bg-white/95 border-slate-100'}`}
+                        >
+                           <div className="p-2 space-y-1">
+                              {pokemons.filter(p => p.nom.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5).map(p => (
+                                 <button
+                                   key={p.id}
+                                   onClick={() => { setSelectedPokemon(p); setShowSuggestions(false); setSearchQuery(''); }}
+                                   className={`w-full flex items-center gap-4 p-3 rounded-2xl transition-all ${isDarkMode ? 'hover:bg-white/10' : 'hover:bg-slate-50'}`}
+                                 >
+                                    <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                                       <img src={p.image} className="w-8 h-8 object-contain" />
+                                    </div>
+                                    <div className="text-left">
+                                       <div className="text-xs font-black uppercase tracking-tight">{p.nom}</div>
+                                       <div className="text-[8px] font-bold text-slate-500">#{p.id.toString().padStart(3, '0')}</div>
+                                    </div>
+                                 </button>
+                              ))}
+                              {pokemons.filter(p => p.nom.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+                                 <div className="p-6 text-center text-xs font-black text-slate-400 uppercase italic">Aucun résultat</div>
+                              )}
+                           </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
                 </div>
               </>
             )}
@@ -616,16 +750,34 @@ function App() {
                    <p className="text-slate-500 mt-2 font-bold">Explorez la collection pour sélectionner 6 champions.</p>
                 </div>
               ) : (
-                <motion.div 
-                  layout
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8"
-                >
-                   {(activeTab === 'equipe' ? team : paginatedPokemons).map((p, i) => (
-                      <PokemonCard key={p.id} pokemon={p} isCaught={team.some(t => t.id === p.id)} isDarkMode={isDarkMode} onCatch={() => toggleTeam(p)} onClick={() => setSelectedPokemon(p)} index={i} />
-                   ))}
-                </motion.div>
+                activeTab === 'collection' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-8">
+                    {loading ? (
+                      Array.from({ length: 8 }).map((_, i) => <PokemonSkeleton key={i} />)
+                    ) : paginatedPokemons.map((p, i) => (
+                      <PokemonCard 
+                        key={p.id} 
+                        pokemon={p} 
+                        index={i}
+                        isDarkMode={isDarkMode} 
+                        isCaught={team.some(t => t.id === p.id)} 
+                        onClick={() => setSelectedPokemon(p)}
+                        onCatch={() => toggleTeam(p)} 
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <motion.div 
+                    layout
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8"
+                  >
+                    {team.map((p, i) => (
+                        <PokemonCard key={p.id} pokemon={p} isCaught={team.some(t => t.id === p.id)} isDarkMode={isDarkMode} onCatch={() => toggleTeam(p)} onClick={() => setSelectedPokemon(p)} index={i} />
+                    ))}
+                  </motion.div>
+                )
               )}
-              {activeTab === 'collection' && totalPages > 1 && (
+              {totalPages > 1 && (
                 <div className="mt-16 flex justify-center items-center gap-8 pb-10">
                    <button disabled={page === 1} onClick={() => setPage(p => p-1)} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronLeft/></button>
                    <span className="font-black text-2xl dark:text-white">{page} / {totalPages}</span>
@@ -635,7 +787,25 @@ function App() {
             </motion.div>
           )}
 
-          {activeTab === 'combat' && <BattleArena state={battleState} onStart={startBattle} isDarkMode={isDarkMode} teamLength={team.length} />}
+          {activeTab === 'combat' && (
+            <BattleArena 
+              state={battleState} 
+              onStart={startBattle} 
+              isDarkMode={isDarkMode} 
+              teamLength={team.length} 
+              pokemons={filteredPokemons}
+              onManualMove={handleManualMove}
+              setBattleState={setBattleState}
+            />
+          )}
+          {activeTab === 'memory' && (
+            <PokeMemory 
+              state={memoryState} 
+              onCardClick={handleMemoryClick} 
+              onRestart={startMemoryGame}
+              isDarkMode={isDarkMode} 
+            />
+          )}
           {activeTab === 'quiz' && <TypeMasterQuiz state={quizState} onAnswer={handleQuizAnswer} onNext={startNewQuiz} isDarkMode={isDarkMode} />}
           {activeTab === 'jeu' && <PokemonGame gameState={gameState} onGuess={handleGuess} onNext={startNewGame} isDarkMode={isDarkMode} />}
         </AnimatePresence>
@@ -738,6 +908,16 @@ function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
 
   useEffect(() => {
     setLoadingEvo(true);
+    
+    // Check Cache
+    const cacheKey = `evo_cache_${pokemon.id}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData) {
+      setEvoChain(JSON.parse(cachedData));
+      setLoadingEvo(false);
+      return;
+    }
+
     const fetchEvo = async () => {
       try {
         const speciesRes = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}/`);
@@ -756,14 +936,13 @@ function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
             if (d.known_move) return `Capacité`;
             return `Niveau`;
           }
-          if (d.trigger.name === 'use-item') return d.item.name.replace('-', ' ');
+          if (d.trigger.name === 'use-item') return d.item.name.replace('-', ' ').toUpperCase();
           if (d.trigger.name === 'trade') return `Échange`;
           return d.trigger.name;
         };
 
         const processNode = async (node) => {
           const id = parseInt(node.species.url.split('/').filter(Boolean).pop());
-          // On cherche le nom français dans notre liste locale si possible
           const localP = pokemons.find(p => p.id === id);
           chain.push({
             id,
@@ -772,12 +951,13 @@ function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
             condition: getTriggerLabel(node.evolution_details)
           });
           if (node.evolves_to.length > 0) {
-            await processNode(node.evolves_to[0]); // On prend la ligne principale
+            await processNode(node.evolves_to[0]);
           }
         };
 
         await processNode(curr);
         setEvoChain(chain);
+        localStorage.setItem(cacheKey, JSON.stringify(chain));
       } catch (err) {
         console.error("Evo fetch error:", err);
       } finally {
@@ -935,7 +1115,7 @@ function ComparisonModal({ p1, p2, isDarkMode, onClose }) {
                 <h3 className="text-3xl font-black">{p2.nom}</h3>
              </div>
           </div>
-          <div className="space-y-6">
+          <div className="space-y-6 text-slate-900 dark:text-white">
              {stats.map(s => {
                 const diff = p1.base[s] - p2.base[s];
                 return (
@@ -957,75 +1137,294 @@ function ComparisonModal({ p1, p2, isDarkMode, onClose }) {
   );
 }
 
-function BattleArena({ state, onStart, isDarkMode, teamLength }) {
-  if (!state.isFighting && !state.winner) {
+function BattleArena({ state, onStart, isDarkMode, teamLength, pokemons, onManualMove, setBattleState }) {
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  if (state.mode === 'menu') {
     return (
-      <div className="flex flex-col items-center justify-center py-20 animate-fade-in text-center max-w-2xl mx-auto">
-         <div className="p-10 bg-rose-500 rounded-[3rem] shadow-2xl mb-12 ring-8 ring-rose-500/20"><Activity size={80} className="text-white"/></div>
-          <h2 className="text-5xl font-black mb-6 uppercase tracking-tighter text-slate-900 dark:text-white">L'Arène du Champion</h2>
-          <p className="text-slate-500 text-xl font-medium mb-10 leading-relaxed">
-            Défiez un grand dresseur dans un combat acharné en 6 contre 6. 
-            {teamLength < 6 && <span className="block mt-4 text-rose-500 font-bold animate-pulse uppercase text-sm tracking-widest">Attention : sélectionnez 6 Pokémon pour combattre ({teamLength}/6)</span>}
-          </p>
-          <button 
-            onClick={onStart} 
-            disabled={teamLength < 6}
-            className={`px-16 py-6 rounded-[2rem] font-black text-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-5 ${teamLength < 6 ? 'bg-slate-300 cursor-not-allowed text-slate-500 shadow-none' : 'bg-slate-900 dark:bg-white dark:text-slate-900 text-white hover:bg-rose-500 hover:text-white'}`}
-          >
-             LANCER LE COMBAT <Sword size={28}/>
-          </button>
+      <div className="flex flex-col items-center justify-center py-12 md:py-20 animate-fade-in text-center max-w-4xl mx-auto space-y-8 md:space-y-12 px-4">
+          <div className="relative">
+             <div className="absolute inset-0 bg-rose-500/20 blur-3xl rounded-full scale-110 animate-pulse" />
+             <div className="relative p-6 md:p-10 bg-rose-500 rounded-[2rem] md:rounded-[3rem] shadow-2xl ring-4 md:ring-8 ring-rose-500/20"><Activity size={48} className="text-white md:w-20 md:h-20"/></div>
+          </div>
+          <div>
+             <h2 className="text-3xl md:text-6xl font-black mb-3 md:mb-6 uppercase tracking-tighter text-slate-900 dark:text-white leading-none">Arène Master</h2>
+             <p className="text-slate-500 text-xs md:text-xl font-bold uppercase tracking-widest opacity-70">Choisissez votre défi</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full px-2">
+             {[
+                { id: 'ia', title: 'J1 vs IA', desc: 'Le défi classique', icon: Shield },
+                { id: 'pvp', title: 'Local PvP', desc: 'Défiez un ami', icon: Users },
+                { id: 'auto', title: 'Spectateur', desc: 'Combat Auto', icon: Shuffle }
+             ].map((m) => (
+                <button 
+                  key={m.id}
+                  onClick={() => onStart(m.id)}
+                  disabled={teamLength < 6}
+                  className={`group relative p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] bg-white dark:bg-slate-900 shadow-xl border-4 transition-all overflow-hidden ${teamLength < 6 ? 'opacity-30 cursor-not-allowed grayscale' : 'hover:border-rose-500 hover:scale-[1.03] active:scale-95 border-slate-100 dark:border-slate-800'}`}
+                >
+                   <div className="relative z-10 flex flex-col items-center">
+                      <m.icon size={32} className="text-rose-500 mb-3 md:mb-4 group-hover:scale-110 transition-transform md:w-10 md:h-10" />
+                      <h3 className="text-sm md:text-xl font-black uppercase tracking-tighter mb-1 md:mb-2">{m.title}</h3>
+                      <p className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-rose-500 transition-colors uppercase">{m.desc}</p>
+                   </div>
+                </button>
+             ))}
+          </div>
+
+          {teamLength < 6 && (
+            <div className="px-6 py-3 md:px-10 md:py-5 bg-rose-500/10 rounded-xl md:rounded-2xl border-2 border-rose-500/20 text-rose-500 font-black text-[10px] md:text-sm uppercase tracking-widest animate-pulse max-w-sm mx-auto">
+               Veuillez sélectionner 6 Pokémon dans votre équipe ({teamLength}/6)
+            </div>
+          )}
+      </div>
+    );
+  }
+
+  if (state.mode === 'selection') {
+    const filteredSelection = pokemons.filter(p => p.nom.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    return (
+      <div className="max-w-6xl mx-auto space-y-6 md:space-y-8 animate-fade-in relative px-4 pb-20">
+         <button 
+           onClick={() => setBattleState(s => ({ ...s, mode: 'menu' }))}
+           className="absolute -top-8 left-4 md:left-0 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-500 transition-colors group"
+         >
+           <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Retour
+         </button>
+
+         <div className="text-center pt-8">
+            <h2 className="text-2xl md:text-4xl font-black uppercase italic mb-2 text-rose-500">Joueur 2</h2>
+            <p className="text-slate-500 font-bold uppercase tracking-widest text-[8px] md:text-sm">Composez votre équipe ({state.enemyTeam.length}/6)</p>
+         </div>
+
+         <div className="max-w-md mx-auto relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-rose-500 transition-colors" size={18} />
+            <input 
+               type="text" 
+               placeholder="Rechercher..." 
+               value={searchTerm}
+               onChange={(e) => setSearchTerm(e.target.value)}
+               className="w-full bg-white dark:bg-slate-900 border-2 md:border-4 border-slate-100 dark:border-slate-800 rounded-xl md:rounded-[2rem] pl-12 pr-4 py-3 md:pl-14 md:pr-6 md:py-4 text-xs md:text-sm font-bold shadow-xl focus:ring-4 ring-rose-500/20 focus:border-rose-500 transition-all"
+            />
+         </div>
+
+         <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 mb-8">
+            {state.enemyTeam.map((p, i) => (
+               <div key={i} className="bg-rose-500 p-2 md:p-4 rounded-xl md:rounded-3xl shadow-xl flex flex-col items-center relative overflow-hidden group border-2 border-white/20">
+                  <button 
+                    onClick={() => setBattleState(s => ({ ...s, enemyTeam: s.enemyTeam.filter((_, idx) => idx !== i) }))}
+                    className="absolute top-1 right-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 p-1 rounded-full text-white"
+                  >
+                    <X size={10}/>
+                  </button>
+                  <img src={p.image} className="w-10 h-10 md:w-16 md:h-16 object-contain" />
+               </div>
+            ))}
+            {Array.from({ length: 6 - state.enemyTeam.length }).map((_, i) => (
+               <div key={i} className="aspect-square rounded-xl md:rounded-3xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center border-2 md:border-4 border-dashed border-slate-200 dark:border-slate-700">
+                  <div className="w-4 h-4 md:w-8 md:h-8 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse" />
+               </div>
+            ))}
+         </div>
+         
+         {state.enemyTeam.length === 6 && (
+            <button 
+              onClick={() => { setBattleState(s => ({ ...s, mode: 'pvp', isFighting: true, logs: ['QUE LE DUEL COMMENCE !'] })); setSearchTerm(''); }}
+              className="w-full py-4 md:py-6 bg-slate-900 dark:bg-white dark:text-slate-900 text-white rounded-xl md:rounded-[2rem] font-black text-sm md:text-2xl hover:bg-rose-500 hover:text-white transition-all shadow-2xl"
+            >
+               VALIDE & COMBAT
+            </button>
+         )}
+
+         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 md:gap-4 max-h-[300px] md:max-h-[450px] overflow-y-auto p-2 md:p-4 custom-scrollbar bg-slate-50 dark:bg-slate-950/20 rounded-2xl md:rounded-[3rem] border-2 md:border-4 border-slate-100 dark:border-slate-900/50">
+            {filteredSelection.map(p => (
+               <button 
+                  key={p.id}
+                  onClick={() => state.enemyTeam.length < 6 && setBattleState(s => ({ ...s, enemyTeam: [...s.enemyTeam, { ...p, currentHP: 100 }] }))}
+                  className={`p-2 md:p-4 rounded-xl md:rounded-3xl transition-all shadow-md flex flex-col items-center border-2 ${state.enemyTeam.some(et => et.id === p.id) ? 'bg-rose-500 border-rose-500 text-white' : 'bg-white dark:bg-slate-900 border-transparent hover:scale-105 hover:border-rose-500'}`}
+               >
+                  <img src={p.image} className="w-8 h-8 md:w-12 md:h-12 object-contain" />
+                  <span className="text-[7px] md:text-[10px] font-black uppercase mt-1 text-center truncate w-full">{p.nom}</span>
+               </button>
+            ))}
+         </div>
       </div>
     );
   }
 
   const pActive = state.playerTeam[state.playerActive];
   const eActive = state.enemyTeam[state.enemyActive];
+  const isPlayerTurn = state.currentTurn === 'player';
+  const showControls = (state.mode === 'ia' && isPlayerTurn) || (state.mode === 'pvp');
 
   return (
-    <div className="space-y-12">
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative min-h-[500px] items-center px-8 py-12 bg-slate-900/5 dark:bg-slate-900/40 rounded-[4rem] border-8 border-white dark:border-slate-800 shadow-inner overflow-hidden">
-          {/* Player side */}
-          <div className="text-center space-y-6 z-10">
+    <div className="space-y-6 md:space-y-12 pb-20 relative text-slate-900 dark:text-white animate-fade-in px-4">
+       {!state.winner && (
+         <button 
+            onClick={() => setBattleState(s => ({ ...s, mode: 'menu', isFighting: false, enemyTeam: [] }))}
+            className="absolute -top-8 left-4 md:left-0 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-500 transition-colors group z-50"
+         >
+            <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Abandonner
+         </button>
+       )}
+       <AnimatePresence>
+          {state.winner && (
+            <motion.div initial={{opacity:0, scale:0.5}} animate={{opacity:1, scale:1}} className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xl">
+               <div className="relative text-center p-8 md:p-16 rounded-[2rem] md:rounded-[4rem] bg-white dark:bg-slate-900 shadow-2xl border-4 md:border-8 border-rose-500 overflow-hidden">
+                  <Trophy size={48} className="text-amber-500 mx-auto mb-4 md:mb-8 animate-bounce md:w-24 md:h-24" />
+                  <h2 className="text-3xl md:text-7xl font-black uppercase tracking-tighter mb-2 md:mb-4">WINNER !</h2>
+                  <div className="text-lg md:text-4xl font-black text-rose-500 uppercase italic mb-6 md:mb-12">{state.winner}</div>
+                  <button 
+                    onClick={() => window.location.reload()} 
+                    className="w-full md:w-auto px-8 py-3 md:px-16 md:py-6 bg-slate-900 dark:bg-rose-500 text-white rounded-xl md:rounded-[2rem] font-black text-sm md:text-2xl hover:scale-110 active:scale-95 transition-all shadow-2xl"
+                  >
+                    FERMER
+                  </button>
+               </div>
+            </motion.div>
+          )}
+       </AnimatePresence>
+
+       <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 md:gap-12 relative min-h-[400px] lg:min-h-[500px] items-center p-6 md:p-16 bg-slate-900/5 dark:bg-slate-900/40 rounded-[2rem] md:rounded-[4rem] border-4 md:border-8 border-white dark:border-slate-800 shadow-inner">
+          <div className={`w-full text-center space-y-4 md:space-y-6 transition-all duration-500 ${isPlayerTurn ? 'scale-105 md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
              <div className="relative group">
-                <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full scale-150 animate-pulse" />
-                <motion.img key={pActive?.id} initial={{x:-100,opacity:0}} animate={{x:0,opacity:1}} src={pActive?.image} className="w-64 h-64 md:w-80 md:h-80 object-contain relative mx-auto drop-shadow-2xl" />
+                <div className={`absolute inset-0 blur-3xl rounded-full scale-150 transition-all ${isPlayerTurn ? 'bg-blue-500/30' : 'bg-transparent'}`} />
+                <motion.img key={pActive?.id} initial={{x:-50}} animate={{x:0}} src={pActive?.image} className="w-32 h-32 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain relative mx-auto drop-shadow-2xl" />
              </div>
-             <div className="w-full max-w-sm mx-auto bg-slate-200 dark:bg-slate-800 h-6 rounded-full overflow-hidden border-4 border-white dark:border-slate-700 shadow-lg relative">
+             <div className="w-full max-w-[200px] md:max-w-sm mx-auto bg-slate-200 dark:bg-slate-800 h-4 md:h-6 rounded-full overflow-hidden border-2 md:border-4 border-white dark:border-slate-700 shadow-lg relative">
                 <motion.div animate={{width:`${pActive?.currentHP}%` || 0}} className="h-full bg-gradient-to-r from-blue-500 to-cyan-400" />
-                <span className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-white drop-shadow-md">{Math.round(pActive?.currentHP || 0)}%</span>
+                <span className="absolute inset-0 flex items-center justify-center text-[8px] md:text-[10px] font-black text-slate-800 dark:text-white drop-shadow-md">{Math.round(pActive?.currentHP || 0)}%</span>
              </div>
-             <div className="text-2xl font-black uppercase tracking-tighter">{pActive?.nom}</div>
+             <div className="text-lg md:text-2xl font-black uppercase tracking-tighter">{pActive?.nom}</div>
+             
+             {showControls && isPlayerTurn && (
+                <motion.div initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} className="flex justify-center gap-2 md:gap-4 mt-4">
+                   <button onClick={() => onManualMove('normal')} className="px-4 py-2 md:px-6 md:py-4 bg-white dark:bg-slate-800 border-2 md:border-4 border-slate-100 dark:border-slate-700 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest hover:border-rose-500 shadow-xl transition-all">Attaque</button>
+                   <button onClick={() => onManualMove('special')} className="px-4 py-2 md:px-6 md:py-4 bg-rose-500 text-white rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all">Spécial</button>
+                </motion.div>
+             )}
           </div>
 
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 p-6 bg-rose-500 rounded-full shadow-2xl text-white font-black text-3xl italic animate-bounce border-8 border-white dark:border-slate-900 hidden md:block">VS</div>
+          <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 p-6 bg-rose-500 rounded-full shadow-2xl text-white font-black text-3xl italic animate-bounce border-8 border-white dark:border-slate-900">VS</div>
+          <div className="lg:hidden w-full h-px bg-slate-200 dark:bg-slate-800 my-4 flex items-center justify-center relative">
+             <span className="bg-rose-500 text-white font-black px-4 py-1 rounded-full text-xs absolute italic">VS</span>
+          </div>
           
-          {/* Enemy side */}
-          <div className="text-center space-y-6 z-10">
+          <div className={`w-full text-center space-y-4 md:space-y-6 transition-all duration-500 ${!isPlayerTurn ? 'scale-105 md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
             <div className="relative group">
-                <div className="absolute inset-0 bg-rose-500/20 blur-3xl rounded-full scale-150 animate-pulse" />
-                <motion.img key={eActive?.id} initial={{x:100,opacity:0}} animate={{x:0,opacity:1}} src={eActive?.image} className="w-64 h-64 md:w-80 md:h-80 object-contain relative mx-auto drop-shadow-2xl" />
+                <div className={`absolute inset-0 blur-3xl rounded-full scale-150 transition-all ${!isPlayerTurn ? 'bg-rose-500/30' : 'bg-transparent'}`} />
+                <motion.img key={eActive?.id} initial={{x:50}} animate={{x:0}} src={eActive?.image} className="w-32 h-32 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain relative mx-auto drop-shadow-2xl" />
             </div>
-            <div className="w-full max-w-sm mx-auto bg-slate-200 dark:bg-slate-800 h-6 rounded-full overflow-hidden border-4 border-white dark:border-slate-700 shadow-lg relative">
+            <div className="w-full max-w-[200px] md:max-w-sm mx-auto bg-slate-200 dark:bg-slate-800 h-4 md:h-6 rounded-full overflow-hidden border-2 md:border-4 border-white dark:border-slate-700 shadow-lg relative">
                <motion.div animate={{width:`${eActive?.currentHP}%` || 0}} className="h-full bg-gradient-to-r from-rose-500 to-orange-400" />
-               <span className="absolute inset-0 flex items-center justify-center text-[10px] font-black text-white drop-shadow-md">{Math.round(eActive?.currentHP || 0)}%</span>
+               <span className="absolute inset-0 flex items-center justify-center text-[8px] md:text-[10px] font-black text-slate-800 dark:text-white drop-shadow-md">{Math.round(eActive?.currentHP || 0)}%</span>
             </div>
-            <div className="text-2xl font-black uppercase tracking-tighter">{eActive?.nom}</div>
+            <div className="text-lg md:text-2xl font-black uppercase tracking-tighter">{eActive?.nom}</div>
+            
+            {showControls && !isPlayerTurn && state.mode === 'pvp' && (
+               <motion.div initial={{y:20, opacity:0}} animate={{y:0, opacity:1}} className="flex justify-center gap-2 md:gap-4 mt-4">
+                  <button onClick={() => onManualMove('normal')} className="px-4 py-2 md:px-6 md:py-4 bg-white dark:bg-slate-800 border-2 md:border-4 border-slate-100 dark:border-slate-700 rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest hover:border-rose-500 shadow-xl transition-all">Attaque</button>
+                  <button onClick={() => onManualMove('special')} className="px-4 py-2 md:px-6 md:py-4 bg-rose-500 text-white rounded-xl md:rounded-2xl font-black text-[9px] md:text-xs uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all">Spécial</button>
+               </motion.div>
+             )}
           </div>
        </div>
 
-       <div className="bg-slate-900 text-white p-10 rounded-[3rem] shadow-2xl border-t-8 border-rose-500">
-          <div className="flex justify-between items-center mb-6">
-             <h4 className="font-black uppercase tracking-widest text-slate-400 flex items-center gap-2"><Disc size={20} className="animate-spin text-rose-500" /> Journal de combat</h4>
-             <span className="px-4 py-1 bg-white/10 rounded-full text-[10px] font-black uppercase tracking-widest">Live Updates</span>
+       <div className="bg-slate-900 text-white p-6 md:p-10 rounded-[2rem] md:rounded-[4rem] shadow-2xl border-t-4 md:border-t-8 border-rose-500 overflow-hidden">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-10 gap-4">
+             <h4 className="font-black uppercase tracking-widest text-slate-500 flex items-center gap-4 text-[10px] md:text-sm"><Activity size={18} className="text-rose-500" /> Journal</h4>
+             {state.currentTurn && <span className="px-4 py-1.5 md:py-2 bg-white/5 rounded-full text-[8px] md:text-xs font-black uppercase tracking-widest text-rose-500 border border-rose-500/20">{state.currentTurn === 'player' ? 'J1' : 'J2 / IA'}</span>}
           </div>
-          <div className="space-y-4 font-bold text-lg max-h-60 overflow-y-auto pr-4 custom-scrollbar">
+          <div className="space-y-3 md:space-y-6 max-h-[150px] md:max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
              {state.logs.map((log, i) => (
-                <motion.div key={i} initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} className={i === 0 ? 'text-rose-400 text-2xl font-black italic' : 'text-slate-400'}>{log}</motion.div>
+                <motion.div 
+                  key={i} 
+                  initial={{opacity:0}} 
+                  animate={{opacity:1}} 
+                  className={`p-3 md:p-4 rounded-xl md:rounded-2xl border-l-4 ${i === 0 ? 'bg-rose-500/10 border-rose-500 text-rose-500 text-sm md:text-xl font-bold' : 'bg-white/5 border-slate-800 text-slate-400 text-[10px] md:text-sm'}`}
+                >
+                   {log}
+                </motion.div>
              ))}
           </div>
-          {state.winner && (
-            <button onClick={() => window.location.reload()} className="mt-8 px-10 py-4 bg-rose-500 text-white rounded-2xl font-black uppercase hover:scale-110 transition-all shadow-xl">Nouvelle Session</button>
-          )}
+       </div>
+    </div>
+  );
+}
+
+function PokeMemory({ state, onCardClick, onRestart, isDarkMode }) {
+  const isWon = state.endTime !== null && state.cards.length > 0;
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-8 px-4 pb-20">
+       <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
+             <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-slate-900 dark:text-white">Poké-Memory</h2>
+             <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Tentez de trouver les 6 paires</p>
+          </div>
+          <div className="flex gap-4">
+             <div className="bg-white dark:bg-slate-900 px-6 py-4 rounded-3xl shadow-xl border-4 border-slate-100 dark:border-slate-800 text-center">
+                <div className="text-[8px] font-black uppercase text-slate-400 opacity-50 mb-1">Essais</div>
+                <div className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">{state.moves}</div>
+             </div>
+             <button onClick={onRestart} className="p-4 bg-rose-500 text-white rounded-3xl shadow-xl hover:rotate-105 transition-all"><Shuffle size={24}/></button>
+          </div>
+       </div>
+
+       {isWon && (
+         <motion.div initial={{scale:0.8, opacity:0}} animate={{scale:1, opacity:1}} className="p-8 bg-emerald-500/10 rounded-[3rem] border-4 border-emerald-500/20 text-center space-y-4">
+            <Trophy size={48} className="mx-auto text-emerald-500" />
+            <h3 className="text-3xl font-black text-emerald-500 uppercase">INCROYABLE !</h3>
+            <p className="font-bold text-slate-500">Victoire en {state.moves} coups.</p>
+            <button onClick={onRestart} className="px-10 py-4 bg-emerald-500 text-white rounded-2xl font-black uppercase hover:scale-105 shadow-xl transition-all">Rejouer</button>
+         </motion.div>
+       )}
+
+       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {state.cards.map((card, index) => {
+             const flipped = state.flipped.includes(index);
+             const solved = state.solved.includes(index);
+             const active = flipped || solved;
+             
+             return (
+               <div 
+                 key={card.uniqueId} 
+                 className="aspect-square relative cursor-pointer perspective-1000" 
+                 onClick={() => !isWon && onCardClick(index)}
+               >
+                  <motion.div 
+                    initial={false}
+                    animate={{ rotateY: active ? 180 : 0 }}
+                    transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+                    className="w-full h-full relative preserve-3d"
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                    {/* DOS - Visible quand 0deg */}
+                    <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border-4 border-slate-300 dark:border-slate-700 rounded-3xl shadow-xl flex items-center justify-center p-4 z-10" style={{ backfaceVisibility: 'hidden' }}>
+                       <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-[8px] border-slate-300 dark:border-slate-700 opacity-20 flex items-center justify-center">
+                          <div className="w-4 h-4 bg-rose-500 rounded-full" />
+                       </div>
+                    </div>
+                    
+                    {/* FRONT - Visible quand 180deg */}
+                    <div 
+                      className="absolute inset-0 backface-hidden bg-white dark:bg-slate-800 rounded-3xl shadow-xl flex flex-col items-center justify-center p-3 md:p-6 border-4 border-rose-500 z-0"
+                      style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}
+                    >
+                       <img 
+                         src={card.image} 
+                         alt={card.nom} 
+                         className="w-full h-full object-contain drop-shadow-2xl mb-1"
+                         onError={(e) => { e.target.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png'; }}
+                       />
+                       <span className="text-[10px] md:text-sm font-black text-rose-500 uppercase truncate text-center w-full mt-2 font-mono">{card.nom}</span>
+                    </div>
+                  </motion.div>
+               </div>
+             );
+          })}
        </div>
     </div>
   );

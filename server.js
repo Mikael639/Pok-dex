@@ -30,6 +30,7 @@ app.get('/types', function(req,res) {
 
 // Liste des pokémons
 app.get('/pokemons', function(req,res) {
+    const database = JSON.parse(fs.readFileSync(path.join(__dirname, 'pokedex.json')));
     if (database && database.pokemons) {
       console.log(`Envoi de ${database.pokemons.length} pokemons`);
       res.send(database.pokemons);
@@ -41,6 +42,7 @@ app.get('/pokemons', function(req,res) {
 
 // Liste des pokémons en fonction du type
 app.get('/pokemons/:types', function(req,res) {
+    const database = JSON.parse(fs.readFileSync(path.join(__dirname, 'pokedex.json')));
     if('types' in req.params){
         var types = req.params.types;
         var tableau = [];
