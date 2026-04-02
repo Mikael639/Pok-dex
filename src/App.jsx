@@ -10,7 +10,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- CONFIG & CONSTANTS ---
-const API_BASE = 'http://127.0.0.1:8080'; 
+const API_BASE = ''; // Déploiement Vercel (Statique)
 
 const TYPE_COLORS = {
   'Normal': '#A8A77A', 'Feu': '#EE8130', 'Eau': '#6390F0', 'Electrique': '#F7D02C',
@@ -134,7 +134,7 @@ function App() {
     startTime: null,
     endTime: null
   });
-  const [audio] = useState(new Audio(`${API_BASE}/play`));
+  const [audio] = useState(() => typeof window !== 'undefined' ? new Audio('/pokemon.mp3') : null);
 
   // --- JEUX STATES ---
   const [gameState, setGameState] = useState({
@@ -170,12 +170,12 @@ function App() {
 
   useEffect(() => {
     console.log("Fetching from:", `${API_BASE}/pokemons`);
-    axios.get(`${API_BASE}/pokemons`).then(res => {
-      console.log("Data received:", res.data ? res.data.length : 'null');
-      if (Array.isArray(res.data)) {
-        setPokemons(res.data);
+    axios.get('/pokedex.json').then(res => {
+      console.log("Data received:", res.data ? "yes" : 'null');
+      if (res.data && Array.isArray(res.data.pokemons)) {
+        setPokemons(res.data.pokemons);
       } else {
-        console.error("Data is not an array:", res.data);
+        console.error("Data structure is incorrect:", res.data);
       }
       setLoading(false);
     }).catch(err => {
