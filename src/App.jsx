@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 import { 
-  Search, Menu, X, Archive, Home, Disc, Music, Activity, 
+  Search, Menu, X, Archive, Home, Disc, Activity, 
   Shuffle, Moon, Sun, Users, ChevronRight, ChevronLeft, 
   Info, Circle, Gamepad2, Trophy, Filter, ChevronDown, 
   Zap, Heart, Shield, Sword, Flame, Waves, Leaf, Sparkles,
@@ -126,7 +126,6 @@ function App() {
   const [activeTab, setActiveTab] = useState('accueil');
   const [page, setPage] = useState(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [battleStats, setBattleStats] = useState(() => JSON.parse(localStorage.getItem('pokedexBattleStats') || '{"wins": 0, "losses": 0}'));
   const [memoryState, setMemoryState] = useState({
     cards: [],
@@ -136,7 +135,6 @@ function App() {
     startTime: null,
     endTime: null
   });
-  const [audio] = useState(() => typeof window !== 'undefined' ? new Audio('/pokemon.mp3') : null);
 
   // --- JEUX STATES ---
   const [gameState, setGameState] = useState({
@@ -196,17 +194,8 @@ function App() {
       });
   }, []);
 
-  useEffect(() => {
-    audio.loop = true;
-    return () => audio.pause();
-  }, [audio]);
 
   // --- HANDLERS ---
-  const toggleMusic = () => {
-    if (isPlaying) audio.pause();
-    else audio.play().catch(e => console.log("Autoplay blocked"));
-    setIsPlaying(!isPlaying);
-  };
 
   const toggleTeam = (p) => {
     if (team.find(pt => pt.id === p.id)) {
@@ -230,19 +219,20 @@ function App() {
 
   // --- GAME LOGIC: SILHOUETTE ---
   const startNewGame = () => {
-    if (pokemons.length === 0) return;
-    const target = pokemons[Math.floor(Math.random() * pokemons.length)];
-    const choices = [target];
-    let attempts = 0;
-    while (choices.length < 4 && attempts < 100) {
-      attempts++;
-      const c = pokemons[Math.floor(Math.random() * pokemons.length)];
-      if (c && !choices.find(p => p.id === c.id)) choices.push(c);
+    if (pokemons.length > 0) {
+      const target = pokemons[Math.floor(Math.random() * pokemons.length)];
+      const choices = [target];
+      let attempts = 0;
+      while (choices.length < 4 && attempts < 100) {
+        attempts++;
+        const c = pokemons[Math.floor(Math.random() * pokemons.length)];
+        if (c && !choices.find(p => p.id === c.id)) choices.push(c);
+      }
+      setGameState(prev => ({
+        ...prev, target, choices: choices.sort(() => Math.random() - 0.5),
+        status: 'playing', selectedId: null, timeLeft: 10, timerRunning: true
+      }));
     }
-    setGameState(prev => ({
-      ...prev, target, choices: choices.sort(() => Math.random() - 0.5),
-      status: 'playing', selectedId: null, timeLeft: 10, timerRunning: true
-    }));
   };
 
   const handleGuess = (id) => {
@@ -530,9 +520,6 @@ function App() {
           </nav>
 
         <div className="mt-auto p-4 space-y-2">
-           <button onClick={toggleMusic} className={`w-full p-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3 ${isPlaying ? 'bg-indigo-500 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
-              <Music size={20} /> {isSidebarOpen && <span className="text-sm font-bold">{isPlaying ? 'On' : 'Musique'}</span>}
-           </button>
            <button onClick={() => setIsDarkMode(!isDarkMode)} className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center gap-3">
               {isDarkMode ? <Sun size={20}/> : <Moon size={20}/>} {isSidebarOpen && <span className="text-sm font-bold">Thème</span>}
            </button>
@@ -970,7 +957,6 @@ function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
   const [isShiny, setIsShiny] = useState(false);
   const [evoChain, setEvoChain] = useState([]);
   const [loadingEvo, setLoadingEvo] = useState(false);
-  const [playCry] = useState(() => new Audio(`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`));
 
   const imageUrl = isShiny 
     ? pokemon.image.replace('official-artwork', 'official-artwork/shiny')
@@ -1080,9 +1066,6 @@ function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
                 <div className="flex gap-3 justify-center">
                    <button onClick={() => setIsShiny(!isShiny)} className={`p-2.5 rounded-xl backdrop-blur-xl transition-all shadow-md ${isShiny ? 'bg-amber-400 text-slate-900' : 'bg-white/10 hover:bg-white/20'}`}>
                       <Sparkles size={18} />
-                   </button>
-                   <button onClick={() => playCry.play().catch(e=>console.log(e))} className="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl backdrop-blur-xl transition-all shadow-md">
-                      <Music size={18} />
                    </button>
                 </div>
              </div>
