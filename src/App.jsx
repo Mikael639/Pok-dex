@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+
 import { 
   Search, Menu, X, Archive, Home, Disc, Music, Activity, 
   Shuffle, Moon, Sun, Users, ChevronRight, ChevronLeft, 
@@ -169,19 +169,21 @@ function App() {
   }, [isDarkMode]);
 
   useEffect(() => {
-    console.log("Fetching from:", `${API_BASE}/pokemons`);
-    axios.get('/pokedex.json').then(res => {
-      console.log("Data received:", res.data ? "yes" : 'null');
-      if (res.data && Array.isArray(res.data.pokemons)) {
-        setPokemons(res.data.pokemons);
-      } else {
-        console.error("Data structure is incorrect:", res.data);
-      }
-      setLoading(false);
-    }).catch(err => {
-      console.error("Error fetching pokemons:", err);
-      setLoading(false);
-    });
+    fetch('/pokedex.json')
+      .then(res => res.json())
+      .then(data => {
+        console.log("Data received:", data ? "yes" : 'null');
+        if (data && Array.isArray(data.pokemons)) {
+          setPokemons(data.pokemons);
+        } else {
+          console.error("Data structure is incorrect:", data);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error fetching pokemons:", err);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -920,11 +922,12 @@ function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
 
     const fetchEvo = async () => {
       try {
-        const speciesRes = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}/`);
-        const evoRes = await axios.get(speciesRes.data.evolution_chain.url);
+        const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}/`).then(r => r.json());
+        const evoRes = await fetch(speciesRes.evolution_chain.url).then(r => r.json());
+        const evoData = evoRes;
         
         const chain = [];
-        let curr = evoRes.data.chain;
+        let curr = evoRes.chain;
 
         const getTriggerLabel = (details) => {
           if (!details) return null;
