@@ -9,8 +9,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- CONFIG & CONSTANTS ---
-const API_BASE = ''; // Déploiement Vercel (Statique)
+
 
 const TYPE_COLORS = {
   'Normal': '#A8A77A', 'Feu': '#EE8130', 'Eau': '#6390F0', 'Electrique': '#F7D02C',
