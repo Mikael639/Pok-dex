@@ -1,6 +1,6 @@
 # ⚡ Pokém-Master - L'Arène Élite
 
-Bienvenue dans l'expérience Pokédex ultime. Une plateforme premium conçue pour les dresseurs exigeants, alliant une gestion complète de collection (V1-V5) et une arène de combat tactique interactive.
+Bienvenue dans l'expérience Pokédex ultime. Une plateforme premium conçue pour les dresseurs exigeants, alliant une gestion complète de collection (V1-V9) et une arène de combat tactique interactive.
 
 ---
 
@@ -9,7 +9,7 @@ Bienvenue dans l'expérience Pokédex ultime. Une plateforme premium conçue pou
 ![Dashboard](screenshots/github_dashboard.png)
 
 ### 📂 Collection & Tactique
-Une base de données exhaustive couvrant **649 Pokémon** des générations 1 à 5. Filtrez par type, triez par statistiques et composez votre équipe de rêve avec des analyses en temps réel.
+Une base de données exhaustive couvrant **1025 Pokémon** des Générations 1 à 9. Filtrez par type, triez par statistiques et composez votre équipe de rêve avec des analyses en temps réel.
 
 ![Archives](screenshots/github_archives.png)
 
@@ -37,7 +37,7 @@ Chaque victoire est récompensée par une animation premium célébrant vos expl
 
 ## 🚀 Fonctionnalités Clés
 
-*   **Gestion d'Équipe (6/6)** : Choisissez vos champions parmi 649 espèces.
+*   **Gestion d'Équipe (6/6)** : Choisissez vos champions parmi 1025 espèces.
 *   **Système de Combat Manuel** : Choisissez entre attaques classiques et capacités spéciales liées au Type.
 *   **Design Premium** : Glassmorphism, animations fluides, thèmes clair et sombre automatiques.
 *   **Utilitaires Intégrés** : Quiz sur les forces/faiblesses de types et jeu des silhouettes.
@@ -46,7 +46,7 @@ Chaque victoire est récompensée par une animation premium célébrant vos expl
 
 *   **Frontend** : [React 19](https://react.dev/), [Framer Motion](https://www.framer.com/motion/), [Tailwind CSS](https://tailwindcss.com/)
 *   **Backend** : Node.js, Express (API Pokémon locale)
-*   **Données** : Poké-API complétée jusqu'à la Génération 5.
+*   **Données** : Poké-API complétée jusqu'à la Génération 9 (1025 Pokémon).
 
 ## 📦 Installation & Démarrage
 

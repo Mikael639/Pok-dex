@@ -502,7 +502,7 @@ function App() {
         <nav className="p-4 space-y-1">
             {[
               { id: 'accueil', icon: Home, label: 'Tableau de Bord' },
-              { id: 'collection', icon: Archive, label: 'Archives 649' },
+              { id: 'collection', icon: Archive, label: 'Archives 1025' },
               { id: 'equipe', icon: Users, label: 'Mon Équipe', count: team.length },
               { id: 'combat', icon: Activity, label: 'Arène Battle' },
               { id: 'memory', icon: Brain, label: 'Poké-Memory' },
@@ -550,7 +550,7 @@ function App() {
             <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter">
               {activeTab === 'accueil' ? 'Bienvenue, Champion' : activeTab.toUpperCase()}
             </h2>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Gens 1 à 5 • {pokemons.length} espèces</p>
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Gens 1 à 9 • {pokemons.length} espèces</p>
           </div>
           
           <div className="flex flex-wrap items-center gap-4">
