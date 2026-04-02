@@ -116,8 +116,10 @@ function App() {
   const [comparedPokemon, setComparedPokemon] = useState(null);
   const [team, setTeam] = useState(() => JSON.parse(localStorage.getItem('pokedexTeam') || '[]'));
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('pokedexTheme') === 'dark');
+  const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('pokedexFavorites') || '[]'));
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('Tous');
+  const [isFavoritesOnly, setIsFavoritesOnly] = useState(false);
   const [sortBy, setSortBy] = useState('id');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [shareMsg, setShareMsg] = useState('');
@@ -125,6 +127,7 @@ function App() {
   const [page, setPage] = useState(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [battleStats, setBattleStats] = useState(() => JSON.parse(localStorage.getItem('pokedexBattleStats') || '{"wins": 0, "losses": 0}'));
   const [memoryState, setMemoryState] = useState({
     cards: [],
     flipped: [],
@@ -158,6 +161,10 @@ function App() {
 
   // --- EFFECTS ---
   useEffect(() => {
+    localStorage.setItem('pokedexBattleStats', JSON.stringify(battleStats));
+  }, [battleStats]);
+
+  useEffect(() => {
     localStorage.setItem('pokedexTeam', JSON.stringify(team));
   }, [team]);
 
@@ -166,6 +173,10 @@ function App() {
     if (isDarkMode) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
   }, [isDarkMode]);
+
+  useEffect(() => {
+    localStorage.setItem('pokedexFavorites', JSON.stringify(favorites));
+  }, [favorites]);
 
   useEffect(() => {
     fetch('/pokedex.json')
@@ -203,6 +214,12 @@ function App() {
     } else if (team.length < 6) {
       setTeam([...team, p]);
     }
+  };
+
+  const toggleFavorite = (id) => {
+    setFavorites(prev => 
+      prev.includes(id) ? prev.filter(fid => fid !== id) : [...prev, id]
+    );
   };
 
   const getRandomPokemon = () => {
@@ -381,6 +398,9 @@ function App() {
       if (newDefenderHP <= 0) {
         newLogs.unshift(`${defender.nom} est K.O. !`);
         if (enemyActive + 1 >= 6) {
+          if (mode !== 'pvp' || currentTurn === 'player') {
+            setBattleStats(prev => ({ ...prev, wins: prev.wins + 1 }));
+          }
           setBattleState(s => ({ ...s, enemyTeam: newEnemyTeam, winner: 'Joueur 1', isFighting: false, logs: ['VICTOIRE DE JOUEUR 1 !'] }));
           return;
         }
@@ -394,6 +414,7 @@ function App() {
       if (newDefenderHP <= 0) {
         newLogs.unshift(`${defender.nom} est K.O. !`);
         if (playerActive + 1 >= 6) {
+          setBattleStats(prev => ({ ...prev, losses: prev.losses + 1 }));
           setBattleState(s => ({ ...s, playerTeam: newPlayerTeam, winner: mode === 'pvp' ? 'Joueur 2' : 'L\'Ordinateur', isFighting: false, logs: ['DÉFAITE...'] }));
           return;
         }
@@ -434,7 +455,8 @@ function App() {
   const filteredPokemons = useMemo(() => {
     let list = pokemons.filter(p =>
       (p.nom.toLowerCase().includes(searchQuery.toLowerCase()) || p.id.toString() === searchQuery) &&
-      (typeFilter === 'Tous' || p.types.some(t => t.nom === typeFilter))
+      (typeFilter === 'Tous' || p.types.some(t => t.nom === typeFilter)) &&
+      (!isFavoritesOnly || favorites.includes(p.id))
     );
     if (sortBy === 'nom') list = [...list].sort((a, b) => a.nom.localeCompare(b.nom));
     else if (sortBy === 'hp') list = [...list].sort((a, b) => (b.base?.HP || 0) - (a.base?.HP || 0));
@@ -546,6 +568,16 @@ function App() {
                     ...Object.keys(TYPE_COLORS).map(t => ({ value: t, label: t }))
                   ]}
                 />
+
+                <button 
+                  onClick={() => setIsFavoritesOnly(!isFavoritesOnly)}
+                  className={`flex items-center gap-3 px-5 py-3 rounded-2xl text-sm font-black transition-all shadow-xl border-2 ${
+                    isFavoritesOnly ? 'bg-rose-500 text-white border-rose-500 shadow-rose-500/20' : isDarkMode ? 'bg-slate-900 border-transparent text-slate-400' : 'bg-white border-transparent text-slate-400'
+                  }`}
+                >
+                  <Heart size={18} fill={isFavoritesOnly ? "currentColor" : "none"} className={isFavoritesOnly ? "text-white" : "text-slate-400"} />
+                  <span className="uppercase tracking-widest hidden md:inline">Favoris</span>
+                </button>
 
                 <CustomDropdown 
                   isDarkMode={isDarkMode}
@@ -708,6 +740,20 @@ function App() {
                      </div>
 
                      <div className="grid grid-cols-1 gap-4">
+                        <div className="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-xl border-4 border-emerald-500/20 flex flex-col justify-center items-center gap-2">
+                           <div className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">Stats de Combat</div>
+                           <div className="flex gap-8 items-center">
+                              <div className="text-center">
+                                 <div className="text-2xl font-black text-emerald-500">{battleStats.wins}</div>
+                                 <div className="text-[8px] font-black uppercase text-slate-400">Victoires</div>
+                              </div>
+                              <div className="w-px h-8 bg-slate-100 dark:bg-slate-800" />
+                              <div className="text-center">
+                                 <div className="text-2xl font-black text-rose-500">{battleStats.losses}</div>
+                                 <div className="text-[8px] font-black uppercase text-slate-400">Défaites</div>
+                              </div>
+                           </div>
+                        </div>
                         <QuickCard icon={<Trophy size={24} className="text-amber-500" />} title="Master Type" text={`Record: ${quizState.highscore}`} onClick={() => setActiveTab('quiz')} />
                         <QuickCard icon={<Gamepad2 size={24} className="text-indigo-500" />} title="Silhouette" text={`Record: ${gameState.highscore}`} onClick={() => setActiveTab('jeu')} />
                         <QuickCard icon={<Activity size={24} className="text-emerald-500" />} title="Arène Battle" text="Défiez la ligue" onClick={() => setActiveTab('combat')} />
@@ -762,8 +808,10 @@ function App() {
                         index={i}
                         isDarkMode={isDarkMode} 
                         isCaught={team.some(t => t.id === p.id)} 
+                        isFavorite={favorites.includes(p.id)}
                         onClick={() => setSelectedPokemon(p)}
                         onCatch={() => toggleTeam(p)} 
+                        onToggleFavorite={() => toggleFavorite(p.id)}
                       />
                     ))}
                   </div>
@@ -773,7 +821,17 @@ function App() {
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8"
                   >
                     {team.map((p, i) => (
-                        <PokemonCard key={p.id} pokemon={p} isCaught={team.some(t => t.id === p.id)} isDarkMode={isDarkMode} onCatch={() => toggleTeam(p)} onClick={() => setSelectedPokemon(p)} index={i} />
+                        <PokemonCard 
+                          key={p.id} 
+                          pokemon={p} 
+                          isCaught={team.some(t => t.id === p.id)} 
+                          isFavorite={favorites.includes(p.id)}
+                          isDarkMode={isDarkMode} 
+                          onCatch={() => toggleTeam(p)} 
+                          onToggleFavorite={() => toggleFavorite(p.id)}
+                          onClick={() => setSelectedPokemon(p)} 
+                          index={i} 
+                        />
                     ))}
                   </motion.div>
                 )
@@ -821,6 +879,8 @@ function App() {
               onNavigate={(p) => setSelectedPokemon(p)}
               onCatch={() => toggleTeam(selectedPokemon)} 
               isCaught={team.some(t => t.id === selectedPokemon.id)} 
+              isFavorite={favorites.includes(selectedPokemon.id)}
+              onToggleFavorite={() => toggleFavorite(selectedPokemon.id)}
               onCompare={(p) => { setComparedPokemon(p); setSelectedPokemon(null); }}
             />
           )}
@@ -851,7 +911,7 @@ function QuickCard({ icon, title, text, onClick }) {
   );
 }
 
-function PokemonCard({ pokemon, isCaught, isDarkMode, onClick, onCatch, index = 0 }) {
+function PokemonCard({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCatch, onToggleFavorite, index = 0 }) {
   const color = (pokemon.types && pokemon.types[0] && TYPE_COLORS[pokemon.types[0].nom]) || '#94A3B8';
   return (
     <motion.div
@@ -863,6 +923,15 @@ function PokemonCard({ pokemon, isCaught, isDarkMode, onClick, onCatch, index = 
       className={`card-shimmer relative p-8 rounded-[3rem] shadow-2xl border-4 transition-all cursor-pointer group ${isCaught ? 'card-caught' : ''} ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-white text-slate-900'}`}
       onClick={onClick}
     >
+       <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
+          <motion.button
+            whileTap={{ scale: 0.8 }}
+            onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
+            className={`p-3 rounded-full transition-all shadow-md ${isFavorite ? 'bg-amber-400 text-white' : 'bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-400 hover:text-amber-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+          >
+             <Star size={22} fill={isFavorite ? 'white' : 'none'} />
+          </motion.button>
+       </div>
        <div className="absolute top-5 right-5 z-20 flex flex-col gap-2">
           <motion.button
             whileTap={{ scale: 0.8 }}
@@ -897,7 +966,7 @@ function PokemonCard({ pokemon, isCaught, isDarkMode, onClick, onCatch, index = 
   );
 }
 
-function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, onCatch, isCaught, onCompare }) {
+function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, onCatch, isCaught, isFavorite, onToggleFavorite, onCompare }) {
   const [isShiny, setIsShiny] = useState(false);
   const [evoChain, setEvoChain] = useState([]);
   const [loadingEvo, setLoadingEvo] = useState(false);
@@ -1022,12 +1091,12 @@ function PokemonDetails({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-4">
                 <h3 className="text-base lg:text-lg font-black uppercase tracking-widest">Statistiques</h3>
                 <div className="flex gap-2">
-                   <button onClick={() => onCompare(pokemon)} className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-2xl hover:bg-indigo-500 hover:text-white transition-all shadow-lg">
-                      <Shuffle size={20} />
-                   </button>
-                   <button onClick={onCatch} className={`flex items-center gap-2 px-6 py-3 rounded-2xl md:rounded-3xl font-black transition-all shadow-lg ${isCaught ? 'bg-rose-500 text-white shadow-rose-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
-                      <Heart size={20} fill={isCaught ? 'white' : 'none'} /> <span className="text-sm md:text-base">{isCaught ? 'LIBÉRER' : 'CAPTURER'}</span>
-                   </button>
+                    <button onClick={onToggleFavorite} className={`p-3 rounded-2xl transition-all shadow-lg ${isFavorite ? 'bg-amber-400 text-white shadow-amber-400/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
+                       <Star size={20} fill={isFavorite ? 'white' : 'none'} />
+                    </button>
+                    <button onClick={onCatch} className={`flex items-center gap-2 px-6 py-3 rounded-2xl md:rounded-3xl font-black transition-all shadow-lg ${isCaught ? 'bg-rose-500 text-white shadow-rose-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
+                       <Heart size={20} fill={isCaught ? 'white' : 'none'} /> <span className="text-sm md:text-base">{isCaught ? 'LIBÉRER' : 'CAPTURER'}</span>
+                    </button>
                 </div>
              </div>
              <div className="space-y-3 lg:space-y-4">
