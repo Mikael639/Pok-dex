@@ -126,6 +126,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('accueil');
   const [page, setPage] = useState(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [battleStats, setBattleStats] = useState(() => JSON.parse(localStorage.getItem('pokedexBattleStats') || '{"wins": 0, "losses": 0}'));
   const [memoryState, setMemoryState] = useState({
     cards: [],
@@ -480,16 +481,37 @@ function App() {
   return (
     <div className={`min-h-screen flex transition-all duration-500 ${isDarkMode ? 'dark bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
       
+      {/* SIDEBAR OVERLAY FOR MOBILE */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[60] lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+
       {/* SIDEBAR */}
-      <aside className={`fixed inset-y-0 left-0 z-50 transition-all duration-700 transform border-r-[6px] flex flex-col ${isSidebarOpen ? 'w-80' : 'w-24'} ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-slate-100 shadow-2xl text-slate-900'}`}>
-        <div className="p-5 flex items-center gap-4">
-          <div className="bg-rose-500 p-3 rounded-[1.5rem] shadow-xl shadow-rose-500/20 rotate-3">
-             <Zap className="text-white h-8 w-8" />
+      <aside className={`fixed inset-y-0 left-0 z-[70] transition-all duration-700 transform border-r-[6px] flex flex-col 
+        ${isSidebarOpen ? 'w-80' : 'w-24'} 
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-slate-100 shadow-2xl text-slate-900'}`}>
+        <div className="p-5 flex items-center justify-between lg:justify-start gap-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-rose-500 p-3 rounded-[1.5rem] shadow-xl shadow-rose-500/20 rotate-3">
+               <Zap className="text-white h-8 w-8" />
+            </div>
+            {(isSidebarOpen || isMobileMenuOpen) && <span className="font-black text-3xl tracking-tighter uppercase">Poké-Master</span>}
           </div>
-          {isSidebarOpen && <span className="font-black text-3xl tracking-tighter uppercase">Poké-Master</span>}
+          <button onClick={() => setIsMobileMenuOpen(false)} className="lg:hidden p-2 text-rose-500">
+            <X size={24} />
+          </button>
         </div>
 
-        <nav className="p-4 space-y-1">
+        <nav className="p-4 space-y-1 overflow-y-auto custom-scrollbar">
             {[
               { id: 'accueil', icon: Home, label: 'Tableau de Bord' },
               { id: 'collection', icon: Archive, label: 'Archives 1025' },
@@ -501,7 +523,7 @@ function App() {
             ].map((item) => (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => { setActiveTab(item.id); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-[1.5rem] font-black transition-all duration-300 relative group ${
                   activeTab === item.id 
                     ? 'bg-rose-500 text-white shadow-2xl shadow-rose-500/40 scale-[1.02]' 
@@ -509,8 +531,8 @@ function App() {
                 }`}
               >
                 <item.icon size={22} className={activeTab === item.id ? 'animate-pulse' : 'group-hover:scale-110 transition-transform'} />
-                {isSidebarOpen && <span className="tracking-tight uppercase text-xs">{item.label}</span>}
-                {item.count !== undefined && isSidebarOpen && (
+                {(isSidebarOpen || isMobileMenuOpen) && <span className="tracking-tight uppercase text-xs">{item.label}</span>}
+                {item.count !== undefined && (isSidebarOpen || isMobileMenuOpen) && (
                    <span className={`ml-auto px-2 py-0.5 rounded-lg text-[10px] font-black ${activeTab === item.id ? 'bg-white text-rose-500' : 'bg-slate-100 dark:bg-slate-700 text-slate-500'}`}>
                       {item.count}/6
                    </span>
@@ -521,23 +543,29 @@ function App() {
 
         <div className="mt-auto p-4 space-y-2">
            <button onClick={() => setIsDarkMode(!isDarkMode)} className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center gap-3">
-              {isDarkMode ? <Sun size={20}/> : <Moon size={20}/>} {isSidebarOpen && <span className="text-sm font-bold">Thème</span>}
+              {isDarkMode ? <Sun size={20}/> : <Moon size={20}/>} {(isSidebarOpen || isMobileMenuOpen) && <span className="text-sm font-bold">Thème</span>}
            </button>
-           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="w-full p-4 rounded-2xl bg-rose-100 dark:bg-slate-800 text-rose-500 flex items-center justify-center gap-3">
+           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="hidden lg:flex w-full p-4 rounded-2xl bg-rose-100 dark:bg-slate-800 text-rose-500 items-center justify-center gap-3">
               {isSidebarOpen ? <ChevronLeft size={20}/> : <ChevronRight size={20}/>}
            </button>
         </div>
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className={`flex-1 transition-all duration-700 min-h-screen p-12 ${isSidebarOpen ? 'ml-80' : 'ml-24'}`}>
+      <main className={`flex-1 transition-all duration-700 min-h-screen p-6 lg:p-12 
+        ${isSidebarOpen ? 'lg:ml-80' : 'lg:ml-24'} ml-0`}>
         {/* HEADER */}
-        <header className="flex items-center justify-between mb-16">
-          <div>
-            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tighter">
-              {activeTab === 'accueil' ? 'Bienvenue, Champion' : activeTab.toUpperCase()}
-            </h2>
-            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Gens 1 à 9 • {pokemons.length} espèces</p>
+        <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-16">
+          <div className="flex items-center justify-between lg:block">
+            <div>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tighter">
+                {activeTab === 'accueil' ? 'Bienvenue, Champion' : activeTab.toUpperCase()}
+              </h2>
+              <p className="text-slate-500 text-[10px] lg:text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Gens 1 à 9 • {pokemons.length} espèces</p>
+            </div>
+            <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-2 border-slate-100 dark:border-slate-800 text-slate-900 dark:text-white">
+              <Menu size={24} />
+            </button>
           </div>
           
           <div className="flex flex-wrap items-center gap-4">
@@ -639,27 +667,27 @@ function App() {
             <motion.div key="h" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} className="space-y-12 pb-20">
                {/* HERO SECTION */}
                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                  <div className="xl:col-span-2 relative rounded-[4rem] overflow-hidden group shadow-2xl h-[450px] bg-slate-900 border-4 border-white dark:border-slate-800">
+                  <div className="xl:col-span-2 relative rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden group shadow-2xl h-[300px] lg:h-[450px] bg-slate-900 border-4 border-white dark:border-slate-800">
                     <img src="/images/home_aesthetic.png" className="absolute inset-0 w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105" alt="Hero" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                    <div className="relative h-full flex flex-col justify-end p-12 space-y-6">
-                       <h1 className="text-6xl font-black text-white leading-none tracking-tighter">ÉCRIVEZ VOTRE <br/><span className="text-rose-500">LÉGENDE</span>.</h1>
-                       <div className="flex gap-4">
-                          <button onClick={() => setActiveTab('collection')} className="bg-white text-slate-950 px-8 py-4 rounded-2xl font-black text-sm shadow-2xl hover:bg-rose-500 hover:text-white transition-all uppercase tracking-widest">Voir Index</button>
-                          <button onClick={() => setActiveTab('combat')} className="bg-slate-800/40 backdrop-blur-xl border border-white/20 text-white px-8 py-4 rounded-2xl font-black text-sm shadow-2xl hover:bg-white hover:text-slate-900 transition-all uppercase tracking-widest">Combat</button>
+                    <div className="relative h-full flex flex-col justify-end p-6 lg:p-12 space-y-4 lg:space-y-6">
+                       <h1 className="text-3xl lg:text-6xl font-black text-white leading-none tracking-tighter uppercase">Écrivez votre <br/><span className="text-rose-500">Légende</span>.</h1>
+                       <div className="flex gap-3 lg:gap-4">
+                          <button onClick={() => setActiveTab('collection')} className="bg-white text-slate-950 px-5 lg:px-8 py-3 lg:py-4 rounded-xl lg:rounded-2xl font-black text-[10px] lg:text-sm shadow-2xl hover:bg-rose-500 hover:text-white transition-all uppercase tracking-widest">Voir Index</button>
+                          <button onClick={() => setActiveTab('combat')} className="bg-slate-800/40 backdrop-blur-xl border border-white/20 text-white px-5 lg:px-8 py-3 lg:py-4 rounded-xl lg:rounded-2xl font-black text-[10px] lg:text-sm shadow-2xl hover:bg-white hover:text-slate-900 transition-all uppercase tracking-widest">Combat</button>
                        </div>
                     </div>
                   </div>
 
                   {/* TRAINER CARD */}
-                  <div className="glass-card rounded-[4rem] p-10 flex flex-col justify-between relative overflow-hidden group">
-                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform">
-                        <Zap size={120} className="text-rose-500" />
+                  <div className="glass-card rounded-[2.5rem] lg:rounded-[4rem] p-6 lg:p-10 flex flex-col justify-between relative overflow-hidden group">
+                     <div className="absolute top-0 right-0 p-4 lg:p-8 opacity-10 group-hover:rotate-12 transition-transform">
+                        <Zap size={80} className="lg:size-[120px] text-rose-500" />
                      </div>
                      <div>
-                        <span className="text-rose-500 font-black text-xs uppercase tracking-[0.3em] mb-4 block">Profil Certifié</span>
-                        <h2 className="text-4xl font-black tracking-tighter leading-none mb-2">Maître <br/> Pokémon</h2>
-                        <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Ligue de Johto • Rang S</p>
+                        <span className="text-rose-500 font-black text-[10px] uppercase tracking-[0.3em] mb-2 lg:mb-4 block">Profil Certifié</span>
+                        <h2 className="text-2xl lg:text-4xl font-black tracking-tighter leading-none mb-1 lg:mb-2 uppercase">Maître <br/> Pokémon</h2>
+                        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest opacity-70">Ligue de Johto • Rang S</p>
                      </div>
                      
                      <div className="space-y-6 relative z-10">

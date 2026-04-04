@@ -25,12 +25,34 @@ html.dark {
   color: #f3f4f6;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
   transition: background-color 0.3s ease;
+}
+
+/* Custom Thin Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(244, 63, 94, 0.2);
+  border-radius: 10px;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(244, 63, 94, 0.5);
 }
 
 #root {
