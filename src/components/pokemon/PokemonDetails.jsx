@@ -1,8 +1,9 @@
 // src/components/pokemon/PokemonDetails.jsx
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { X, Sparkles, Star, Heart, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { motion as Motion } from 'framer-motion';
+import { X, Sparkles, Star, Heart, ChevronRight, Scale } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
+import useAccessibleModal from '../../hooks/useAccessibleModal';
 
 /**
  * Modal affichant les détails approfondis d'un Pokémon.
@@ -12,6 +13,9 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
   const [isShiny, setIsShiny] = useState(false);
   const [evoChain, setEvoChain] = useState([]);
   const [loadingEvo, setLoadingEvo] = useState(false);
+  const modalRef = useRef(null);
+
+  useAccessibleModal(modalRef, onClose);
 
   // URL de l'image dynamique (normale ou chromatique/shiny)
   const imageUrl = isShiny 
@@ -93,12 +97,23 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
   }, [pokemon]);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-hidden">
-       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-2xl" onClick={onClose} />
-       <motion.div initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }} className={`relative w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}>
+    <Motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Fiche de ${pokemon.nom}`}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-hidden"
+    >
+       <div aria-hidden="true" className="absolute inset-0 bg-slate-950/80 backdrop-blur-2xl" onClick={onClose} />
+       <Motion.div ref={modalRef} tabIndex={-1} initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }} className={`relative w-full max-w-4xl max-h-[98vh] flex flex-col md:flex-row rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}>
           
           <button 
+            type="button"
+            data-autofocus
             onClick={onClose} 
+            aria-label="Fermer la fiche Pokemon"
             className="absolute top-4 right-4 z-50 p-2.5 bg-black/20 hover:bg-black/40 dark:bg-white/10 dark:hover:bg-white/20 rounded-full text-slate-800 dark:text-white backdrop-blur-xl transition-all hover:scale-110 active:scale-95 shadow-lg border border-transparent hover:border-white/20"
           >
             <X size={20} />
@@ -107,11 +122,11 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
           {/* Section Gauche : Visuel et Nom */}
           <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-center items-center relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${TYPE_COLORS[pokemon.types[0].nom]} 0%, #000 150%)` }}>
              <div className="absolute inset-0 bg-black/10 z-0" />
-             <motion.img 
+             <Motion.img 
                key={imageUrl}
                initial={{ scale: 0.8, opacity: 0 }}
                animate={{ scale: 1, opacity: 1 }}
-               src={imageUrl} 
+               src={imageUrl} alt={pokemon.nom} 
                className="w-36 h-36 md:w-48 md:h-48 object-contain z-10 drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:scale-110 transition-transform duration-700" 
              />
              <div className="mt-4 text-center text-white z-10">
@@ -119,45 +134,48 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
                 <div className="flex gap-2 justify-center mb-3">
                    {pokemon.types.map(t => <span key={t.nom} className="px-4 py-1 bg-white/20 backdrop-blur-xl rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest">{t.nom}</span>)}
                 </div>
-                <button onClick={() => setIsShiny(!isShiny)} className={`p-2.5 rounded-xl backdrop-blur-xl transition-all shadow-md ${isShiny ? 'bg-amber-400 text-slate-900' : 'bg-white/10 hover:bg-white/20'}`}>
+                <button type="button" aria-label={isShiny ? 'Afficher la version classique' : 'Afficher la version shiny'} onClick={() => setIsShiny(!isShiny)} className={`p-2.5 rounded-xl backdrop-blur-xl transition-all shadow-md ${isShiny ? 'bg-amber-400 text-slate-900' : 'bg-white/10 hover:bg-white/20'}`}>
                    <Sparkles size={18} />
                 </button>
              </div>
           </div>
 
           {/* Section Droite : Stats et Evolutions */}
-          <div className="md:w-1/2 p-5 pt-10 md:p-8 md:pt-12 lg:p-10 lg:pt-14 overflow-y-auto flex-1 custom-scrollbar">
+          <div className="md:w-1/2 p-4 pt-6 md:p-6 lg:p-8 overflow-y-auto flex-1 custom-scrollbar">
              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                 <h3 className="text-base lg:text-lg font-black uppercase tracking-widest">Statistiques</h3>
-                <div className="flex gap-2">
-                    <button onClick={onToggleFavorite} className={`p-3 rounded-2xl transition-all shadow-lg ${isFavorite ? 'bg-amber-400 text-white shadow-amber-400/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
+                <div className="grid w-full grid-cols-[auto,minmax(0,1fr)] gap-2 sm:flex sm:w-auto sm:flex-wrap">
+                    <button type="button" aria-label={isFavorite ? `Retirer ${pokemon.nom} des favoris` : `Ajouter ${pokemon.nom} aux favoris`} onClick={onToggleFavorite} className={`p-3 rounded-2xl transition-all shadow-lg ${isFavorite ? 'bg-amber-400 text-white shadow-amber-400/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
                        <Star size={20} fill={isFavorite ? 'white' : 'none'} />
                     </button>
-                    <button onClick={onCatch} className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black transition-all shadow-lg ${isCaught ? 'bg-rose-500 text-white shadow-rose-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
-                       <Heart size={20} fill={isCaught ? 'white' : 'none'} /> <span className="text-sm md:text-base">{isCaught ? 'LIBÉRER' : 'CAPTURER'}</span>
+                    <button type="button" onClick={onCatch} className={`flex min-w-0 items-center justify-center gap-2 px-4 py-3 rounded-2xl font-black transition-all shadow-lg sm:px-6 ${isCaught ? 'bg-rose-500 text-white shadow-rose-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
+                       <Heart size={20} fill={isCaught ? 'white' : 'none'} /> <span className="truncate text-xs sm:text-sm md:text-base">{isCaught ? 'LIBÉRER' : 'CAPTURER'}</span>
+                    </button>
+                    <button type="button" onClick={onCompare} className="col-span-2 flex w-full items-center justify-center gap-2 px-4 py-3 rounded-2xl font-black transition-all shadow-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700 sm:col-auto sm:w-auto sm:px-5">
+                       <Scale size={18} /> <span className="text-xs sm:text-sm md:text-base">COMPARER</span>
                     </button>
                 </div>
              </div>
 
              {/* Barres de Statistiques */}
-             <div className="space-y-3 lg:space-y-4">
+             <div className="space-y-1.5 lg:space-y-2">
                 {Object.entries(pokemon.base).map(([key, val]) => (
                    <div key={key}>
                       <div className="flex justify-between mb-1">
                          <span className="font-black text-slate-400 uppercase text-[9px] tracking-widest">{key}</span>
                          <span className="font-black text-base">{val}</span>
                       </div>
-                      <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                         <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, (val / 150) * 100)}%` }} className="h-full rounded-full" style={{ backgroundColor: TYPE_COLORS[pokemon.types[0].nom] }} />
+                      <div role="progressbar" aria-label={`${key} ${val}`} aria-valuemin={0} aria-valuemax={150} aria-valuenow={val} className="h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                         <Motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, (val / 150) * 100)}%` }} className="h-full rounded-full" style={{ backgroundColor: TYPE_COLORS[pokemon.types[0].nom] }} />
                       </div>
                    </div>
                 ))}
              </div>
 
              {/* Efficacité subie */}
-             <div className="mt-6">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Efficacité subie</h4>
-                <div className="flex flex-wrap gap-2">
+             <div className="mt-4">
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Efficacité subie</h4>
+                <div className="flex flex-wrap gap-1.5">
                     {Object.entries(weaknesses).sort((a,b) => b[1] - a[1]).map(([t, m]) => (
                        <div key={t} className={`px-2 py-1 rounded-lg text-[9px] font-black flex items-center gap-1.5 shadow-sm ${m > 1 ? 'bg-rose-500/10 text-rose-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
                           <span>{t}</span>
@@ -168,8 +186,8 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
              </div>
 
              {/* Chaîne d'évolution */}
-             <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800 pb-10">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Lignée Évolutive</h4>
+             <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 pb-4">
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Lignée Évolutive</h4>
                 {loadingEvo ? (
                   <div className="flex gap-4 animate-pulse">
                     {[1, 2, 3].map(i => <div key={i} className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl" />)}
@@ -184,17 +202,18 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
                             {evo.condition && <span className="text-[7px] font-black uppercase text-rose-500 mt-1">{evo.condition}</span>}
                           </div>
                         )}
-                        <div onClick={() => { const p = pokemons.find(x => x.id === evo.id); if (p) onNavigate(p); }} className={`relative group cursor-pointer p-2 rounded-2xl border-2 transition-all ${evo.id === pokemon.id ? 'border-rose-500 bg-rose-50' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
-                           <img src={evo.image} className="w-14 h-14 object-contain group-hover:scale-110 transition-transform" />
-                        </div>
+                        <button type="button" disabled={evo.id === pokemon.id} aria-label={evo.id === pokemon.id ? `${evo.nom}, Pokemon actuel` : `Voir ${evo.nom}`} onClick={() => { const p = pokemons.find(x => x.id === evo.id); if (p) onNavigate(p); }} className={`relative group p-2 rounded-2xl border-2 transition-all ${evo.id === pokemon.id ? 'border-rose-500 bg-rose-50 cursor-default' : 'border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer'}`}>
+                           <img src={evo.image} alt={evo.nom} className="w-14 h-14 object-contain group-hover:scale-110 transition-transform" />
+                        </button>
                       </React.Fragment>
                     ))}
+                    {!loadingEvo && evoChain.length === 0 && <p role="status" className="text-xs font-black uppercase tracking-widest text-slate-400">Aucune evolution disponible.</p>}
                   </div>
                 )}
              </div>
           </div>
-       </motion.div>
-    </motion.div>
+       </Motion.div>
+    </Motion.div>
   );
 };
 

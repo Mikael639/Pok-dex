@@ -1,6 +1,6 @@
 // src/components/pokemon/PokemonCard.jsx
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import { Star, Heart } from 'lucide-react';
 import { TYPE_COLORS } from '../../constants/pokemon';
 
@@ -12,7 +12,7 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
   const color = (pokemon.types && pokemon.types[0] && TYPE_COLORS[pokemon.types[0].nom]) || '#94A3B8';
   
   return (
-    <motion.div
+    <Motion.article
       layout
       initial={{ opacity: 0, scale: 0.85, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -21,25 +21,38 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
       className={`card-shimmer relative p-8 rounded-[3rem] shadow-2xl border-4 transition-all cursor-pointer group ${isCaught ? 'card-caught' : ''} ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-white text-slate-900'}`}
       onClick={onClick}
     >
+       <button
+         type="button"
+         aria-label={`Voir ${pokemon.nom}`}
+         onClick={(event) => {
+           event.stopPropagation();
+           onClick();
+         }}
+         className="pointer-events-none absolute inset-0 z-10 rounded-[3rem] focus-visible:outline-none focus-visible:ring-4 ring-rose-500/20"
+       />
        <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
-          <motion.button
+          <Motion.button
+            type="button"
+            aria-label={isFavorite ? `Retirer ${pokemon.nom} des favoris` : `Ajouter ${pokemon.nom} aux favoris`}
             whileTap={{ scale: 0.8 }}
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
             className={`p-3 rounded-full transition-all shadow-md ${isFavorite ? 'bg-amber-400 text-white' : 'bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-400 hover:text-amber-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
           >
              <Star size={22} fill={isFavorite ? 'white' : 'none'} />
-          </motion.button>
+          </Motion.button>
        </div>
        <div className="absolute top-5 right-5 z-20 flex flex-col gap-2">
-          <motion.button
+          <Motion.button
+            type="button"
+            aria-label={isCaught ? `Retirer ${pokemon.nom} de l equipe` : `Ajouter ${pokemon.nom} a l equipe`}
             whileTap={{ scale: 0.8 }}
             onClick={(e) => { e.stopPropagation(); onCatch(); }}
             className={`p-3 rounded-full transition-all shadow-md ${isCaught ? 'bg-rose-500 text-white' : 'bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
           >
              <Heart size={22} fill={isCaught ? 'white' : 'none'} />
-          </motion.button>
+          </Motion.button>
        </div>
-       <div className="relative mb-8 mt-4 h-48 flex items-center justify-center">
+       <div className="relative z-[1] mb-8 mt-4 h-48 flex items-center justify-center">
           {/* Aura lumineuse derrière le Pokémon basée sur son type primaire */}
           <div
             className="pokemon-aura absolute inset-0 blur-3xl rounded-full"
@@ -51,7 +64,7 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
             className="pokemon-float-img w-48 h-48 object-contain relative z-10 drop-shadow-2xl mx-auto"
           />
        </div>
-        <div className="mt-4">
+        <div className="relative z-[1] mt-4">
            <h3 className="text-3xl font-black capitalize tracking-tighter mb-4">{pokemon.nom}</h3>
           <div className="flex gap-2">
              {pokemon.types.map(t => (
@@ -59,7 +72,7 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
              ))}
           </div>
        </div>
-    </motion.div>
+    </Motion.article>
   );
 };
 
