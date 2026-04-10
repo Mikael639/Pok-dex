@@ -1,9 +1,13 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
 import { TEST_POKEMONS } from './fixtures/pokemonFixtures';
 import { installPokemonFetchMock } from './utils';
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 async function renderApp({ team = [], width = 1280, waitForNavigation = true } = {}) {
   installPokemonFetchMock();
@@ -36,6 +40,18 @@ async function openBattleTab(user) {
   const navigation = screen.getByRole('navigation');
   await user.click(within(navigation).getByRole('button', { name: /Ar.ne Battle/i }));
   await screen.findByRole('heading', { name: /Arene Master/i });
+}
+
+async function openStatClashTab(user) {
+  const navigation = screen.getByRole('navigation');
+  await user.click(within(navigation).getByRole('button', { name: /Stat Clash/i }));
+  await screen.findByText(/Quelle equipe domine cette statistique/i);
+}
+
+async function openEvolutionRushTab(user) {
+  const navigation = screen.getByRole('navigation');
+  await user.click(within(navigation).getByRole('button', { name: /Evolution Rush/i }));
+  await screen.findByRole('button', { name: /Relancer Evolution Rush/i });
 }
 
 describe('App integration', () => {
@@ -109,5 +125,65 @@ describe('App integration', () => {
     expect(await screen.findByText(/Journal de Combat/i)).toBeInTheDocument();
     expect(screen.getByText(/Preparez-vous au combat !/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Attaque/i })).toBeInTheDocument();
+  });
+
+  it('ouvre Stat Clash et revele une manche apres un choix', async () => {
+    const user = userEvent.setup();
+
+    await renderApp();
+    await openStatClashTab(user);
+
+    const choices = screen.getAllByRole('button', { name: /Choisir /i });
+    expect(choices).toHaveLength(2);
+
+    await user.click(choices[0]);
+
+    expect(await screen.findByRole('button', { name: /Suivant/i })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent(/Bien vu|Rate|Egalite/i);
+  });
+
+  it('ouvre Evolution Rush et valide une manche', async () => {
+    const user = userEvent.setup();
+
+    await renderApp();
+    await openEvolutionRushTab(user);
+
+    const initialChoices = await screen.findAllByRole('button', { name: /Ajouter /i });
+    expect(initialChoices.length).toBeGreaterThanOrEqual(2);
+
+    for (let index = 0; index < initialChoices.length; index += 1) {
+      await user.click(screen.getAllByRole('button', { name: /Ajouter /i })[0]);
+    }
+
+    await user.click(screen.getByRole('button', { name: /Valider l ordre/i }));
+
+    expect(await screen.findByRole('button', { name: /Suivant/i })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent(/Parfait|Rate/i);
+  });
+
+  it('change la difficulte Evolution Rush en debutant', async () => {
+    const user = userEvent.setup();
+
+    await renderApp();
+    await openEvolutionRushTab(user);
+
+    await user.click(screen.getByRole('button', { name: /Passer en Debutant/i }));
+
+    expect(await screen.findByText(/Remettez 2 Pokemon dans le bon ordre/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mode actuel : Debutant - 2 etapes/i)).toBeInTheDocument();
+  });
+
+  it("affiche le defi du jour sur l'accueil et ouvre son action principale", async () => {
+    localStorage.removeItem('pokedexDailyActivity');
+
+    const user = userEvent.setup();
+
+    await renderApp();
+
+    expect(screen.getByText(/Defi du jour/i)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Voir le Pokemon du jour/i }));
+
+    expect(await screen.findByRole('dialog', { name: /Fiche de/ })).toBeInTheDocument();
   });
 });
