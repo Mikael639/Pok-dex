@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { Zap, Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Star, Shield, Flame, Crown } from 'lucide-react';
+import { Zap, Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Star, Shield, Flame, Crown, LayoutGrid, Music } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
 import { EXPERIENCE_META } from '../../constants/gameMeta';
 import { QuickCard } from '../common/Cards';
@@ -16,11 +16,13 @@ export default function Dashboard({
   statClashState,
   gameState,
   quizState,
+  todayKey,
+  setSelectedPokemon,
+  pokedleState,
+  cryQuizState,
   dailyChallenge,
   handleDailyChallengeAction,
-  isDailyChallengeComplete,
-  todayKey,
-  setSelectedPokemon
+  isDailyChallengeComplete
 }) {
   const continueMode = EXPERIENCE_META[lastPlayedTab] ?? EXPERIENCE_META['evolution-rush'];
   const ContinueModeIcon = continueMode.icon;
@@ -47,7 +49,7 @@ export default function Dashboard({
     { label: 'Favoris', value: favorites.length, helper: 'Pokemon suivis', tone: 'text-rose-500', Icon: Star },
     { label: 'Equipe', value: `${team.length}/6`, helper: 'Champions actifs', tone: 'text-indigo-500', Icon: Shield },
     { label: 'Victoires', value: battleStats.wins, helper: 'Arene Battle', tone: 'text-emerald-500', Icon: Flame },
-    { label: 'Record', value: Math.max(gameState.highscore, quizState.highscore, overallEvolutionRushBestStreak, statClashState.bestStreak), helper: 'Tous defis', tone: 'text-amber-500', Icon: Crown }
+    { label: 'Record', value: Math.max(gameState.highscore, quizState.highscore, overallEvolutionRushBestStreak, statClashState.bestStreak, cryQuizState.highscore), helper: 'Tous defis', tone: 'text-amber-500', Icon: Crown }
   ];
 
   const dashboardGameCards = [
@@ -55,6 +57,8 @@ export default function Dashboard({
     { id: 'jeu', icon: <Gamepad2 size={24} className="text-indigo-500" />, title: 'Silhouette', text: `Record: ${gameState.highscore}` },
     { id: 'evolution-rush', icon: <GitBranch size={24} className="text-violet-500" />, title: 'Evolution Rush', text: `Meilleur: ${overallEvolutionRushBestStreak}` },
     { id: 'stat-clash', icon: <BarChart3 size={24} className="text-cyan-500" />, title: 'Stat Clash', text: `Serie max: ${statClashState.bestStreak}` },
+    { id: 'pokedle', icon: <LayoutGrid size={24} className="text-emerald-500" />, title: 'Pokédle Daily', text: pokedleState.status === 'won' ? '🎯 Défi Réussi !' : '🧩 Devinette active' },
+    { id: 'cry-quiz', icon: <Music size={24} className="text-rose-500" />, title: 'Qui est-ce ?', text: `Record: ${cryQuizState.highscore}` },
     { id: 'combat', icon: <Activity size={24} className="text-emerald-500" />, title: 'Arène Battle', text: `${battleStats.wins} victoire${battleStats.wins > 1 ? 's' : ''}` }
   ];
 
@@ -68,35 +72,35 @@ export default function Dashboard({
             <img src="/images/home_aesthetic.png" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/55 to-rose-950/30" />
             <div className="relative flex min-h-[320px] flex-col justify-between p-6 lg:min-h-[450px] lg:p-12">
-               <h1 className="text-3xl lg:text-6xl font-black text-white leading-none tracking-tighter uppercase font-['Outfit'] italic">Écrivez votre <br/><span className="text-rose-500">Légende</span>.</h1>
-               <div className="flex flex-wrap gap-3">
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-white backdrop-blur-xl">Dashboard joueur</span>
-                  <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-white/80 backdrop-blur-xl">Dernier defi : {continueMode.label}</span>
+               <h1 className="text-4xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight uppercase font-['Outfit'] italic drop-shadow-2xl">Écrivez votre <br/><span className="text-rose-500">Légende</span>.</h1>
+               <div className="flex flex-wrap gap-4 mt-2">
+                  <span className="rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.4em] text-white/90 backdrop-blur-2xl">Dashboard joueur</span>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.4em] text-white/70 backdrop-blur-2xl">Dernier defi : {continueMode.label}</span>
                </div>
-               <p className="max-w-2xl text-sm font-bold text-white/75 lg:text-base">Pilotez votre progression, relancez votre dernier defi et gardez un oeil sur votre equipe sans quitter l accueil.</p>
-                <div className="flex flex-wrap gap-3 lg:gap-4">
-                   <button type="button" onClick={() => setActiveTab('collection')} className="rounded-xl bg-white px-5 py-3 text-[10px] font-black uppercase tracking-widest text-slate-950 shadow-2xl transition-all hover:bg-rose-500 hover:text-white lg:rounded-2xl lg:px-8 lg:py-4 lg:text-sm">Explorer la collection</button>
-                   <button type="button" aria-label={continueMode.cta} onClick={() => setActiveTab(continueMode.id)} className="rounded-xl border border-white/20 bg-slate-800/40 px-5 py-3 text-[10px] font-black uppercase tracking-widest text-white shadow-2xl backdrop-blur-xl transition-all hover:bg-white hover:text-slate-900 lg:rounded-2xl lg:px-8 lg:py-4 lg:text-sm">{continueMode.cta}</button>
+               <p className="max-w-xl text-sm font-medium text-white/60 lg:text-base leading-relaxed">Pilotez votre progression, relancez votre dernier defi et gardez un oeil sur votre equipe sans quitter l accueil.</p>
+                <div className="flex flex-wrap gap-5 lg:gap-6">
+                   <button type="button" onClick={() => setActiveTab('collection')} className="rounded-2xl bg-white px-8 py-4 text-[10px] font-black uppercase tracking-widest text-slate-950 shadow-[0_20px_40px_rgba(255,255,255,0.15)] transition-all hover:scale-105 active:scale-95 lg:px-10 lg:py-5 lg:text-xs">Explorer la collection</button>
+                   <button type="button" aria-label={continueMode.cta} onClick={() => setActiveTab(continueMode.id)} className="rounded-2xl border border-white/20 bg-slate-800/20 px-8 py-4 text-[10px] font-black uppercase tracking-widest text-white shadow-2xl backdrop-blur-2xl transition-all hover:bg-white/10 lg:px-10 lg:py-5 lg:text-xs">{continueMode.cta}</button>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                   <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/10 p-4 backdrop-blur-xl group">
+                <div className="grid gap-4 sm:grid-cols-3">
+                   <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-white/5 p-6 backdrop-blur-3xl group transition-all hover:bg-white/10">
                       <div className="relative z-10">
-                         <div className="text-[9px] font-black uppercase tracking-[0.3em] text-white/60">Favoris</div>
-                         <div className="mt-2 text-2xl font-black text-white">{favorites.length}</div>
+                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Favoris</div>
+                         <div className="mt-2 text-3xl font-black text-white">{favorites.length}</div>
                       </div>
-                      <Star size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-10 transition-all duration-500 group-hover:-rotate-12 group-hover:scale-110 group-hover:opacity-30" />
+                      <Star size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-5 transition-all duration-700 group-hover:-rotate-12 group-hover:scale-110 group-hover:opacity-20" />
                    </div>
-                   <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/10 p-4 backdrop-blur-xl group">
+                   <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-white/5 p-6 backdrop-blur-3xl group transition-all hover:bg-white/10">
                       <div className="relative z-10">
-                         <div className="text-[9px] font-black uppercase tracking-[0.3em] text-white/60">Equipe</div>
-                         <div className="mt-2 text-2xl font-black text-white">{team.length}/6</div>
+                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Equipe</div>
+                         <div className="mt-2 text-3xl font-black text-white">{team.length}/6</div>
                       </div>
-                      <Shield size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-10 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 group-hover:opacity-30" />
+                      <Shield size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-5 transition-all duration-700 group-hover:rotate-12 group-hover:scale-110 group-hover:opacity-20" />
                    </div>
-                   <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/10 p-4 backdrop-blur-xl group">
+                   <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-white/5 p-6 backdrop-blur-3xl group transition-all hover:bg-white/10">
                       <div className="relative z-10">
-                         <div className="text-[9px] font-black uppercase tracking-[0.3em] text-white/60">Victoires</div>
-                         <div className="mt-2 text-2xl font-black text-white">{battleStats.wins}</div>
+                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Victoires</div>
+                         <div className="mt-2 text-3xl font-black text-white">{battleStats.wins}</div>
                       </div>
                       <Trophy size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-10 transition-all duration-500 group-hover:-rotate-12 group-hover:scale-110 group-hover:opacity-30" />
                    </div>
@@ -118,133 +122,121 @@ export default function Dashboard({
                    </div>
                    <div className="mt-2 text-xs font-bold text-slate-500">{pokemons.length} Pokemon deja indexes sur 1025.</div>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                   {dashboardProgressStats.map((stat) => {
-                      const IconComponent = stat.Icon;
-                      return (
-                      <div key={stat.label} className="relative overflow-hidden rounded-[1.75rem] bg-slate-100 p-4 dark:bg-slate-800/50 group hover:shadow-lg transition-shadow">
-                         <div className="relative z-10">
-                            <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">{stat.label}</div>
-                            <div className={`mt-2 text-2xl font-black leading-none ${stat.tone}`}>{stat.value}</div>
-                            <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">{stat.helper}</div>
-                         </div>
-                         <IconComponent size={80} strokeWidth={1} className={`absolute -bottom-4 -right-4 opacity-5 transition-all duration-500 group-hover:-translate-y-2 group-hover:scale-110 group-hover:opacity-20 ${stat.tone}`} />
-                      </div>
-                   )})}
-                </div>
-                <div className="rounded-[2rem] border border-slate-200/80 bg-white/70 p-5 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/70">
-                   <div className="mb-3 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Records a surveiller</div>
-                   <div className="grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-2xl bg-slate-100 px-4 py-3 dark:bg-slate-800/70">
-                         <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Evolution Rush</div>
-                         <div className="mt-1 text-xl font-black text-violet-500">{overallEvolutionRushBestStreak}</div>
-                      </div>
-                      <div className="rounded-2xl bg-slate-100 px-4 py-3 dark:bg-slate-800/70">
-                         <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Stat Clash</div>
-                         <div className="mt-1 text-xl font-black text-cyan-500">{statClashState.bestStreak}</div>
-                      </div>
-                   </div>
-                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                    {dashboardProgressStats.map((stat) => {
+                       const IconComponent = stat.Icon;
+                       return (
+                       <div key={stat.label} className="relative overflow-hidden rounded-3xl bg-slate-100 p-6 dark:bg-slate-800/50 group hover:shadow-2xl hover:shadow-rose-500/5 transition-all duration-500 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+                          <div className="relative z-10">
+                             <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{stat.label}</div>
+                             <div className={`mt-3 text-3xl font-black leading-none ${stat.tone}`}>{stat.value}</div>
+                             <div className="mt-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 opacity-60">{stat.helper}</div>
+                          </div>
+                          <IconComponent size={100} strokeWidth={1} className={`absolute -bottom-6 -right-6 opacity-5 transition-all duration-700 group-hover:-translate-y-4 group-hover:scale-125 group-hover:opacity-15 ${stat.tone}`} />
+                       </div>
+                    )})}
+                 </div>
+                 <div className="rounded-[2.5rem] border border-slate-100 bg-white/40 p-8 backdrop-blur-3xl dark:border-slate-800 dark:bg-slate-900/40 shadow-sm">
+                    <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Records a surveiller</div>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                       <div className="rounded-2xl bg-slate-50 px-5 py-4 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                          <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Evolution Rush</div>
+                          <div className="mt-1 text-2xl font-black text-violet-500">{overallEvolutionRushBestStreak}</div>
+                       </div>
+                       <div className="rounded-2xl bg-slate-50 px-5 py-4 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                          <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Stat Clash</div>
+                          <div className="mt-1 text-2xl font-black text-cyan-500">{statClashState.bestStreak}</div>
+                       </div>
+                    </div>
+                 </div>
              </div>
           </div>
        </div>
 
-       <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.15fr_0.95fr_1fr]">
-          <button type="button" onClick={() => setActiveTab(continueMode.id)} aria-label={continueMode.cta} className="group relative overflow-hidden rounded-[3rem] border border-slate-200 bg-white p-8 text-left shadow-xl transition-all hover:-translate-y-1 hover:border-rose-400/40 dark:border-slate-800 dark:bg-slate-900">
-             <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-amber-400/10 opacity-80" />
-             <div className="relative flex h-full flex-col justify-between gap-8">
-                <div className="flex items-start justify-between gap-6">
-                   <div>
-                      <div className="mb-3 text-[10px] font-black uppercase tracking-[0.3em] text-rose-500">Continuer l aventure</div>
-                      <h3 className="text-2xl font-black uppercase tracking-tighter dark:text-white">{continueMode.label}</h3>
-                      <p className="mt-3 max-w-md text-sm font-bold text-slate-500">{continueMode.description}</p>
-                   </div>
-                   <div className="rounded-[1.75rem] bg-slate-100 p-4 text-rose-500 transition-transform group-hover:scale-110 dark:bg-slate-800">
-                      <ContinueModeIcon size={34} />
-                   </div>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                   <span className="rounded-full bg-rose-500 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-white">{continueMode.cta}</span>
-                   <span className="rounded-full bg-slate-100 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 dark:bg-slate-800 dark:text-slate-300">Dernier mode joue</span>
-                </div>
-             </div>
-          </button>
-          
-          <button type="button" aria-label={dailyChallenge?.cta} onClick={handleDailyChallengeAction} className="group relative overflow-hidden rounded-[3rem] border border-slate-200 bg-white p-8 text-left shadow-xl transition-all hover:-translate-y-1 hover:border-amber-400/30 dark:border-slate-800 dark:bg-slate-900">
-             <div className={`absolute inset-0 bg-gradient-to-br ${dailyChallenge?.accent}`} />
-             <div className="relative flex h-full flex-col gap-6">
-                <div className="flex items-start justify-between gap-4">
-                   <div>
-                      <div className="mb-3 text-[10px] font-black uppercase tracking-[0.3em] text-amber-500">Defi du jour</div>
-                      <h3 className="text-xl font-black uppercase tracking-tighter dark:text-white">{dailyChallenge?.title}</h3>
-                      <p className="mt-3 text-sm font-bold text-slate-500">{dailyChallenge?.description}</p>
-                   </div>
-                   <div className="rounded-[1.75rem] bg-slate-100 p-4 text-amber-500 transition-transform group-hover:scale-110 dark:bg-slate-800">
-                      <DailyChallengeIcon size={32} />
-                   </div>
-                </div>
-                <div className="flex items-center justify-center">
-                   {dailyChallenge?.visualPokemon ? (
-                      <div className="relative">
-                         <div className={`absolute inset-0 scale-150 rounded-full blur-3xl ${dailyChallenge?.glow}`} />
-                         <img src={dailyChallenge.visualPokemon.image} alt={dailyChallenge.visualPokemon.nom} className="relative z-10 h-28 w-28 object-contain drop-shadow-2xl transition-transform duration-500 group-hover:rotate-6" />
-                      </div>
-                   ) : (
-                      <div className={`relative flex h-28 w-28 items-center justify-center rounded-full ${isDailyChallengeComplete ? 'bg-emerald-500 text-white shadow-[0_0_30px_rgba(16,185,129,0.35)]' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-200'}`}>
-                         <DailyChallengeIcon size={42} />
-                         {isDailyChallengeComplete && <Sparkles size={18} className="absolute -right-1 -top-1 text-amber-200" />}
-                      </div>
-                   )}
-                </div>
-                <div className="rounded-[2rem] border border-slate-200/80 bg-white/75 p-5 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/70">
-                   <div className="flex items-center justify-between gap-3">
-                      <div>
-                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{dailyChallenge?.reward}</div>
-                         <div className={`mt-2 text-sm font-black uppercase tracking-[0.2em] ${isDailyChallengeComplete ? 'text-emerald-500' : 'text-slate-500'}`}>{dailyChallengeStatusLabel}</div>
-                      </div>
-                      <span className={`rounded-full px-3 py-2 text-[10px] font-black uppercase tracking-[0.3em] ${isDailyChallengeComplete ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300'}`}>{isDailyChallengeComplete ? '1 / 1' : '0 / 1'}</span>
-                   </div>
-                   <div className="mt-3 text-xs font-bold text-slate-500">{dailyChallenge?.helper} • cycle {todayKey}</div>
-                   <AnimatePresence>
-                      {isDailyChallengeComplete && (
-                         <Motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 rounded-[1.5rem] bg-emerald-500/10 px-4 py-3 text-xs font-black uppercase tracking-[0.25em] text-emerald-600 dark:text-emerald-300">
-                            Badge du jour debloque
-                         </Motion.div>
-                      )}
-                   </AnimatePresence>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                   <span className="rounded-full bg-amber-500 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-white">{dailyChallenge?.cta}</span>
-                   <span className="rounded-full bg-slate-100 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 dark:bg-slate-800 dark:text-slate-300">Recompense visuelle</span>
-                </div>
-             </div>
-          </button>
-          
-          <div className="rounded-[3rem] border border-slate-200 bg-white p-8 shadow-xl dark:border-slate-800 dark:bg-slate-900">
-             <div className="mb-6 flex items-center justify-between gap-4">
-                <div>
-                   <div className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-500">Equipe active</div>
-                   <h3 className="mt-2 text-xl font-black uppercase tracking-tighter dark:text-white">Prete pour la ligue</h3>
-                </div>
-                <button type="button" onClick={() => setActiveTab('equipe')} className="rounded-full bg-indigo-500 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-white">Voir l equipe</button>
-             </div>
-             <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[1.75rem] bg-slate-100 p-4 dark:bg-slate-800/70">
-                   <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Slots</div>
-                   <div className="mt-2 text-2xl font-black text-indigo-500">{team.length}/6</div>
-                   <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Pokemon equipes</div>
-                </div>
-                <div className="rounded-[1.75rem] bg-slate-100 p-4 dark:bg-slate-800/70">
-                   <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Couverture</div>
-                   <div className="mt-2 text-2xl font-black text-emerald-500">{teamCoverageCount}</div>
-                   <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Types bien geres</div>
-                </div>
-             </div>
-             <div className="mt-5 grid grid-cols-3 gap-3">
-                {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-transparent bg-slate-50 p-3 text-center transition-all hover:border-indigo-500 dark:bg-slate-950" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} className="mx-auto h-12 w-12 object-contain transition-transform hover:scale-110" /></button>) : <div role="status" className="col-span-3 rounded-[1.75rem] border border-dashed border-slate-200 px-4 py-8 text-center text-xs font-black uppercase tracking-widest text-slate-400 dark:border-slate-700">Compose ton equipe pour debloquer un resume strategique ici.</div>}
-             </div>
-          </div>
-       </div>
+       <div className="grid grid-cols-1 gap-12 xl:grid-cols-[1.15fr_0.95fr_1fr]">
+           <button type="button" onClick={() => setActiveTab(continueMode.id)} aria-label={continueMode.cta} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-10 text-left shadow-2xl shadow-rose-500/5 transition-all hover:-translate-y-2 hover:border-rose-300 dark:border-slate-800 dark:bg-slate-900 duration-500">
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 via-transparent to-amber-400/5 opacity-80" />
+              <div className="relative flex h-full flex-col justify-between gap-10">
+                 <div className="flex items-start justify-between gap-8">
+                    <div>
+                       <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-rose-500">Continuer l aventure</div>
+                       <h3 className="text-3xl font-black uppercase tracking-tight dark:text-white leading-tight">Prochain<br/>Objectif</h3>
+                       <p className="mt-4 max-w-md text-sm font-bold text-slate-400 leading-relaxed uppercase tracking-tighter italic">{continueMode.label}</p>
+                    </div>
+                    <div className="rounded-3xl bg-slate-50 p-5 text-rose-500 transition-all duration-700 group-hover:scale-110 group-hover:bg-rose-50 dark:bg-slate-800 outline outline-0 group-hover:outline-8 outline-rose-500/10">
+                       <ContinueModeIcon size={38} />
+                    </div>
+                 </div>
+                 <div className="flex flex-wrap gap-4">
+                    <span className="rounded-xl bg-slate-900 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-white dark:bg-white dark:text-slate-900 group-hover:bg-rose-500 transition-colors shadow-lg">{continueMode.cta}</span>
+                    <span className="rounded-xl bg-slate-50 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:bg-slate-800 dark:text-slate-500">Reprise automatique</span>
+                 </div>
+              </div>
+           </button>
+           
+           <button type="button" aria-label={dailyChallenge?.cta} onClick={handleDailyChallengeAction} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-10 text-left shadow-2xl shadow-amber-500/5 transition-all hover:-translate-y-2 hover:border-amber-300 dark:border-slate-800 dark:bg-slate-900 duration-500">
+              <div className={`absolute inset-0 bg-gradient-to-br ${dailyChallenge?.accent}`} />
+              <div className="relative flex h-full flex-col gap-8">
+                 <div className="flex items-start justify-between gap-4">
+                    <div>
+                       <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-amber-500">Defi du jour</div>
+                       <h3 className="text-2xl font-black uppercase tracking-tight dark:text-white leading-tight">{dailyChallenge?.title}</h3>
+                       <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 opacity-60 leading-snug">{dailyChallenge?.description}</p>
+                    </div>
+                    <div className="rounded-3xl bg-slate-50 p-5 text-amber-500 transition-all duration-700 group-hover:scale-110 group-hover:bg-amber-50 dark:bg-slate-800 outline outline-0 group-hover:outline-8 outline-amber-500/10">
+                       <DailyChallengeIcon size={34} />
+                    </div>
+                 </div>
+                 <div className="flex items-center justify-center py-4">
+                    {dailyChallenge?.visualPokemon ? (
+                       <div className="relative">
+                          <div className={`absolute inset-0 scale-150 rounded-full blur-3xl ${dailyChallenge?.glow} opacity-20`} />
+                          <img src={dailyChallenge.visualPokemon.image} alt={dailyChallenge.visualPokemon.nom} className="relative z-10 h-32 w-32 object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all duration-700 group-hover:scale-110 group-hover:rotate-6" />
+                       </div>
+                    ) : (
+                       <div className={`relative flex h-32 w-32 items-center justify-center rounded-full ${isDailyChallengeComplete ? 'bg-emerald-500 text-white shadow-[0_20px_40px_rgba(16,185,129,0.3)]' : 'bg-slate-50 text-slate-300 dark:bg-slate-800 dark:text-slate-600 border border-slate-100 dark:border-slate-700'}`}>
+                          <DailyChallengeIcon size={48} />
+                          {isDailyChallengeComplete && <Sparkles size={20} className="absolute -right-1 -top-1 text-amber-200" />}
+                       </div>
+                    )}
+                 </div>
+                 <div className="rounded-[2rem] border border-slate-100 bg-slate-50/50 p-6 backdrop-blur-2xl dark:border-slate-800 dark:bg-slate-800/30">
+                    <div className="flex items-center justify-between gap-4">
+                       <div>
+                          <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">{dailyChallenge?.reward}</div>
+                          <div className={`mt-2 text-xs font-black uppercase tracking-[0.2em] ${isDailyChallengeComplete ? 'text-emerald-500' : 'text-slate-400'}`}>{dailyChallengeStatusLabel}</div>
+                       </div>
+                       <span className={`rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] ${isDailyChallengeComplete ? 'bg-emerald-500 text-white shadow-lg' : 'bg-white text-slate-300 dark:bg-slate-900 dark:text-slate-600 border border-slate-100 dark:border-slate-700'}`}>{isDailyChallengeComplete ? '1 / 1' : '0 / 1'}</span>
+                    </div>
+                 </div>
+              </div>
+           </button>
+           
+           <div className="rounded-[2.5rem] border border-slate-100 bg-white p-10 shadow-2xl shadow-indigo-500/5 dark:border-slate-800 dark:bg-slate-900 duration-500">
+              <div className="mb-8 flex items-center justify-between gap-6">
+                 <div>
+                    <div className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-500">Equipe active</div>
+                    <h3 className="mt-3 text-2xl font-black uppercase tracking-tight dark:text-white leading-tight">Prete pour<br />la ligue</h3>
+                 </div>
+                 <button type="button" onClick={() => setActiveTab('equipe')} className="rounded-xl bg-indigo-50 px-5 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all shadow-sm shadow-indigo-500/10">Explorer</button>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                 <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                    <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Slots</div>
+                    <div className="mt-2 text-3xl font-black text-indigo-500">{team.length}/6</div>
+                    <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">Pokemon equipes</div>
+                 </div>
+                 <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                    <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Typage</div>
+                    <div className="mt-2 text-3xl font-black text-emerald-500">{teamCoverageCount}</div>
+                    <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">Points forts</div>
+                 </div>
+              </div>
+              <div className="mt-8 grid grid-cols-3 gap-4">
+                 {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-slate-50 bg-slate-50/50 p-4 text-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:border-indigo-200 dark:bg-slate-950 dark:border-slate-900" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} className="mx-auto h-14 w-14 object-contain transition-transform hover:scale-110 drop-shadow-md" /></button>) : <div role="status" className="col-span-3 rounded-2xl border-2 border-dashed border-slate-100 px-6 py-10 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-300 dark:border-slate-800">Compose ton equipe pour debloquer un resume strategique ici.</div>}
+              </div>
+           </div>
+        </div>
 
        <section className="space-y-6">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
@@ -254,7 +246,7 @@ export default function Dashboard({
              </div>
              <p className="max-w-2xl text-sm font-bold text-slate-500">Sélectionne un mode d'entraînement pour tester tes connaissances, améliorer tes stratégies et inscrire ton nom dans la légende.</p>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7">
              {dashboardGameCards.map((card) => (
                 <QuickCard key={card.id} icon={card.icon} title={card.title} text={card.text} onClick={() => setActiveTab(card.id)} />
              ))}

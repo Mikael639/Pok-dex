@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useEffectEvent } from 'react';
-import { INITIAL_BATTLE_STATE } from '../constants/gameMeta';
+import { INITIAL_BATTLE_STATE, getGeneration } from '../constants/gameMeta';
 import { TYPE_CHART } from '../constants/pokemon';
 import { 
   getEvolutionRushDifficulty, 
@@ -7,10 +7,13 @@ import {
   createStatClashRound, 
   shuffleArray, 
   getEvolutionRushChain, 
-  buildEvolutionRushChainForDifficulty 
+  buildEvolutionRushChainForDifficulty,
+  getTodayKey
 } from '../utils/gameLogic';
 
 export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTab }) {
+  const [todayKey] = useState(() => getTodayKey());
+
   // --- ÉTATS ---
   const [battleStats, setBattleStats] = useState(() => JSON.parse(localStorage.getItem('pokedexBattleStats') || '{"wins": 0, "losses": 0}'));
   const [memoryState, setMemoryState] = useState({ cards: [], flipped: [], solved: [], moves: 0, startTime: null, endTime: null });
@@ -36,8 +39,19 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
     chain: [], choices: [], selectedOrder: [], status: 'idle', feedback: null, score: 0, streak: 0
   });
 
+  const [pokedleState, setPokedleState] = useState(() => {
+    const saved = JSON.parse(localStorage.getItem(`pokedleState_${getTodayKey()}`) || '{"target": null, "guesses": [], "status": "playing"}');
+    return saved;
+  });
+
+  const [cryQuizState, setCryQuizState] = useState({
+    target: null, choices: [], status: 'idle', score: 0, streak: 0,
+    highscore: parseInt(localStorage.getItem('cryQuizHighscore') || '0')
+  });
+
   // --- PERSISTANCE ---
   useEffect(() => { localStorage.setItem('pokedexBattleStats', JSON.stringify(battleStats)); }, [battleStats]);
+  useEffect(() => { localStorage.setItem(`pokedleState_${todayKey}`, JSON.stringify(pokedleState)); }, [pokedleState, todayKey]);
 
   // --- SILHOUETTE ---
   const startNewGame = useCallback(() => {
@@ -278,6 +292,65 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
     return () => clearTimeout(timer);
   }, [battleState, runAutomatedBattleTurn]);
 
+  // --- POKEDLE ---
+  const startPokedle = useCallback(() => {
+    if (pokemons.length === 0) return;
+    // Utiliser la date comme graine pour le choix quotidien
+    const dateInt = parseInt(todayKey.replace(/-/g, ''));
+    const target = pokemons[dateInt % pokemons.length];
+    setPokedleState(prev => {
+      if (prev.target?.id === target.id) return prev;
+      return { target, guesses: [], status: 'playing' };
+    });
+  }, [pokemons, todayKey]);
+
+  const submitPokedleGuess = useCallback((guess) => {
+    setPokedleState(prev => {
+      if (prev.status !== 'playing' || !prev.target) return prev;
+      
+      const target = prev.target;
+      const compare = (gVal, tVal) => gVal === tVal ? 'correct' : (gVal < tVal ? 'up' : 'down');
+      
+      const typeResult = (gt) => {
+        if (target.types.some(t => t.nom === gt.nom)) {
+          return target.types[0].nom === gt.nom ? 'correct' : 'pos';
+        }
+        return 'fail';
+      };
+
+      const result = {
+        id: compare(guess.id, target.id),
+        gen: compare(getGeneration(guess.id), getGeneration(target.id)),
+        types: guess.types.map(t => typeResult(t))
+      };
+
+      const isWin = guess.id === target.id;
+      const newGuesses = [...prev.guesses, { pokemon: guess, result }];
+      const newStatus = isWin ? 'won' : (newGuesses.length >= 6 ? 'lost' : 'playing');
+
+      return { ...prev, guesses: newGuesses, status: newStatus };
+    });
+  }, []);
+
+  // --- CRY QUIZ ---
+  const startCryQuiz = useCallback(() => {
+    if (pokemons.length < 4) return;
+    const choices = shuffleArray(pokemons).slice(0, 4);
+    const target = choices[Math.floor(Math.random() * choices.length)];
+    setCryQuizState(prev => ({ ...prev, target, choices, status: 'playing' }));
+  }, [pokemons]);
+
+  const handleCryAnswer = useCallback((id) => {
+    setCryQuizState(prev => {
+      if (prev.status !== 'playing') return prev;
+      const isCorrect = id === prev.target.id;
+      const newStreak = isCorrect ? prev.streak + 1 : 0;
+      const newHigh = Math.max(newStreak, prev.highscore);
+      if (newHigh !== prev.highscore) localStorage.setItem('cryQuizHighscore', String(newHigh));
+      return { ...prev, status: 'revealed', selectedId: id, streak: newStreak, score: isCorrect ? prev.score + 1 : prev.score, highscore: newHigh };
+    });
+  }, []);
+
   // --- GARANTIR L'ÉTAT ACTIF ---
   const ensureActiveExperienceReady = useEffectEvent(() => {
     if (pokemons.length === 0) return;
@@ -286,6 +359,8 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
     if (activeTab === 'evolution-rush' && evolutionRushState.status === 'idle') startEvolutionRushRound();
     if (activeTab === 'memory' && memoryState.cards.length === 0) startMemoryGame();
     if (activeTab === 'stat-clash' && !statClashState.left) startStatClashRound();
+    if (activeTab === 'pokedle' && !pokedleState.target) startPokedle();
+    if (activeTab === 'cry-quiz' && !cryQuizState.target) startCryQuiz();
   });
 
   useEffect(() => {
@@ -298,6 +373,8 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
     statClashState, startStatClashRound, handleStatClashPick,
     evolutionRushState, startEvolutionRushRound, handleEvolutionRushDifficultyChange, handleEvolutionRushSelect, handleEvolutionRushRemove, clearEvolutionRushSelection, validateEvolutionRushOrder,
     memoryState, startMemoryGame, handleMemoryClick,
-    battleState, setBattleState, battleStats, startBattle, handleManualMove
+    battleState, setBattleState, battleStats, startBattle, handleManualMove,
+    pokedleState, submitPokedleGuess, startPokedle,
+    cryQuizState, startCryQuiz, handleCryAnswer
   };
 }

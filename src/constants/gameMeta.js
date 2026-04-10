@@ -1,5 +1,5 @@
 import { 
-  Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Heart 
+  Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Heart, LayoutGrid, Music
 } from 'lucide-react';
 
 export const INITIAL_BATTLE_STATE = {
@@ -34,7 +34,9 @@ export const TAB_TITLES = {
   memory: 'Poke-Memory',
   quiz: 'Master Type',
   jeu: 'Silhouette',
-  'stat-clash': 'Stat Clash'
+  'stat-clash': 'Stat Clash',
+  pokedle: 'Pokédle Daily',
+  'cry-quiz': 'Qui est-ce ?'
 };
 
 export const EVOLUTION_RUSH_DIFFICULTIES = [
@@ -43,7 +45,7 @@ export const EVOLUTION_RUSH_DIFFICULTIES = [
   { id: 'maitre', label: 'Maitre', helper: 'chaine complete', minChainLength: 3, targetLength: null }
 ];
 
-export const TRACKED_EXPERIENCE_TABS = ['combat', 'memory', 'quiz', 'jeu', 'evolution-rush', 'stat-clash'];
+export const TRACKED_EXPERIENCE_TABS = ['combat', 'memory', 'quiz', 'jeu', 'evolution-rush', 'stat-clash', 'pokedle', 'cry-quiz'];
 
 export const EXPERIENCE_META = {
   combat: {
@@ -87,7 +89,38 @@ export const EXPERIENCE_META = {
     description: 'Choisis le bon Pokémon en duel de stats et monte ton record.',
     cta: 'Continuer Stat Clash',
     icon: BarChart3
+  },
+  pokedle: {
+    id: 'pokedle',
+    label: 'Pokédle Daily',
+    description: 'Devine le Pokémon du jour en comparant ses caractéristiques.',
+    cta: 'Lancer le Pokédle',
+    icon: LayoutGrid
+  },
+  'cry-quiz': {
+    id: 'cry-quiz',
+    label: 'Sound Quiz',
+    description: 'Identifie le Pokémon par son cri emblématique.',
+    cta: 'Lancer le quiz sonore',
+    icon: Music
   }
+};
+
+export const POKEMON_GENERATIONS = [
+  { gen: 1, start: 1, end: 151 },
+  { gen: 2, start: 152, end: 251 },
+  { gen: 3, start: 252, end: 386 },
+  { gen: 4, start: 387, end: 493 },
+  { gen: 5, start: 494, end: 649 },
+  { gen: 6, start: 650, end: 721 },
+  { gen: 7, start: 722, end: 809 },
+  { gen: 8, start: 810, end: 905 },
+  { gen: 9, start: 906, end: 1025 },
+];
+
+export const getGeneration = (id) => {
+  const g = POKEMON_GENERATIONS.find(g => id >= g.start && id <= g.end);
+  return g ? g.gen : 9;
 };
 
 export const DAILY_CHALLENGE_ROTATION = [

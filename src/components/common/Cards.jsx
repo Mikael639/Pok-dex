@@ -6,10 +6,11 @@ import React from 'react';
  */
 export const QuickCard = ({ icon, title, text, onClick }) => {
   return (
-    <button type="button" onClick={onClick} className="w-full text-left p-8 bg-white dark:bg-slate-900 rounded-[3rem] shadow-xl border-4 border-transparent hover:border-rose-500 transition-all cursor-pointer group">
-       <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-3xl inline-block mb-6 group-hover:scale-110 transition-transform">{icon}</div>
-       <h4 className="text-2xl font-black dark:text-white mb-2">{title}</h4>
-       <p className="text-slate-500 font-bold text-sm tracking-tight">{text}</p>
+    <button type="button" onClick={onClick} className="w-full text-left p-10 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-800 hover:border-rose-500/50 transition-all cursor-pointer group relative overflow-hidden">
+       <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">{icon}</div>
+       <div className="p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl inline-block mb-8 group-hover:scale-110 transition-transform shadow-inner">{icon}</div>
+       <h4 className="text-xl font-black dark:text-white mb-3 tracking-tight uppercase leading-tight">{title}</h4>
+       <p className="text-slate-500 font-bold text-xs tracking-widest uppercase opacity-80">{text}</p>
     </button>
   );
 };

@@ -28,6 +28,8 @@ import PokeMemory from './components/games/PokeMemory';
 import PokemonGame from './components/games/PokemonGame';
 import StatClash from './components/games/StatClash';
 import TypeMasterQuiz from './components/games/TypeMasterQuiz';
+import Pokedle from './components/games/Pokedle';
+import CryQuiz from './components/games/CryQuiz';
 import { TYPE_COLORS } from './constants/pokemon';
 
 function App() {
@@ -66,7 +68,9 @@ function App() {
     statClashState, startStatClashRound, handleStatClashPick,
     evolutionRushState, startEvolutionRushRound, handleEvolutionRushDifficultyChange, handleEvolutionRushSelect, handleEvolutionRushRemove, clearEvolutionRushSelection, validateEvolutionRushOrder,
     memoryState, startMemoryGame, handleMemoryClick,
-    battleState, setBattleState, battleStats, startBattle, handleManualMove
+    battleState, setBattleState, battleStats, startBattle, handleManualMove,
+    pokedleState, submitPokedleGuess, startPokedle,
+    cryQuizState, startCryQuiz, handleCryAnswer
   } = useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTab: (tab) => setActiveTab(tab) });
 
   // --- EFFETS GLOBAUX UI ---
@@ -191,6 +195,8 @@ function App() {
               isDailyChallengeComplete={isDailyChallengeComplete}
               todayKey={todayKey}
               setSelectedPokemon={setSelectedPokemon}
+              pokedleState={pokedleState}
+              cryQuizState={cryQuizState}
             />
           )}
 
@@ -231,6 +237,8 @@ function App() {
           {activeTab === 'quiz' && <TypeMasterQuiz state={quizState} onAnswer={handleQuizAnswer} onNext={startNewQuiz} isDarkMode={isDarkMode} />}
           {activeTab === 'jeu' && <PokemonGame gameState={gameState} onGuess={handleGuess} onNext={startNewGame} isDarkMode={isDarkMode} />}
           {activeTab === 'stat-clash' && <StatClash state={statClashState} onPick={handleStatClashPick} onNext={() => startStatClashRound()} onRestart={() => startStatClashRound(true)} isDarkMode={isDarkMode} />}
+          {activeTab === 'pokedle' && <Pokedle state={pokedleState} pokemons={pokemons} onGuess={submitPokedleGuess} onRestart={startPokedle} isDarkMode={isDarkMode} />}
+          {activeTab === 'cry-quiz' && <CryQuiz state={cryQuizState} onAnswer={handleCryAnswer} onNext={startCryQuiz} isDarkMode={isDarkMode} />}
         </AnimatePresence>
 
         <AnimatePresence>

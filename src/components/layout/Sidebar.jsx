@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Archive, Users, Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sun, Moon, ChevronLeft, ChevronRight, Zap, X } from 'lucide-react';
+import { Home, Archive, Users, Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sun, Moon, ChevronLeft, ChevronRight, Zap, X, LayoutGrid, Music } from 'lucide-react';
 
 const TABS = [
   { id: 'accueil', icon: Home, label: 'Tableau de Bord' },
@@ -10,7 +10,9 @@ const TABS = [
   { id: 'quiz', icon: Trophy, label: 'Master Type' },
   { id: 'jeu', icon: Gamepad2, label: 'Silhouette' },
   { id: 'evolution-rush', icon: GitBranch, label: 'Evolution Rush' },
-  { id: 'stat-clash', icon: BarChart3, label: 'Stat Clash' }
+  { id: 'stat-clash', icon: BarChart3, label: 'Stat Clash' },
+  { id: 'pokedle', icon: LayoutGrid, label: 'Pokédle Daily' },
+  { id: 'cry-quiz', icon: Music, label: 'Qui est-ce ?' }
 ];
 
 export default function Sidebar({
