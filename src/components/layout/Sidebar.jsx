@@ -1,6 +1,5 @@
 import React from 'react';
 import { Home, Archive, Users, Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sun, Moon, ChevronLeft, ChevronRight, Zap, X, LayoutGrid, Music } from 'lucide-react';
-import NdjitekSignature from '../common/NdjitekSignature';
 
 const TABS = [
   { id: 'accueil', icon: Home, label: 'Tableau de Bord' },
@@ -52,9 +51,6 @@ export default function Sidebar({
         </nav>
 
       <div className="mt-auto p-4 space-y-2">
-         {/* Marque NDJITEK */}
-         <NdjitekSignature isExpanded={isSidebarOpen || isMobileMenuOpen} />
-
          <button type="button" aria-label={isDarkMode ? 'Activer le theme clair' : 'Activer le theme sombre'} onClick={() => setIsDarkMode(!isDarkMode)} className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center gap-3">
             {isDarkMode ? <Sun size={20}/> : <Moon size={20}/>} {(isSidebarOpen || isMobileMenuOpen) && <span className="text-sm font-bold">Thème</span>}
          </button>

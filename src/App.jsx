@@ -14,6 +14,7 @@ import { useGames } from './hooks/useGames';
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
 import Dashboard from './components/home/Dashboard';
+import SplashScreen from './components/common/SplashScreen';
 
 // Import des composants communs et Pokémon
 import { PokemonSkeleton } from './components/common/Cards';
@@ -34,6 +35,7 @@ import { TYPE_COLORS } from './constants/pokemon';
 
 function App() {
   // --- ÉTATS UI & LAYOUT ---
+  const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState('accueil');
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('pokedexTheme') === 'dark');
   const [isDesktopViewport, setIsDesktopViewport] = useState(() => typeof window !== 'undefined' ? window.matchMedia('(min-width: 1024px)').matches : true);
@@ -135,7 +137,11 @@ function App() {
   const displayedPokemons = isTeamView ? team : paginatedPokemons;
 
   return (
-    <div className={`min-h-screen flex transition-all duration-500 ${isDarkMode ? 'dark bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+    <>
+      <AnimatePresence>
+        {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+      </AnimatePresence>
+      <div className={`min-h-screen flex transition-all duration-500 ${isDarkMode ? 'dark bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
       
       <AnimatePresence>
         {isMobileMenuOpen && (
@@ -247,6 +253,7 @@ function App() {
         </AnimatePresence>
       </main>
     </div>
+    </>
   );
 }
 
