@@ -89,6 +89,12 @@ function App() {
   }, [activeTab]);
 
   useEffect(() => {
+    if (!isDesktopViewport) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [activeTab, isDesktopViewport]);
+
+  useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') setIsMobileMenuOpen(false);
     };

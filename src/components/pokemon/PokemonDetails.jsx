@@ -6,6 +6,17 @@ import { X, Sparkles, Star, Heart, ChevronRight, Scale } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
 import useAccessibleModal from '../../hooks/useAccessibleModal';
 
+const floatingAnimation = {
+  y: [0, -26, 0, -14, 0],
+  rotate: [0, -4, 4, -2, 0],
+  scale: [1, 1.045, 1, 1.025, 1],
+  transition: {
+    duration: 3.2,
+    ease: 'easeInOut',
+    repeat: Infinity,
+  },
+};
+
 /**
  * Modal affichant les détails approfondis d'un Pokémon.
  * Récupère dynamiquement la chaîne d'évolution via l'API PokéAPI.
@@ -105,10 +116,10 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
       role="dialog"
       aria-modal="true"
       aria-label={`Fiche de ${pokemon.nom}`}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-hidden"
+      className="fixed inset-0 z-[100] flex items-end justify-center p-2 overflow-hidden sm:items-center sm:p-4"
     >
        <div aria-hidden="true" className="absolute inset-0 bg-slate-950/80 backdrop-blur-2xl" onClick={onClose} />
-       <Motion.div ref={modalRef} tabIndex={-1} initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }} className={`relative w-full max-w-4xl max-h-[98vh] flex flex-col md:flex-row rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}>
+       <Motion.div ref={modalRef} tabIndex={-1} initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }} className={`relative w-full max-w-4xl max-h-[96vh] sm:max-h-[98vh] flex flex-col md:flex-row rounded-[1.75rem] sm:rounded-[3rem] overflow-hidden shadow-2xl ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}>
           
           <button 
             type="button"
@@ -121,19 +132,80 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
           </button>
 
           {/* Section Gauche : Visuel et Nom */}
-          <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-center items-center relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${TYPE_COLORS[pokemon.types[0].nom]} 0%, #000 150%)` }}>
+          <div className="md:w-1/2 min-h-[280px] p-5 sm:p-6 md:p-8 flex flex-col justify-center items-center relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${TYPE_COLORS[pokemon.types[0].nom]} 0%, #000 150%)` }}>
              <div className="absolute inset-0 bg-black/10 z-0" />
-             <Motion.img 
-               key={imageUrl}
+             <Motion.div
                initial={{ scale: 0.8, opacity: 0 }}
-               animate={{ scale: 1, opacity: 1 }}
-               src={imageUrl} alt={pokemon.nom} 
-               className="w-36 h-36 md:w-48 md:h-48 object-contain z-10 drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:scale-110 transition-transform duration-700" 
-             />
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+               className="relative z-10 flex items-center justify-center"
+             >
+               <Motion.div
+                 animate={{
+                   scale: [0.96, 1.06, 0.98],
+                   opacity: [0.14, 0.24, 0.16],
+                 }}
+                 transition={{
+                   duration: 2.8,
+                   repeat: Infinity,
+                   ease: 'easeInOut',
+                 }}
+                 className="absolute h-40 w-40 rounded-full bg-white/10 blur-3xl sm:h-48 sm:w-48 md:h-56 md:w-56"
+                />
+                <Motion.div
+                  animate={{
+                    rotate: 360,
+                    scale: [1, 1.02, 1],
+                    opacity: [0.06, 0.14, 0.08],
+                  }}
+                  transition={{
+                    rotate: { duration: 10, repeat: Infinity, ease: 'linear' },
+                    scale: { duration: 3.2, repeat: Infinity, ease: 'easeInOut' },
+                    opacity: { duration: 3.2, repeat: Infinity, ease: 'easeInOut' },
+                  }}
+                 className="absolute h-40 w-40 rounded-full border border-white/10 sm:h-48 sm:w-48 md:h-56 md:w-56"
+                />
+                <Motion.div
+                  animate={{
+                    rotate: -360,
+                    scale: [0.97, 1, 0.98],
+                    opacity: [0.04, 0.1, 0.05],
+                  }}
+                  transition={{
+                    rotate: { duration: 14, repeat: Infinity, ease: 'linear' },
+                    scale: { duration: 3.6, repeat: Infinity, ease: 'easeInOut' },
+                    opacity: { duration: 3.6, repeat: Infinity, ease: 'easeInOut' },
+                  }}
+                 className="absolute h-48 w-48 rounded-full border border-cyan-300/10 sm:h-56 sm:w-56 md:h-64 md:w-64"
+                />
+               <Motion.div
+                 animate={{
+                   y: [0, -12, 0],
+                   opacity: [0.2, 0.55, 0.2],
+                 }}
+                 transition={{
+                   duration: 2.4,
+                   repeat: Infinity,
+                   ease: 'easeInOut',
+                 }}
+                 className="absolute bottom-2 h-16 w-28 rounded-full bg-black/35 blur-2xl sm:w-32 md:w-40"
+               />
+               <Motion.div
+                 key={imageUrl}
+                 animate={floatingAnimation}
+                 className="relative"
+               >
+                 <img
+                   src={imageUrl}
+                   alt={pokemon.nom}
+                   className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.58)] transition-transform duration-700 hover:scale-110"
+                 />
+               </Motion.div>
+             </Motion.div>
              <div className="mt-4 text-center text-white z-10">
-                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-1">{pokemon.nom}</h2>
-                <div className="flex gap-2 justify-center mb-3">
-                   {pokemon.types.map(t => <span key={t.nom} className="px-4 py-1 bg-white/20 backdrop-blur-xl rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest">{t.nom}</span>)}
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tighter mb-1">{pokemon.nom}</h2>
+                <div className="flex flex-wrap gap-2 justify-center mb-3">
+                   {pokemon.types.map(t => <span key={t.nom} className="px-3 sm:px-4 py-1 bg-white/20 backdrop-blur-xl rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest">{t.nom}</span>)}
                 </div>
                 <button type="button" aria-label={isShiny ? 'Afficher la version classique' : 'Afficher la version shiny'} onClick={() => setIsShiny(!isShiny)} className={`p-2.5 rounded-xl backdrop-blur-xl transition-all shadow-md ${isShiny ? 'bg-amber-400 text-slate-900' : 'bg-white/10 hover:bg-white/20'}`}>
                    <Sparkles size={18} />
@@ -142,10 +214,10 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
           </div>
 
           {/* Section Droite : Stats et Evolutions */}
-          <div className="md:w-1/2 p-4 pt-6 md:p-6 lg:p-8 overflow-y-auto flex-1 custom-scrollbar">
-             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+          <div className="md:w-1/2 p-4 pt-5 sm:p-5 sm:pt-6 md:p-6 lg:p-8 overflow-y-auto flex-1 custom-scrollbar">
+             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4">
                 <h3 className="text-base lg:text-lg font-black uppercase tracking-widest">Statistiques</h3>
-                <div className="grid w-full grid-cols-[auto,minmax(0,1fr)] gap-2 sm:flex sm:w-auto sm:flex-wrap">
+                <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap">
                     <button type="button" aria-label={isFavorite ? `Retirer ${pokemon.nom} des favoris` : `Ajouter ${pokemon.nom} aux favoris`} onClick={onToggleFavorite} className={`p-3 rounded-2xl transition-all shadow-lg ${isFavorite ? 'bg-amber-400 text-white shadow-amber-400/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
                        <Star size={20} fill={isFavorite ? 'white' : 'none'} />
                     </button>
@@ -187,14 +259,35 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
              </div>
 
              {/* Chaîne d'évolution */}
-             <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 pb-4">
+             <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 pb-2 sm:pb-4">
                 <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Lignée Évolutive</h4>
                 {loadingEvo ? (
-                  <div className="flex gap-4 animate-pulse">
-                    <PokeBallLoader size={70} showText={false} />
+                  <div
+                    role="status"
+                    aria-live="polite"
+                    className={`relative overflow-hidden rounded-[2rem] border px-4 py-5 sm:px-6 ${
+                      isDarkMode
+                        ? 'border-cyan-400/10 bg-slate-950/70'
+                        : 'border-rose-100 bg-gradient-to-br from-rose-50 via-white to-sky-50'
+                    }`}
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_35%)]" />
+                    <div className="relative flex flex-col items-center justify-center text-center">
+                      <PokeBallLoader size={78} showText={false} />
+                      <span className="text-[9px] font-black uppercase tracking-[0.42em] text-cyan-400/80">
+                        Evolution Scan
+                      </span>
+                      <p
+                        className={`mt-2 max-w-[18rem] text-[11px] font-bold uppercase tracking-[0.2em] ${
+                          isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                        }`}
+                      >
+                        Analyse de la lignee en cours...
+                      </p>
+                    </div>
                   </div>
                 ) : (
-                  <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                     {evoChain.map((evo, i) => (
                       <React.Fragment key={evo.id}>
                         {i > 0 && (

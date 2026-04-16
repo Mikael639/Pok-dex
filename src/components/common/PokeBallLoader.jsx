@@ -2,31 +2,53 @@ import React from 'react';
 
 /**
  * PokeBallLoader Component
- * Simple and robust CSS-only PokeBall loader as Lottie public URLs are often restricted.
+ * CSS-only Pokeball loader for transient loading states.
  */
 const PokeBallLoader = ({ size = 60, showText = true }) => {
+  const borderWidth = Math.max(2, Math.round(size * 0.05));
+
   return (
     <div className="flex flex-col items-center justify-center p-4 select-none pointer-events-none">
-      <div 
-        className="relative animate-spin-slow" 
-        style={{ width: size, height: size, transition: 'var(--duration) linear infinite' }}
+      <div
+        className="relative"
+        style={{ width: size, height: size }}
       >
-        {/* Main Ball Section */}
-        <div className="w-full h-full rounded-full border-[3px] border-slate-950 overflow-hidden relative shadow-lg">
-           {/* Top Red Half */}
-           <div className="absolute top-0 left-0 w-full h-1/2 bg-rose-500 border-b-[3px] border-slate-950" />
-           {/* Bottom White Half */}
-           <div className="absolute bottom-0 left-0 w-full h-1/2 bg-white" />
-           {/* Inner Button Detail */}
-           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-white border-[3px] border-slate-950 rounded-full z-10 flex items-center justify-center">
-              <div className="w-1/2 h-1/2 bg-slate-100 border border-slate-200 rounded-full" />
-           </div>
+        <div className="absolute inset-0 rounded-full bg-rose-500/20 blur-xl" />
+        <div
+          className="relative h-full w-full rounded-full"
+          style={{ animation: 'pokeball-spin 1.35s linear infinite' }}
+        >
+          <div
+            className="relative h-full w-full overflow-hidden rounded-full border-slate-950 shadow-[0_10px_30px_rgba(15,23,42,0.22)]"
+            style={{ borderWidth }}
+          >
+            <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-rose-400 to-rose-600" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-white" />
+            <div
+              className="absolute inset-x-0 top-1/2 -translate-y-1/2 bg-slate-950"
+              style={{ height: borderWidth }}
+            />
+            <div className="absolute left-[18%] top-[16%] h-[20%] w-[38%] rotate-[-24deg] rounded-full bg-white/30 blur-sm" />
+            <div
+              className="absolute top-1/2 left-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-slate-950 bg-white shadow-inner"
+              style={{
+                width: `${size * 0.34}px`,
+                height: `${size * 0.34}px`,
+                borderWidth,
+              }}
+            >
+              <div
+                className="rounded-full border border-slate-300 bg-slate-100"
+                style={{ width: `${size * 0.14}px`, height: `${size * 0.14}px` }}
+              />
+            </div>
+          </div>
         </div>
       </div>
-      
+
       {showText && (
-        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-rose-500 mt-3 animate-pulse">
-          Attrapez-les tous...
+        <p className="mt-3 text-[9px] font-black uppercase tracking-[0.28em] text-rose-500 animate-pulse">
+          Analyse en cours...
         </p>
       )}
 
@@ -34,9 +56,6 @@ const PokeBallLoader = ({ size = 60, showText = true }) => {
         @keyframes pokeball-spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: pokeball-spin 1.5s linear infinite;
         }
       `}} />
     </div>

@@ -28,7 +28,7 @@ export default function Sidebar({
   teamCount
 }) {
   return (
-    <aside aria-label="Navigation principale" aria-hidden={!isSidebarVisible} {...(!isSidebarVisible ? { inert: "" } : {})} className={`fixed inset-y-0 left-0 z-[70] transition-all duration-700 transform border-r-[6px] flex flex-col ${isSidebarOpen ? 'w-80' : 'w-24'} ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-slate-100 shadow-2xl text-slate-900'}`}>
+    <aside aria-label="Navigation principale" aria-hidden={!isSidebarVisible} {...(!isSidebarVisible ? { inert: true } : {})} className={`fixed inset-y-0 left-0 z-[70] transition-all duration-700 transform border-r-[6px] flex flex-col ${isSidebarOpen ? 'w-80' : 'w-24'} ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-slate-100 shadow-2xl text-slate-900'}`}>
       <div className="p-5 flex items-center justify-between lg:justify-start gap-4">
         <div className="flex items-center gap-4">
           <div className="bg-rose-500 p-3 rounded-[1.5rem] shadow-xl shadow-rose-500/20 rotate-3"><Zap className="text-white h-8 w-8" /></div>

@@ -2,126 +2,147 @@ import React, { useEffect } from 'react';
 import { motion as Motion } from 'framer-motion';
 
 /**
- * SplashScreen Component - Une introduction "Studio" pour NDJITEK.
+ * SplashScreen Component - Intro centree sur l'experience Pokedex,
+ * avec NDJITEK comme signature visuelle.
  */
+const scanLineVariants = {
+  initial: { scaleX: 0, opacity: 0 },
+  animate: {
+    scaleX: 1,
+    opacity: [0, 1, 0.35],
+    transition: { duration: 0.85, ease: 'easeInOut' },
+  },
+};
+
 const SplashScreen = ({ onFinish }) => {
   useEffect(() => {
-    // On force la fin de l'animation après 3.2 secondes si Framer Motion onAnimationComplete tarde (sécurité)
-    const timer = setTimeout(onFinish, 3500);
+    const timer = setTimeout(onFinish, 2550);
     return () => clearTimeout(timer);
   }, [onFinish]);
 
   return (
-    <Motion.div 
+    <Motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
-      transition={{ delay: 2.8, duration: 0.7, ease: "easeInOut" }}
+      transition={{ delay: 2.05, duration: 0.45, ease: 'easeInOut' }}
       onAnimationComplete={onFinish}
-      className="fixed inset-0 z-[9999] bg-slate-950 flex flex-col items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-slate-950"
     >
-      {/* Réseau de lignes Cyber/Tech en arrière-plan */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-1/4 -left-20 w-80 h-[2px] bg-cyan-500/30 rotate-45 blur-sm animate-pulse" />
-        <div className="absolute top-3/4 -right-20 w-80 h-[2px] bg-blue-500/30 -rotate-45 blur-sm animate-pulse" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#020617_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(239,68,68,0.14),_transparent_32%),radial-gradient(circle_at_bottom,_rgba(34,211,238,0.18),_transparent_38%),linear-gradient(180deg,_#020617_0%,_#020617_45%,_#010409_100%)]" />
+
+      <div className="absolute inset-0 pointer-events-none opacity-30">
+        <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+        <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-cyan-500/70 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(2,6,23,0.85)_72%)]" />
       </div>
 
-      {/* Container du Logo Lion */}
       <Motion.div
-        initial={{ scale: 0.5, opacity: 0, rotateY: 180 }}
-        animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-        transition={{ duration: 1.2, ease: "backOut" }}
-        className="relative group"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className="relative flex flex-col items-center px-6 text-center"
       >
-        {/* Glow effect */}
-        <div className="absolute inset-0 bg-cyan-500 blur-[80px] opacity-20 animate-pulse" />
-        
-        {/* Logo Lion Géométrique Simplifié */}
-        <svg width="180" height="180" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="lionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#22d3ee" />
-              <stop offset="100%" stopColor="#3b82f6" />
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          
-          {/* Crinière Tech */}
-          <Motion.path 
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 2, ease: "easeInOut" }}
-            d="M50 10 L65 25 L85 25 L75 45 L90 60 L70 70 L50 90 L30 70 L10 60 L25 45 L15 25 L35 25 Z" 
-            stroke="url(#lionGradient)" 
-            strokeWidth="1.5" 
-            strokeLinecap="round"
-            filter="url(#glow)"
-          />
-          
-          {/* Yeux Lumineux */}
-          <Motion.circle 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0.5, 1] }}
-            transition={{ delay: 1.5, duration: 1, repeat: Infinity }}
-            cx="40" cy="45" r="2.5" fill="#22d3ee" 
-          />
-          <Motion.circle 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0.5, 1] }}
-            transition={{ delay: 1.5, duration: 1, repeat: Infinity }}
-            cx="60" cy="45" r="2.5" fill="#22d3ee" 
-          />
-
-          {/* Museau */}
-          <path d="M50 70 L46 62 L54 62 Z" fill="url(#lionGradient)" />
-        </svg>
-      </Motion.div>
-
-      {/* Texte NDJITEK */}
-      <Motion.div
-        initial={{ y: 30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.8 }}
-        className="mt-8 flex flex-col items-center"
-      >
-        <span className="text-[9px] font-black text-slate-500 uppercase tracking-[0.6em] mb-2">PROJET RÉALISÉ PAR</span>
-        <h2 className="text-5xl font-black tracking-tighter text-white uppercase italic">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">NDJI</span>TEK
-        </h2>
-        
-        {/* Barre de chargement stylisée */}
-        <div className="mt-8 w-48 h-1 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-          <Motion.div 
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 2.5, ease: "easeInOut" }}
-            className="h-full bg-gradient-to-r from-cyan-500 to-blue-600"
-          />
-        </div>
-      </Motion.div>
-
-      {/* Particules de fond */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
+        <Motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="relative mb-8 flex h-28 w-28 items-center justify-center md:h-32 md:w-32"
+        >
           <Motion.div
-            key={i}
-            initial={{ y: "110%", x: `${Math.random() * 100}%` }}
-            animate={{ y: "-10%" }}
-            transition={{ 
-              duration: Math.random() * 2 + 2, 
-              repeat: Infinity, 
-              delay: Math.random() * 2,
-              ease: "linear"
-            }}
-            className="absolute w-1 h-1 bg-cyan-400/20 rounded-full"
+            initial={{ rotate: -18, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="absolute inset-0 rounded-full border border-white/10 shadow-[0_0_50px_rgba(239,68,68,0.14)]"
           />
-        ))}
-      </div>
+          <Motion.div
+            initial={{ scale: 0.6, opacity: 0 }}
+            animate={{ scale: 1.08, opacity: 1 }}
+            transition={{ delay: 0.15, duration: 0.55, ease: 'easeOut' }}
+            className="absolute inset-3 rounded-full border border-cyan-400/40"
+          />
+          <Motion.div
+            variants={scanLineVariants}
+            initial="initial"
+            animate="animate"
+            className="absolute left-1/2 top-1/2 h-px w-36 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-transparent via-cyan-300 to-transparent"
+          />
+          <div className="relative h-full w-full overflow-hidden rounded-full border-[4px] border-slate-950 shadow-[0_0_45px_rgba(34,211,238,0.25)]">
+            <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-rose-400 to-rose-600" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-slate-50" />
+            <div className="absolute inset-x-0 top-1/2 h-[4px] -translate-y-1/2 bg-slate-950" />
+            <div className="absolute left-1/2 top-1/2 z-10 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-[4px] border-slate-950 bg-white md:h-10 md:w-10">
+              <div className="absolute inset-1 rounded-full bg-slate-100 shadow-inner" />
+            </div>
+          </div>
+        </Motion.div>
+
+        <Motion.div
+          initial={{ y: 18, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.28, duration: 0.45 }}
+          className="flex flex-col items-center"
+        >
+          <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.55em] text-cyan-300/75">
+            Scan Initiated
+          </span>
+          <h1 className="text-4xl font-black uppercase tracking-[0.35em] text-white md:text-6xl">
+            POKEDEX
+          </h1>
+          <p className="mt-3 max-w-xs text-xs uppercase tracking-[0.28em] text-slate-400 md:max-w-md">
+            Identification en cours du bestiaire
+          </p>
+        </Motion.div>
+
+        <Motion.div
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: '100%', opacity: 1 }}
+          transition={{ delay: 0.55, duration: 1.1, ease: 'easeInOut' }}
+          className="mt-8 h-px max-w-sm bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent"
+        />
+
+        <Motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.85, duration: 0.4 }}
+          className="relative mt-5 flex flex-col items-center"
+        >
+          <Motion.div
+            initial={{ scale: 0.7, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.95, duration: 0.55, ease: 'easeOut' }}
+            className="absolute inset-x-0 top-1/2 h-16 -translate-y-1/2 rounded-full bg-cyan-500/12 blur-3xl"
+          />
+          <span className="text-[9px] font-bold uppercase tracking-[0.45em] text-slate-500">
+            Crafted by
+          </span>
+          <Motion.div
+            initial={{ scale: 0.92, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 1.02, duration: 0.45, ease: 'easeOut' }}
+            className="relative mt-3 flex items-center gap-4 rounded-full border border-cyan-400/15 bg-white/[0.03] px-5 py-3 shadow-[0_0_30px_rgba(34,211,238,0.12)] backdrop-blur-sm"
+          >
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/0 via-cyan-300/8 to-blue-500/0" />
+            <img
+              src="/images/NDJITECH-Logo.png"
+              alt="NDJITEK Lion Logo"
+              fetchpriority="high"
+              decoding="async"
+              className="relative h-11 w-11 object-contain opacity-90 drop-shadow-[0_0_24px_rgba(34,211,238,0.4)]"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+            <div className="relative flex flex-col items-start">
+              <span className="text-[8px] font-semibold uppercase tracking-[0.38em] text-cyan-200/65">
+                Signature Edition
+              </span>
+              <span className="bg-gradient-to-r from-cyan-200 via-sky-300 to-blue-500 bg-clip-text text-xl font-black uppercase tracking-[0.34em] text-transparent">
+                NDJITEK
+              </span>
+            </div>
+          </Motion.div>
+        </Motion.div>
+      </Motion.div>
     </Motion.div>
   );
 };

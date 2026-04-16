@@ -69,7 +69,7 @@ export default function Dashboard({
     <Motion.div key="h" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} className="space-y-12 pb-20">
        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.45fr_0.95fr]">
           <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-900 shadow-2xl dark:border-slate-800 lg:rounded-[4rem]">
-            <img src="/images/home_aesthetic.png" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
+            <img src="/images/home_aesthetic.png" loading="lazy" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/55 to-rose-950/30" />
             <div className="relative flex min-h-[320px] flex-col justify-between p-6 lg:min-h-[450px] lg:p-12">
                <h1 className="text-4xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight uppercase font-['Outfit'] italic drop-shadow-2xl">Écrivez votre <br/><span className="text-rose-500">Légende</span>.</h1>
@@ -191,7 +191,7 @@ export default function Dashboard({
                     {dailyChallenge?.visualPokemon ? (
                        <div className="relative">
                           <div className={`absolute inset-0 scale-150 rounded-full blur-3xl ${dailyChallenge?.glow} opacity-20`} />
-                          <img src={dailyChallenge.visualPokemon.image} alt={dailyChallenge.visualPokemon.nom} className="relative z-10 h-32 w-32 object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all duration-700 group-hover:scale-110 group-hover:rotate-6" />
+                          <img src={dailyChallenge.visualPokemon.image} alt={dailyChallenge.visualPokemon.nom} loading="lazy" className="relative z-10 h-32 w-32 object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all duration-700 group-hover:scale-110 group-hover:rotate-6" />
                        </div>
                     ) : (
                        <div className={`relative flex h-32 w-32 items-center justify-center rounded-full ${isDailyChallengeComplete ? 'bg-emerald-500 text-white shadow-[0_20px_40px_rgba(16,185,129,0.3)]' : 'bg-slate-50 text-slate-300 dark:bg-slate-800 dark:text-slate-600 border border-slate-100 dark:border-slate-700'}`}>
@@ -233,7 +233,7 @@ export default function Dashboard({
                  </div>
               </div>
               <div className="mt-8 grid grid-cols-3 gap-4">
-                 {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-slate-50 bg-slate-50/50 p-4 text-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:border-indigo-200 dark:bg-slate-950 dark:border-slate-900" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} className="mx-auto h-14 w-14 object-contain transition-transform hover:scale-110 drop-shadow-md" /></button>) : <div role="status" className="col-span-3 rounded-2xl border-2 border-dashed border-slate-100 px-6 py-10 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-300 dark:border-slate-800">Compose ton equipe pour debloquer un resume strategique ici.</div>}
+                 {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-slate-50 bg-slate-50/50 p-4 text-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:border-indigo-200 dark:bg-slate-950 dark:border-slate-900" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} loading="lazy" className="mx-auto h-14 w-14 object-contain transition-transform hover:scale-110 drop-shadow-md" /></button>) : <div role="status" className="col-span-3 rounded-2xl border-2 border-dashed border-slate-100 px-6 py-10 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-300 dark:border-slate-800">Compose ton equipe pour debloquer un resume strategique ici.</div>}
               </div>
            </div>
         </div>
