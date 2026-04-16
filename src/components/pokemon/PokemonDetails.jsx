@@ -1,5 +1,6 @@
 // src/components/pokemon/PokemonDetails.jsx
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import PokeBallLoader from '../common/PokeBallLoader';
 import { motion as Motion } from 'framer-motion';
 import { X, Sparkles, Star, Heart, ChevronRight, Scale } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
@@ -190,7 +191,7 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
                 <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Lignée Évolutive</h4>
                 {loadingEvo ? (
                   <div className="flex gap-4 animate-pulse">
-                    {[1, 2, 3].map(i => <div key={i} className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl" />)}
+                    <PokeBallLoader size={70} showText={false} />
                   </div>
                 ) : (
                   <div className="flex flex-wrap items-center gap-4">

@@ -3,6 +3,9 @@ import React from 'react';
 import { motion as Motion } from 'framer-motion';
 import { Star, Heart } from 'lucide-react';
 import { TYPE_COLORS } from '../../constants/pokemon';
+import { cn } from '../../lib/utils';
+import MagicCard from '../magicui/MagicCard';
+import ShineBorder from '../magicui/ShineBorder';
 
 /**
  * Carte de Pokémon interactive affichée dans la liste principale.
@@ -11,16 +14,12 @@ import { TYPE_COLORS } from '../../constants/pokemon';
 const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCatch, onToggleFavorite, index = 0 }) => {
   const color = (pokemon.types && pokemon.types[0] && TYPE_COLORS[pokemon.types[0].nom]) || '#94A3B8';
   
-  return (
-    <Motion.article
-      layout
-      initial={{ opacity: 0, scale: 0.85, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05, ease: [0.175, 0.885, 0.32, 1.275] }}
-      whileHover={{ y: -6, transition: { duration: 0.2 } }}
-      className={`card-shimmer relative p-8 rounded-[3rem] shadow-2xl border-4 transition-all cursor-pointer group ${isCaught ? 'card-caught' : ''} ${isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-white text-slate-900'}`}
-      onClick={onClick}
-    >
+  // Calcul de la "rareté" basé sur la somme des statistiques de base
+  const totalStats = pokemon.base ? Object.values(pokemon.base).reduce((a, b) => a + b, 0) : 0;
+  const isRare = totalStats > 450;
+
+  const CardContent = (
+    <div className="relative w-full h-full p-8 text-left">
        <button
          type="button"
          aria-label={`Voir ${pokemon.nom}`}
@@ -53,7 +52,6 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
           </Motion.button>
        </div>
        <div className="relative z-[1] mb-8 mt-4 h-48 flex items-center justify-center">
-          {/* Aura lumineuse derrière le Pokémon basée sur son type primaire */}
           <div
             className="pokemon-aura absolute inset-0 blur-3xl rounded-full"
             style={{ backgroundColor: color, opacity: 0.4 }}
@@ -72,7 +70,53 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
              ))}
           </div>
        </div>
-    </Motion.article>
+    </div>
+  );
+
+  return (
+    <Motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.85, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.05, ease: [0.175, 0.885, 0.32, 1.275] }}
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+      className="h-full"
+    >
+      {isRare ? (
+        <ShineBorder
+          borderRadius={48}
+          borderWidth={4}
+          color={[color, "#ffffff", color]}
+          duration={8}
+          className={cn(
+            "p-0 h-full cursor-pointer overflow-hidden",
+            isDarkMode ? "bg-slate-900" : "bg-white"
+          )}
+        >
+          <MagicCard 
+            className={cn(
+              "border-none h-full",
+              isDarkMode ? "bg-slate-900 text-white" : "bg-white text-slate-900"
+            )}
+            gradientColor={isDarkMode ? `${color}33` : `${color}11`}
+            onClick={onClick}
+          >
+            {CardContent}
+          </MagicCard>
+        </ShineBorder>
+      ) : (
+        <MagicCard 
+          className={cn(
+            "border-4 h-full cursor-pointer",
+            isDarkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-white text-slate-900"
+          )}
+          gradientColor={isDarkMode ? `${color}33` : `${color}11`}
+          onClick={onClick}
+        >
+          {CardContent}
+        </MagicCard>
+      )}
+    </Motion.div>
   );
 };
 
