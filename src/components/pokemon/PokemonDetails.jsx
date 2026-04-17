@@ -2,9 +2,10 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import PokeBallLoader from '../common/PokeBallLoader';
 import { motion as Motion } from 'framer-motion';
-import { X, Sparkles, Star, Heart, ChevronRight, Scale } from 'lucide-react';
+import { X, Sparkles, Star, Heart, ChevronRight, Scale, Volume2 } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
 import useAccessibleModal from '../../hooks/useAccessibleModal';
+import usePokemonCry from '../../hooks/usePokemonCry';
 
 const floatingAnimation = {
   y: [0, -26, 0, -14, 0],
@@ -26,6 +27,13 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
   const [evoChain, setEvoChain] = useState([]);
   const [loadingEvo, setLoadingEvo] = useState(false);
   const modalRef = useRef(null);
+  
+  const { playCry, isPlaying } = usePokemonCry(pokemon.id);
+
+  // Play cry when pokemon detail modal opens
+  useEffect(() => {
+    playCry();
+  }, [playCry, pokemon.id]);
 
   useAccessibleModal(modalRef, onClose);
 
@@ -207,9 +215,14 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
                 <div className="flex flex-wrap gap-2 justify-center mb-3">
                    {pokemon.types.map(t => <span key={t.nom} className="px-3 sm:px-4 py-1 bg-white/20 backdrop-blur-xl rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest">{t.nom}</span>)}
                 </div>
-                <button type="button" aria-label={isShiny ? 'Afficher la version classique' : 'Afficher la version shiny'} onClick={() => setIsShiny(!isShiny)} className={`p-2.5 rounded-xl backdrop-blur-xl transition-all shadow-md ${isShiny ? 'bg-amber-400 text-slate-900' : 'bg-white/10 hover:bg-white/20'}`}>
-                   <Sparkles size={18} />
-                </button>
+                <div className="flex justify-center gap-3">
+                   <button type="button" aria-label="Ecouter le cri" onClick={playCry} className={`p-2.5 rounded-xl backdrop-blur-xl transition-all shadow-md ${isPlaying ? 'bg-rose-500 text-white animate-pulse' : 'bg-white/10 hover:bg-white/20'}`}>
+                      <Volume2 size={18} />
+                   </button>
+                   <button type="button" aria-label={isShiny ? 'Afficher la version classique' : 'Afficher la version shiny'} onClick={() => setIsShiny(!isShiny)} className={`p-2.5 rounded-xl backdrop-blur-xl transition-all shadow-md ${isShiny ? 'bg-amber-400 text-slate-900' : 'bg-white/10 hover:bg-white/20'}`}>
+                      <Sparkles size={18} />
+                   </button>
+                </div>
              </div>
           </div>
 

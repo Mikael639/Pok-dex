@@ -22,20 +22,21 @@ export default function Dashboard({
   cryQuizState,
   dailyChallenge,
   handleDailyChallengeAction,
-  isDailyChallengeComplete
+  isDailyChallengeComplete,
+  logs
 }) {
-  const continueMode = EXPERIENCE_META[lastPlayedTab] ?? EXPERIENCE_META['evolution-rush'];
-  const ContinueModeIcon = continueMode.icon;
-  const collectionProgress = Math.round((pokemons.length / 1025) * 100);
-  const overallEvolutionRushBestStreak = Math.max(0, ...Object.values(evolutionRushState.bestStreaks || {}));
+  const continueMode = (EXPERIENCE_META && EXPERIENCE_META[lastPlayedTab]) || (EXPERIENCE_META && EXPERIENCE_META['evolution-rush']) || { label: 'Aventure', cta: 'Lancer', icon: Zap };
+  const ContinueModeIcon = continueMode.icon || Zap;
+  const collectionProgress = Math.round(((pokemons?.length || 0) / 1025) * 100);
+  const overallEvolutionRushBestStreak = Math.max(0, ...Object.values(evolutionRushState?.bestStreaks || {}));
 
   const teamAnalysis = useMemo(() => {
-    if (team.length === 0) return null;
+    if (!team || team.length === 0) return null;
     const covered = {};
-    Object.keys(TYPE_COLORS).forEach(defType => {
+    Object.keys(TYPE_COLORS || {}).forEach(defType => {
       let best = 1;
-      team.forEach(p => p.types.forEach(atk => {
-        const mult = (TYPE_CHART[atk.nom] && TYPE_CHART[atk.nom][defType]) ?? 1;
+      team.forEach(p => p?.types?.forEach(atk => {
+        const mult = (TYPE_CHART && TYPE_CHART[atk.nom] && TYPE_CHART[atk.nom][defType]) ?? 1;
         if (mult > best) best = mult;
       }));
       covered[defType] = best;
@@ -46,20 +47,20 @@ export default function Dashboard({
   const teamCoverageCount = teamAnalysis ? Object.values(teamAnalysis).filter((multiplier) => multiplier >= 2).length : 0;
 
   const dashboardProgressStats = [
-    { label: 'Favoris', value: favorites.length, helper: 'Pokemon suivis', tone: 'text-rose-500', Icon: Star },
-    { label: 'Equipe', value: `${team.length}/6`, helper: 'Champions actifs', tone: 'text-indigo-500', Icon: Shield },
-    { label: 'Victoires', value: battleStats.wins, helper: 'Arene Battle', tone: 'text-emerald-500', Icon: Flame },
-    { label: 'Record', value: Math.max(gameState.highscore, quizState.highscore, overallEvolutionRushBestStreak, statClashState.bestStreak, cryQuizState.highscore), helper: 'Tous defis', tone: 'text-amber-500', Icon: Crown }
+    { label: 'Favoris', value: favorites?.length || 0, helper: 'Pokemon suivis', tone: 'text-rose-500', Icon: Star },
+    { label: 'Equipe', value: `${team?.length || 0}/6`, helper: 'Champions actifs', tone: 'text-indigo-500', Icon: Shield },
+    { label: 'Victoires', value: battleStats?.wins || 0, helper: 'Arene Battle', tone: 'text-emerald-500', Icon: Flame },
+    { label: 'Record', value: Math.max(gameState?.highscore || 0, quizState?.highscore || 0, overallEvolutionRushBestStreak, statClashState?.bestStreak || 0, cryQuizState?.highscore || 0), helper: 'Tous defis', tone: 'text-amber-500', Icon: Crown }
   ];
 
   const dashboardGameCards = [
-    { id: 'quiz', icon: <Trophy size={24} className="text-amber-500" />, title: 'Master Type', text: `Record: ${quizState.highscore}` },
-    { id: 'jeu', icon: <Gamepad2 size={24} className="text-indigo-500" />, title: 'Silhouette', text: `Record: ${gameState.highscore}` },
+    { id: 'quiz', icon: <Trophy size={24} className="text-amber-500" />, title: 'Master Type', text: `Record: ${quizState?.highscore || 0}` },
+    { id: 'jeu', icon: <Gamepad2 size={24} className="text-indigo-500" />, title: 'Silhouette', text: `Record: ${gameState?.highscore || 0}` },
     { id: 'evolution-rush', icon: <GitBranch size={24} className="text-violet-500" />, title: 'Evolution Rush', text: `Meilleur: ${overallEvolutionRushBestStreak}` },
-    { id: 'stat-clash', icon: <BarChart3 size={24} className="text-cyan-500" />, title: 'Stat Clash', text: `Serie max: ${statClashState.bestStreak}` },
-    { id: 'pokedle', icon: <LayoutGrid size={24} className="text-emerald-500" />, title: 'Pokédle Daily', text: pokedleState.status === 'won' ? '🎯 Défi Réussi !' : '🧩 Devinette active' },
-    { id: 'cry-quiz', icon: <Music size={24} className="text-rose-500" />, title: 'Qui est-ce ?', text: `Record: ${cryQuizState.highscore}` },
-    { id: 'combat', icon: <Activity size={24} className="text-emerald-500" />, title: 'Arène Battle', text: `${battleStats.wins} victoire${battleStats.wins > 1 ? 's' : ''}` }
+    { id: 'stat-clash', icon: <BarChart3 size={24} className="text-cyan-500" />, title: 'Stat Clash', text: `Serie max: ${statClashState?.bestStreak || 0}` },
+    { id: 'pokedle', icon: <LayoutGrid size={24} className="text-emerald-500" />, title: 'Pokédle Daily', text: pokedleState?.status === 'won' ? '🎯 Défi Réussi !' : '🧩 Devinette active' },
+    { id: 'cry-quiz', icon: <Music size={24} className="text-rose-500" />, title: 'Qui est-ce ?', text: `Record: ${cryQuizState?.highscore || 0}` },
+    { id: 'combat', icon: <Activity size={24} className="text-emerald-500" />, title: 'Arène Battle', text: `${battleStats?.wins || 0} victoire${(battleStats?.wins || 0) > 1 ? 's' : ''}` }
   ];
 
   const DailyChallengeIcon = dailyChallenge.icon || Sparkles;
@@ -235,8 +236,60 @@ export default function Dashboard({
               <div className="mt-8 grid grid-cols-3 gap-4">
                  {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-slate-50 bg-slate-50/50 p-4 text-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:border-indigo-200 dark:bg-slate-950 dark:border-slate-900" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} loading="lazy" className="mx-auto h-14 w-14 object-contain transition-transform hover:scale-110 drop-shadow-md" /></button>) : <div role="status" className="col-span-3 rounded-2xl border-2 border-dashed border-slate-100 px-6 py-10 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-300 dark:border-slate-800">Compose ton equipe pour debloquer un resume strategique ici.</div>}
               </div>
+            </div>
+         </div>
+
+        {/* --- TIMELINE EPIQUE --- */}
+        <section className="space-y-6">
+           <div className="flex items-center gap-4">
+              <div className="rounded-2xl bg-rose-500/10 p-3 text-rose-500">
+                 <Crown size={24} />
+              </div>
+              <div>
+                 <div className="text-[10px] font-black uppercase tracking-[0.3em] text-rose-500">Journal de Bord</div>
+                 <h3 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Timeline Epique</h3>
+              </div>
            </div>
-        </div>
+           
+           <div className="relative rounded-[2.5rem] border border-slate-100 bg-white p-6 md:p-10 shadow-2xl shadow-rose-500/5 dark:border-slate-800 dark:bg-slate-900">
+              {logs && logs.length > 0 ? (
+                 <div className="max-h-[300px] overflow-y-auto pr-4 custom-scrollbar space-y-6">
+                    {logs.slice(0, 15).map((log, index) => {
+                       let Icon = Activity;
+                       let color = 'text-slate-500';
+                       let bg = 'bg-slate-100 dark:bg-slate-800';
+                       
+                       if(log.type === 'favorite') { Icon = Star; color = 'text-amber-500'; bg = 'bg-amber-500/10 border-amber-500/20'; }
+                       else if(log.type === 'team_add') { Icon = Shield; color = 'text-indigo-500'; bg = 'bg-indigo-500/10 border-indigo-500/20'; }
+                       else if(log.type === 'team_remove') { Icon = Shield; color = 'text-slate-400'; bg = 'bg-slate-100 dark:bg-slate-800'; }
+                       else if(log.type === 'win') { Icon = Trophy; color = 'text-emerald-500'; bg = 'bg-emerald-500/10 border-emerald-500/20'; }
+
+                       return (
+                          <Motion.div initial={{opacity:0, x:-20}} animate={{opacity:1, x:0}} transition={{delay: index * 0.05}} key={log.id} className="relative flex gap-6">
+                             <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-transparent shadow-sm flex-col" className={`${bg} ${color} flex h-12 w-12 shrink-0 items-center justify-center rounded-full border shadow-sm`}>
+                                <Icon size={20} />
+                             </div>
+                             <div className="flex-1 pb-6 relative">
+                                {index !== Math.min(logs.length, 15) - 1 && <div className="absolute top-14 bottom-0 left-[-38px] w-px bg-slate-200 dark:bg-slate-800" />}
+                                <h4 className="text-sm md:text-base font-black uppercase tracking-tight text-slate-900 dark:text-wrap dark:text-slate-100">{log.message}</h4>
+                                <div className="mt-1 flex items-center gap-3">
+                                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                </div>
+                             </div>
+                             {log.metadata && log.metadata.image && (
+                               <img src={log.metadata.image} alt="Sprite" className="h-12 w-12 object-contain bg-slate-50 dark:bg-slate-950 rounded-xl p-1 border border-slate-100 dark:border-slate-800" />
+                             )}
+                          </Motion.div>
+                       );
+                    })}
+                 </div>
+              ) : (
+                 <div className="text-center py-10">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Aucun evenement recent.</p>
+                 </div>
+              )}
+           </div>
+        </section>
 
        <section className="space-y-6">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">

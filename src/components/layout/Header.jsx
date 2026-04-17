@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Menu, Search, Filter, Activity, Heart, Shuffle } from 'lucide-react';
+import { Menu, Search, Filter, Activity, Heart, Shuffle, Globe } from 'lucide-react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import CustomDropdown from '../common/CustomDropdown';
 import { TYPE_COLORS } from '../../constants/pokemon';
-import { TAB_TITLES } from '../../constants/gameMeta';
+import { TAB_TITLES, POKEMON_GENERATIONS } from '../../constants/gameMeta';
+
+const REGION_NAMES = [
+  'Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar', 'Paldea'
+];
 
 export default function Header({
   activeTab,
@@ -22,8 +26,12 @@ export default function Header({
   setIsFavoritesOnly,
   getRandomPokemon,
   setPage,
-  isDarkMode
+  isDarkMode,
+  trainerStats,
+  activeRegion,
+  setActiveRegion
 }) {
+  const { trainerTitle, trainerScore, nextTitleThreshold } = trainerStats || {};
   const [showSuggestions, setShowSuggestions] = useState(false);
   const activeTabTitle = TAB_TITLES[activeTab] ?? activeTab.toUpperCase();
 
@@ -31,8 +39,17 @@ export default function Header({
     <header className="mb-8 flex flex-col gap-4 sm:gap-6 lg:mb-16 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex items-start justify-between gap-4 lg:block">
         <div>
+          <Motion.div 
+            initial={{ opacity: 0, x: -10 }} 
+            animate={{ opacity: 1, x: 0 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 mb-2"
+          >
+            <Shuffle size={10} className="animate-spin-slow" />
+            <span className="text-[8px] font-black uppercase tracking-widest">{trainerTitle}</span>
+            <span className="text-[8px] opacity-40">• {trainerScore} PTS</span>
+          </Motion.div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tighter">{activeTabTitle}</h2>
-          <p className="text-slate-500 text-[10px] lg:text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Gens 1 à 9 • {pokemonsLength} espèces</p>
+          <p className="text-slate-500 text-[10px] lg:text-xs font-bold uppercase tracking-widest mt-1 opacity-70">Gens 1 à 9 • {pokemonsLength} espèces • Rang S</p>
         </div>
         <button type="button" aria-label="Ouvrir le menu" onClick={() => setIsMobileMenuOpen(true)} className="shrink-0 lg:hidden p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border-2 border-slate-100 dark:border-slate-800"><Menu size={24} /></button>
       </div>
@@ -64,10 +81,13 @@ export default function Header({
               <CustomDropdown isDarkMode={isDarkMode} icon={Filter} label="Type" value={typeFilter} onChange={(v) => { setTypeFilter(v); setPage(1); }} typeColors={TYPE_COLORS} options={[{ value: 'Tous', label: 'Tous les Types' }, ...Object.keys(TYPE_COLORS).map(t => ({ value: t, label: t }))]} />
             </div>
             <div className="lg:order-2">
+              <CustomDropdown isDarkMode={isDarkMode} icon={Globe} label="Region" value={activeRegion || 'Tous'} onChange={(v) => { setActiveRegion(v === 'Tous' ? null : v); setPage(1); }} options={[{ value: 'Tous', label: 'Toutes les Régions' }, ...POKEMON_GENERATIONS.map((g, i) => ({ value: g.gen, label: REGION_NAMES[i] }))]} />
+            </div>
+            <div className="lg:order-3">
               <CustomDropdown isDarkMode={isDarkMode} icon={Activity} label="Trier" value={sortBy} onChange={(v) => { setSortBy(v); setPage(1); }} options={[{ value: 'id', label: 'N° Pokédex' }, { value: 'nom', label: 'Nom (A-Z)' }, { value: 'hp', label: 'Points de Vie' }, { value: 'attack', label: 'Attaque' }, { value: 'speed', label: 'Vitesse' }]} />
             </div>
-            <button type="button" aria-pressed={isFavoritesOnly} aria-label={isFavoritesOnly ? 'Afficher tous les Pokemon' : 'Afficher uniquement les favoris'} onClick={() => setIsFavoritesOnly(!isFavoritesOnly)} className={`col-span-1 flex items-center justify-center gap-3 px-4 py-3 rounded-2xl text-sm font-black transition-all shadow-xl border-2 lg:order-3 ${isFavoritesOnly ? 'bg-rose-500 text-white border-rose-500' : 'bg-white dark:bg-slate-900 border-transparent text-slate-400'}`}><Heart size={18} fill={isFavoritesOnly ? "currentColor" : "none"} /><span className="uppercase tracking-widest hidden sm:inline">Favoris</span></button>
-            <button type="button" aria-label="Afficher un Pokemon aleatoire" onClick={getRandomPokemon} className="col-span-1 flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-white shadow-xl transition-all hover:scale-[1.02] active:scale-95 dark:bg-white dark:text-slate-900 lg:order-5"><Shuffle size={20} /></button>
+            <button type="button" aria-pressed={isFavoritesOnly} aria-label={isFavoritesOnly ? 'Afficher tous les Pokemon' : 'Afficher uniquement les favoris'} onClick={() => setIsFavoritesOnly(!isFavoritesOnly)} className={`col-span-1 flex items-center justify-center gap-3 px-4 py-3 rounded-2xl text-sm font-black transition-all shadow-xl border-2 lg:order-4 ${isFavoritesOnly ? 'bg-rose-500 text-white border-rose-500' : 'bg-white dark:bg-slate-900 border-transparent text-slate-400'}`}><Heart size={18} fill={isFavoritesOnly ? "currentColor" : "none"} /><span className="uppercase tracking-widest hidden sm:inline">Favoris</span></button>
+            <button type="button" aria-label="Afficher un Pokemon aleatoire" onClick={getRandomPokemon} className="col-span-1 flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-white shadow-xl transition-all hover:scale-[1.02] active:scale-95 dark:bg-white dark:text-slate-900 lg:order-6"><Shuffle size={20} /></button>
           </div>
         ) : (
           <div className="flex justify-end">

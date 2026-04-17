@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 
 // Import des constantes
-import { TRACKED_EXPERIENCE_TABS, EVOLUTION_RUSH_DIFFICULTIES } from './constants/gameMeta';
+import { TRACKED_EXPERIENCE_TABS, EVOLUTION_RUSH_DIFFICULTIES, POKEMON_GENERATIONS } from './constants/gameMeta';
 
 // Import des hooks
 import { usePokedexData } from './hooks/usePokedexData';
 import { useDailyActivity } from './hooks/useDailyActivity';
 import { useGames } from './hooks/useGames';
+import { useTrainerStats } from './hooks/useTrainerStats';
+import { useActivityLog } from './hooks/useActivityLog';
 
 // Import des composants de layout & home
 import Sidebar from './components/layout/Sidebar';
@@ -21,6 +23,7 @@ import { PokemonSkeleton } from './components/common/Cards';
 import PokemonCard from './components/pokemon/PokemonCard';
 import PokemonDetails from './components/pokemon/PokemonDetails';
 import ComparisonModal from './components/pokemon/ComparisonModal';
+import TeamSynergy from './components/team/TeamSynergy';
 
 // Import des jeux
 import BattleArena from './components/games/BattleArena';
@@ -31,12 +34,14 @@ import StatClash from './components/games/StatClash';
 import TypeMasterQuiz from './components/games/TypeMasterQuiz';
 import Pokedle from './components/games/Pokedle';
 import CryQuiz from './components/games/CryQuiz';
+import RegionExplorer from './components/pokemon/RegionExplorer';
 import { TYPE_COLORS } from './constants/pokemon';
 
 function App() {
   // --- ÉTATS UI & LAYOUT ---
   const [showSplash, setShowSplash] = useState(true);
-  const [activeTab, setActiveTab] = useState('accueil');
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem('pokedexActiveTab') || 'accueil');
+  const [activeRegion, setActiveRegion] = useState(null); // null for none, 1-9 for gens
   const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('pokedexTheme') === 'dark');
   const [isDesktopViewport, setIsDesktopViewport] = useState(() => typeof window !== 'undefined' ? window.matchMedia('(min-width: 1024px)').matches : true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -48,6 +53,9 @@ function App() {
 
   const isSidebarVisible = isDesktopViewport || isMobileMenuOpen;
 
+  // --- LOG ACTIVITY ---
+  const { logs, addLog, clearLogs } = useActivityLog();
+
   // --- HOOKS GLOBAUX ---
   const {
     pokemons, loading, 
@@ -58,7 +66,7 @@ function App() {
     searchQuery, setSearchQuery, typeFilter, setTypeFilter, 
     isFavoritesOnly, setIsFavoritesOnly, sortBy, setSortBy, page, setPage,
     filteredPokemons, suggestionPokemons, getRandomPokemon
-  } = usePokedexData();
+  } = usePokedexData({ addLog });
 
   const {
     todayKey, dailyActivity, markDailyFlag, dailyFeaturedPokemon, dailyChallenge, isDailyChallengeComplete
@@ -73,7 +81,17 @@ function App() {
     battleState, setBattleState, battleStats, startBattle, handleManualMove,
     pokedleState, submitPokedleGuess, startPokedle,
     cryQuizState, startCryQuiz, handleCryAnswer
-  } = useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTab: (tab) => setActiveTab(tab) });
+  } = useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTab: (tab) => setActiveTab(tab), addLog });
+
+  const trainerStats = useTrainerStats({ 
+    team: team || [], 
+    favorites: favorites || [], 
+    battleStats: battleStats || {}, 
+    gameState: gameState || {}, 
+    quizState: quizState || {}, 
+    statClashState: statClashState || {}, 
+    cryQuizState: cryQuizState || {} 
+  });
 
   // --- EFFETS GLOBAUX UI ---
   useEffect(() => {
@@ -83,6 +101,7 @@ function App() {
   }, [isDarkMode]);
 
   useEffect(() => {
+    localStorage.setItem('pokedexActiveTab', activeTab);
     if (!TRACKED_EXPERIENCE_TABS.includes(activeTab)) return;
     setLastPlayedTab(activeTab);
     localStorage.setItem('pokedexLastPlayedTab', activeTab);
@@ -137,10 +156,18 @@ function App() {
   const isTeamView = activeTab === 'equipe';
   const showBrowseControls = isCollectionView;
 
-  const totalPages = Math.max(1, Math.ceil(filteredPokemons.length / 32));
+  const regionalFilteredPokemons = useMemo(() => {
+    const list = filteredPokemons || [];
+    if (!activeRegion) return list;
+    const gen = (POKEMON_GENERATIONS || []).find(g => g.gen === activeRegion);
+    if (!gen) return list;
+    return list.filter(p => p.id >= gen.start && p.id <= gen.end);
+  }, [filteredPokemons, activeRegion]);
+
+  const totalPages = Math.max(1, Math.ceil((regionalFilteredPokemons?.length || 0) / 32));
   const currentPage = Math.min(page, totalPages);
-  const paginatedPokemons = filteredPokemons.slice((currentPage - 1) * 32, currentPage * 32);
-  const displayedPokemons = isTeamView ? team : paginatedPokemons;
+  const paginatedPokemons = (regionalFilteredPokemons || []).slice((currentPage - 1) * 32, currentPage * 32);
+  const displayedPokemons = isTeamView ? (team || []) : paginatedPokemons;
 
   return (
     <>
@@ -165,13 +192,13 @@ function App() {
         setIsDarkMode={setIsDarkMode}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        teamCount={team.length}
+        teamCount={team?.length || 0}
       />
 
-      <main id="main-content" className={`flex-1 transition-all duration-700 min-h-screen p-4 sm:p-6 lg:p-12 ${isSidebarOpen ? 'lg:ml-80' : 'lg:ml-24'} ml-0`}>
+      <main id="main-content" className={`flex-1 transition-all duration-700 h-screen overflow-y-auto p-4 sm:p-6 lg:p-12 ${isSidebarOpen ? 'lg:ml-80' : 'lg:ml-24'} ml-0 scroll-smooth custom-scrollbar`}>
         <Header 
           activeTab={activeTab}
-          pokemonsLength={pokemons.length}
+          pokemonsLength={pokemons?.length || 0}
           setIsMobileMenuOpen={setIsMobileMenuOpen}
           showBrowseControls={showBrowseControls}
           searchQuery={searchQuery}
@@ -183,10 +210,11 @@ function App() {
           sortBy={sortBy}
           setSortBy={setSortBy}
           isFavoritesOnly={isFavoritesOnly}
-          setIsFavoritesOnly={setIsFavoritesOnly}
-          getRandomPokemon={getRandomPokemon}
           setPage={setPage}
           isDarkMode={isDarkMode}
+          trainerStats={trainerStats}
+          activeRegion={activeRegion}
+          setActiveRegion={setActiveRegion}
         />
 
         <AnimatePresence mode="wait">
@@ -209,29 +237,25 @@ function App() {
               setSelectedPokemon={setSelectedPokemon}
               pokedleState={pokedleState}
               cryQuizState={cryQuizState}
+              logs={logs}
             />
           )}
 
           {(isCollectionView || isTeamView) && (
             <Motion.div key="c" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-              {isTeamView && teamAnalysis && (
-                <div className="mb-12 grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-3">
-                   {Object.entries(teamAnalysis).map(([type, mult]) => (
-                      <div key={type} className={`p-3 rounded-2xl text-center border-2 transition-all ${mult >= 2 ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-slate-100 dark:bg-slate-800 border-transparent opacity-40'}`}>
-                         <div className="text-[10px] font-black uppercase tracking-widest mb-1 truncate" style={{color: TYPE_COLORS[type]}}>{type}</div>
-                         <div className={`text-lg font-black ${mult >= 2 ? 'text-emerald-600' : 'text-slate-400'}`}>x{mult}</div>
-                      </div>
-                   ))}
-                </div>
-              )}
+              {/* L'Explorateur de régions a été déplacé en filtre dans le Header */}
+              {isTeamView && <TeamSynergy team={team} isDarkMode={isDarkMode} />}
               {isTeamView && team.length === 0 ? (
                 <div role="status" className="text-center py-32 bg-white dark:bg-slate-900 rounded-[4rem] border-4 border-dashed border-slate-100 dark:border-slate-800"><Users size={80} className="mx-auto text-slate-200 dark:text-slate-800 mb-6" /><h3 className="text-3xl font-black dark:text-white">Votre équipe est vide</h3><p className="text-slate-500 mt-2 font-bold">Explorez la collection pour sélectionner 6 champions.</p></div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-8">
-                  {loading && isCollectionView ? Array.from({ length: 8 }).map((_, i) => <PokemonSkeleton key={i} />) : displayedPokemons.map((p, i) => (
-                    <PokemonCard key={p.id} pokemon={p} index={i} isDarkMode={isDarkMode} isCaught={team.some(t => t.id === p.id)} isFavorite={favorites.includes(p.id)} onClick={() => setSelectedPokemon(p)} onCatch={() => toggleTeam(p)} onToggleFavorite={() => toggleFavorite(p.id)} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-6 lg:gap-8 w-full max-w-[2000px] mx-auto">
+                  {loading && isCollectionView ? Array.from({ length: 8 }).map((_, i) => <PokemonSkeleton key={i} />) : (displayedPokemons || []).map((p, i) => (
+                    <PokemonCard key={p.id} pokemon={p} index={i} isDarkMode={isDarkMode} isCaught={(team || []).some(t => t.id === p.id)} isFavorite={(favorites || []).includes(p.id)} onClick={() => setSelectedPokemon(p)} onCatch={() => toggleTeam(p)} onToggleFavorite={() => toggleFavorite(p.id)} />
                   ))}
                 </div>
+              )}
+              {isCollectionView && !loading && (!displayedPokemons || displayedPokemons.length === 0) && (
+                <div className="py-20 text-center opacity-50 font-black uppercase tracking-widest">Aucun Pokémon trouvé dans cette région</div>
               )}
               {isCollectionView && totalPages > 1 && (
                 <div className="mt-16 flex justify-center items-center gap-8 pb-10">
@@ -254,8 +278,8 @@ function App() {
         </AnimatePresence>
 
         <AnimatePresence>
-          {selectedPokemon && <PokemonDetails pokemon={selectedPokemon} isDarkMode={isDarkMode} pokemons={pokemons} onClose={() => setSelectedPokemon(null)} onNavigate={(p) => setSelectedPokemon(p)} onCatch={() => toggleTeam(selectedPokemon)} isCaught={team.some(t => t.id === selectedPokemon.id)} isFavorite={favorites.includes(selectedPokemon.id)} onToggleFavorite={() => toggleFavorite(selectedPokemon.id)} onCompare={() => { setComparedPokemon(selectedPokemon); setSelectedPokemon(null); }} />}
-          {comparedPokemon && <ComparisonModal p1={comparedPokemon} pokemons={pokemons} isDarkMode={isDarkMode} onClose={() => setComparedPokemon(null)} />}
+          {selectedPokemon && <PokemonDetails pokemon={selectedPokemon} isDarkMode={isDarkMode} pokemons={pokemons || []} onClose={() => setSelectedPokemon(null)} onNavigate={(p) => setSelectedPokemon(p)} onCatch={() => toggleTeam(selectedPokemon)} isCaught={(team || []).some(t => t.id === selectedPokemon.id)} isFavorite={(favorites || []).includes(selectedPokemon.id)} onToggleFavorite={() => toggleFavorite(selectedPokemon.id)} onCompare={() => { setComparedPokemon(selectedPokemon); setSelectedPokemon(null); }} />}
+          {comparedPokemon && <ComparisonModal p1={comparedPokemon} pokemons={pokemons || []} isDarkMode={isDarkMode} onClose={() => setComparedPokemon(null)} />}
         </AnimatePresence>
       </main>
     </div>

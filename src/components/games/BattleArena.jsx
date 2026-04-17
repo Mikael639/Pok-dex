@@ -26,7 +26,19 @@ const emptyBattleState = {
 
 const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBattleState }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [damagePopups, setDamagePopups] = React.useState([]);
   const winnerModalRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (state.attackAnim) {
+       setDamagePopups(prev => [...prev, state.attackAnim]);
+       const animId = state.attackAnim.id;
+       setTimeout(() => setDamagePopups(prev => prev.filter(p => p.id !== animId)), 1500);
+    }
+  }, [state.attackAnim]);
+
+  const getShowdownSprite = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
+  const shakeAnimation = { x: [0, -12, 12, -12, 12, 0], filter: ['brightness(1)', 'brightness(1.5)', 'brightness(1)'], transition: { duration: 0.4 } };
   const filteredSelection = pokemons.filter((pokemon) => pokemon.nom.toLowerCase().includes(searchTerm.toLowerCase()));
   const pActive = state.playerTeam[state.playerActive];
   const eActive = state.enemyTeam[state.enemyActive];
@@ -195,10 +207,20 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
       </AnimatePresence>
 
       <div className="relative flex min-h-[360px] flex-col items-center gap-4 rounded-[2rem] border-4 border-white bg-slate-900/5 p-4 shadow-inner sm:p-6 md:gap-12 md:rounded-[4rem] md:border-8 md:p-16 lg:grid lg:min-h-[500px] lg:grid-cols-2 dark:bg-slate-900/40">
-        <div className={`w-full space-y-3 text-center transition-all duration-500 md:space-y-6 ${isPlayerTurn ? 'scale-[1.02] md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
+        <Motion.div animate={state.attackAnim?.target === 'player' ? shakeAnimation : {}} className={`w-full space-y-3 text-center transition-all duration-500 md:space-y-6 ${isPlayerTurn ? 'scale-[1.02] md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
           <div className="relative">
             <div className={`absolute inset-0 scale-150 rounded-full blur-3xl transition-all ${isPlayerTurn ? 'bg-blue-500/30' : 'bg-transparent'}`} />
-            <Motion.img key={pActive?.id} initial={{ x: -50 }} animate={{ x: 0 }} src={pActive?.image} alt={pActive?.nom} className="relative mx-auto h-24 w-24 object-contain drop-shadow-2xl sm:h-32 sm:w-32 md:h-64 md:w-64 lg:w-80" />
+            
+            {/* Pop-up Damage Player */}
+            <AnimatePresence>
+               {damagePopups.filter(p => p.target === 'player').map(p => (
+                  <Motion.div key={p.id} initial={{ opacity: 0, y: 0, scale: 0.5 }} animate={{ opacity: 1, y: -40, scale: 1.2 }} exit={{ opacity: 0 }} className={`absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-3xl font-black md:text-5xl drop-shadow-2xl ${p.isSuper ? 'text-amber-400' : p.isResisted ? 'text-slate-400' : 'text-rose-500'}`}>
+                     -{p.damage}
+                  </Motion.div>
+               ))}
+            </AnimatePresence>
+
+            <Motion.img key={pActive?.id} initial={{ x: -50 }} animate={{ x: 0 }} src={getShowdownSprite(pActive?.id)} onError={(e) => { e.target.onError = null; e.target.src = pActive?.image; }} alt={pActive?.nom} className="relative mx-auto h-24 w-24 object-contain drop-shadow-2xl sm:h-32 sm:w-32 md:h-64 md:w-64 lg:w-80" />
           </div>
           <div role="progressbar" aria-label={`Vie de ${pActive?.nom ?? 'Joueur 1'}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pActive?.currentHP || 0)} className="relative mx-auto h-4 w-full max-w-sm overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-lg md:h-6 md:border-4 dark:bg-slate-800">
             <Motion.div animate={{ width: pActive ? `${pActive.currentHP}%` : '0%' }} className="h-full bg-gradient-to-r from-blue-500 to-cyan-400" />
@@ -216,7 +238,7 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
               </button>
             </div>
           )}
-        </div>
+        </Motion.div>
 
         <div className="rounded-full border-4 border-white bg-rose-500 px-4 py-1 text-sm font-black italic text-white shadow-xl lg:hidden">
           VS
@@ -226,10 +248,20 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
           VS
         </div>
 
-        <div className={`w-full space-y-3 text-center transition-all duration-500 md:space-y-6 ${!isPlayerTurn ? 'scale-[1.02] md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
+        <Motion.div animate={state.attackAnim?.target === 'enemy' ? shakeAnimation : {}} className={`w-full space-y-3 text-center transition-all duration-500 md:space-y-6 ${!isPlayerTurn ? 'scale-[1.02] md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
           <div className="relative">
             <div className={`absolute inset-0 scale-150 rounded-full blur-3xl transition-all ${!isPlayerTurn ? 'bg-rose-500/30' : 'bg-transparent'}`} />
-            <Motion.img key={eActive?.id} initial={{ x: 50 }} animate={{ x: 0 }} src={eActive?.image} alt={eActive?.nom} className="relative mx-auto h-24 w-24 object-contain drop-shadow-2xl sm:h-32 sm:w-32 md:h-64 md:w-64 lg:w-80" />
+
+            {/* Pop-up Damage Enemy */}
+            <AnimatePresence>
+               {damagePopups.filter(p => p.target === 'enemy').map(p => (
+                  <Motion.div key={p.id} initial={{ opacity: 0, y: 0, scale: 0.5 }} animate={{ opacity: 1, y: -40, scale: 1.2 }} exit={{ opacity: 0 }} className={`absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-3xl font-black md:text-5xl drop-shadow-2xl ${p.isSuper ? 'text-amber-400' : p.isResisted ? 'text-slate-400' : 'text-rose-500'}`}>
+                     -{p.damage}
+                  </Motion.div>
+               ))}
+            </AnimatePresence>
+
+            <Motion.img key={eActive?.id} initial={{ x: 50 }} animate={{ x: 0 }} src={getShowdownSprite(eActive?.id)} onError={(e) => { e.target.onError = null; e.target.src = eActive?.image; }} alt={eActive?.nom} className="relative mx-auto h-24 w-24 object-contain drop-shadow-2xl sm:h-32 sm:w-32 md:h-64 md:w-64 lg:w-80" />
           </div>
           <div role="progressbar" aria-label={`Vie de ${eActive?.nom ?? 'Adversaire'}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(eActive?.currentHP || 0)} className="relative mx-auto h-4 w-full max-w-sm overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-lg md:h-6 md:border-4 dark:bg-slate-800">
             <Motion.div animate={{ width: eActive ? `${eActive.currentHP}%` : '0%' }} className="h-full bg-gradient-to-r from-rose-500 to-orange-400" />
@@ -247,7 +279,7 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
               </button>
             </div>
           )}
-        </div>
+        </Motion.div>
       </div>
 
       <div className="overflow-hidden rounded-[2rem] border-t-8 border-rose-500 bg-slate-900 p-6 text-white shadow-2xl md:rounded-[4rem] md:p-10">

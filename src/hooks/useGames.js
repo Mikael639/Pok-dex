@@ -11,7 +11,7 @@ import {
   getTodayKey
 } from '../utils/gameLogic';
 
-export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTab }) {
+export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTab, addLog }) {
   const [todayKey] = useState(() => getTodayKey());
 
   // --- ÉTATS ---
@@ -48,6 +48,7 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
     target: null, choices: [], status: 'idle', score: 0, streak: 0,
     highscore: parseInt(localStorage.getItem('cryQuizHighscore') || '0')
   });
+
 
   // --- PERSISTANCE ---
   useEffect(() => { localStorage.setItem('pokedexBattleStats', JSON.stringify(battleStats)); }, [battleStats]);
@@ -257,24 +258,27 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
       const newHP = Math.max(0, defender.currentHP - damage);
       const newLogs = [`${attacker.nom} utilise ${moveType.toUpperCase()} ! -${damage} HP`, ...logs.slice(0, 4)];
       
+      const animData = { target: isPlayerTurn ? 'enemy' : 'player', damage, isSuper: typeMult > 1, isResisted: typeMult < 1, id: Date.now() };
+
       if (isPlayerTurn) {
         const nextEnemyTeam = [...enemyTeam]; nextEnemyTeam[enemyActive].currentHP = newHP;
         if (newHP <= 0) {
           newLogs.unshift(`${defender.nom} est K.O. !`);
           if (enemyActive + 1 >= 6) {
             setBattleStats(p => ({ ...p, wins: p.wins+1 }));
-            return { ...s, enemyTeam: nextEnemyTeam, winner: 'Joueur 1', isFighting: false, logs: ['VICTOIRE !'] };
-          } else return { ...s, enemyTeam: nextEnemyTeam, enemyActive: enemyActive+1, currentTurn: mode==='pvp'?'enemy':'ia_move', logs: newLogs };
-        } else return { ...s, enemyTeam: nextEnemyTeam, currentTurn: mode==='pvp'?'enemy':'ia_move', logs: newLogs };
+            if (addLog) addLog('win', `Ligue vaincue avec ${attacker.nom} !`, { image: attacker.image });
+            return { ...s, enemyTeam: nextEnemyTeam, winner: 'Joueur 1', isFighting: false, logs: ['VICTOIRE !'], attackAnim: animData };
+          } else return { ...s, enemyTeam: nextEnemyTeam, enemyActive: enemyActive+1, currentTurn: mode==='pvp'?'enemy':'ia_move', logs: newLogs, attackAnim: animData };
+        } else return { ...s, enemyTeam: nextEnemyTeam, currentTurn: mode==='pvp'?'enemy':'ia_move', logs: newLogs, attackAnim: animData };
       } else {
         const nextPlayerTeam = [...playerTeam]; nextPlayerTeam[playerActive].currentHP = newHP;
         if (newHP <= 0) {
           newLogs.unshift(`${defender.nom} est K.O. !`);
           if (playerActive + 1 >= 6) {
             setBattleStats(p => ({ ...p, losses: p.losses+1 }));
-            return { ...s, playerTeam: nextPlayerTeam, winner: mode==='pvp'?'Joueur 2':'Ordinateur', isFighting: false, logs: ['DÉFAITE...'] };
-          } else return { ...s, playerTeam: nextPlayerTeam, playerActive: playerActive+1, currentTurn: 'player', logs: newLogs };
-        } else return { ...s, playerTeam: nextPlayerTeam, currentTurn: 'player', logs: newLogs };
+            return { ...s, playerTeam: nextPlayerTeam, winner: mode==='pvp'?'Joueur 2':'Ordinateur', isFighting: false, logs: ['DÉFAITE...'], attackAnim: animData };
+          } else return { ...s, playerTeam: nextPlayerTeam, playerActive: playerActive+1, currentTurn: 'player', logs: newLogs, attackAnim: animData };
+        } else return { ...s, playerTeam: nextPlayerTeam, currentTurn: 'player', logs: newLogs, attackAnim: animData };
       }
     });
   }, []);
@@ -350,6 +354,7 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
       return { ...prev, status: 'revealed', selectedId: id, streak: newStreak, score: isCorrect ? prev.score + 1 : prev.score, highscore: newHigh };
     });
   }, []);
+
 
   // --- GARANTIR L'ÉTAT ACTIF ---
   const ensureActiveExperienceReady = useEffectEvent(() => {

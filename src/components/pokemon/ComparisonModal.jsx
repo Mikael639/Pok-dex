@@ -1,8 +1,10 @@
 // src/components/pokemon/ComparisonModal.jsx
 import React from 'react';
-import { motion as Motion } from 'framer-motion';
-import { X, Search } from 'lucide-react';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
+import { X, Search, Volume2, Swords, ShieldAlert } from 'lucide-react';
 import useAccessibleModal from '../../hooks/useAccessibleModal';
+import usePokemonCry from '../../hooks/usePokemonCry';
+import { TYPE_CHART, TYPE_COLORS } from '../../constants/pokemon';
 
 const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
   const modalRef = React.useRef(null);
@@ -28,11 +30,38 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
 
   const p2 = selectedPokemon ?? availablePokemons[0] ?? null;
 
+  const { playCry: playCryP1 } = usePokemonCry(p1?.id);
+  const { playCry: playCryP2 } = usePokemonCry(p2?.id);
+
+  // Play P2 sound on selection
+  React.useEffect(() => {
+    if (p2) playCryP2();
+  }, [p2?.id, playCryP2]);
+
+  // Initial sound for P1
+  React.useEffect(() => {
+    playCryP1();
+  }, [playCryP1]);
+
   if (!p1 || !p2) return null;
 
   const stats = Object.keys(p1.base);
   const totalP1 = Object.values(p1.base).reduce((sum, value) => sum + value, 0);
   const totalP2 = Object.values(p2.base).reduce((sum, value) => sum + value, 0);
+
+  // Calcul du Matchup Tactique
+  const calculateAdvantage = (attacker, defender) => {
+    let multiplier = 1;
+    attacker.types.forEach(aType => {
+      defender.types.forEach(dType => {
+         multiplier *= (TYPE_CHART[aType.nom] && TYPE_CHART[aType.nom][dType.nom]) ?? 1;
+      });
+    });
+    return multiplier;
+  };
+
+  const p1Advantage = calculateAdvantage(p1, p2);
+  const p2Advantage = calculateAdvantage(p2, p1);
 
   return (
     <Motion.div
@@ -91,17 +120,36 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
           </div>
 
           <div className="space-y-6 sm:space-y-8">
-            <div className="grid items-center gap-4 sm:gap-6 md:grid-cols-3">
-              <div aria-live="polite" className="text-center">
-                <img src={p1.image} alt={p1.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40" />
-                <h4 className="text-xl font-black sm:text-2xl">{p1.nom}</h4>
-                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Base stat total: {totalP1}</p>
+            <div className="grid items-center gap-4 sm:gap-6 md:grid-cols-3 relative">
+              <div aria-live="polite" className="text-center group relative cursor-pointer" onClick={playCryP1}>
+                <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/5 rounded-full transition-all blur-xl" />
+                <img src={p1.image} alt={p1.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40 relative z-10 transition-transform group-hover:scale-110" />
+                <h4 className="text-xl font-black sm:text-2xl flex justify-center items-center gap-2">{p1.nom} <Volume2 size={16} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" /></h4>
+                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Total: {totalP1}</p>
               </div>
-              <div className="text-center text-3xl font-black italic text-rose-500 sm:text-4xl md:text-5xl">VS</div>
-              <div aria-live="polite" className="text-center">
-                <img src={p2.image} alt={p2.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40" />
-                <h4 className="text-xl font-black sm:text-2xl">{p2.nom}</h4>
-                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Base stat total: {totalP2}</p>
+
+              <div className="text-center flex flex-col items-center gap-4">
+                 <div className="text-3xl font-black italic text-rose-500 sm:text-4xl md:text-5xl drop-shadow-lg">VS</div>
+                 
+                 {/* Tactique Avancée */}
+                 <div className={`p-4 rounded-3xl border-2 flex flex-col gap-2 shadow-xl ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 justify-center"><Swords size={12} /> Avantage Tactique <ShieldAlert size={12} /></div>
+                    <div className="flex justify-between items-center gap-4 w-full px-2">
+                       <span className={`text-sm font-black ${p1Advantage > 1 ? 'text-emerald-500' : p1Advantage < 1 ? 'text-rose-500' : 'text-slate-500'}`}>x{p1Advantage}</span>
+                       <div className="h-1 flex-1 bg-slate-200 dark:bg-slate-800 rounded-full relative overflow-hidden">
+                          <div className={`absolute inset-y-0 left-0 bg-emerald-500 transition-all`} style={{ width: `${Math.min(100, (p1Advantage / Math.max(0.1, p2Advantage)) * 50)}%` }} />
+                          <div className={`absolute inset-y-0 right-0 bg-rose-500 transition-all`} style={{ width: `${Math.min(100, (p2Advantage / Math.max(0.1, p1Advantage)) * 50)}%` }} />
+                       </div>
+                       <span className={`text-sm font-black ${p2Advantage > 1 ? 'text-emerald-500' : p2Advantage < 1 ? 'text-rose-500' : 'text-slate-500'}`}>x{p2Advantage}</span>
+                    </div>
+                 </div>
+              </div>
+
+              <div aria-live="polite" className="text-center group relative cursor-pointer" onClick={playCryP2}>
+                <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/5 rounded-full transition-all blur-xl" />
+                <img src={p2.image} alt={p2.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40 relative z-10 transition-transform group-hover:scale-110" />
+                <h4 className="text-xl font-black sm:text-2xl flex justify-center items-center gap-2">{p2.nom} <Volume2 size={16} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" /></h4>
+                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Total: {totalP2}</p>
               </div>
             </div>
 

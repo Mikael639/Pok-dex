@@ -1,6 +1,6 @@
 // src/components/pokemon/PokemonCard.jsx
 import React from 'react';
-import { motion as Motion } from 'framer-motion';
+import { motion as Motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Star, Heart } from 'lucide-react';
 import { TYPE_COLORS } from '../../constants/pokemon';
 import { cn } from '../../lib/utils';
@@ -26,32 +26,64 @@ function PokeBallBadge({ isCaught }) {
   );
 }
 
-/**
- * Carte de Pokémon interactive affichée dans la liste principale.
- * Gère le survol, le clic et les actions rapides (favori/capture).
- */
 const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCatch, onToggleFavorite, index = 0 }) => {
-  const color = (pokemon.types && pokemon.types[0] && TYPE_COLORS[pokemon.types[0].nom]) || '#94A3B8';
+  const color = (pokemon?.types && pokemon.types[0] && TYPE_COLORS[pokemon.types[0].nom]) || '#94A3B8';
   
-  // Calcul de la "rareté" basé sur la somme des statistiques de base
-  const totalStats = pokemon.base ? Object.values(pokemon.base).reduce((a, b) => a + b, 0) : 0;
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { stiffness: 300, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), { stiffness: 300, damping: 30 });
+
+  const shineX = useTransform(x, [-100, 100], ["0%", "100%"]);
+  const shineY = useTransform(y, [-100, 100], ["0%", "100%"]);
+  const shineOpacity = useTransform(x, [-100, 0, 100], [0.3, 0, 0.3]);
+
+  function handleMouseMove(event) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const xPct = (mouseX / width - 0.5) * 200;
+    const yPct = (mouseY / height - 0.5) * 200;
+    x.set(xPct);
+    y.set(yPct);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+  
+  const totalStats = pokemon?.base ? Object.values(pokemon.base).reduce((a, b) => a + b, 0) : 0;
   const isRare = totalStats > 450;
 
   const CardContent = (
     <div className="relative w-full h-full p-8 text-left">
+       {/* Holographic Shine Overlay - Using absolute positioning within a motion block */}
+       <Motion.div 
+         className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+         style={{
+           background: `radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%)`,
+           left: shineX,
+           top: shineY,
+           opacity: shineOpacity,
+           mixBlendMode: 'overlay'
+         }}
+       />
+       {isRare && (
+         <div className="absolute inset-0 z-10 pointer-events-none opacity-10 bg-[linear-gradient(105deg,transparent_20%,rgba(255,255,255,0.2)_25%,rgba(0,255,255,0.1)_30%,rgba(255,0,255,0.1)_35%,transparent_40%)] bg-[length:200%_200%] mix-blend-color-dodge" />
+       )}
        <button
          type="button"
-         aria-label={`Voir ${pokemon.nom}`}
-         onClick={(event) => {
-           event.stopPropagation();
-           onClick();
-         }}
+         aria-label={`Voir ${pokemon?.nom}`}
+         onClick={(event) => { event.stopPropagation(); onClick(); }}
          className="absolute inset-0 z-10 rounded-[3rem] focus-visible:outline-none focus-visible:ring-4 ring-rose-500/20"
        />
        <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
           <Motion.button
             type="button"
-            aria-label={isFavorite ? `Retirer ${pokemon.nom} des favoris` : `Ajouter ${pokemon.nom} aux favoris`}
             whileTap={{ scale: 0.8 }}
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
             className={`p-3 rounded-full transition-all shadow-md ${isFavorite ? 'bg-amber-400 text-white' : 'bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-400 hover:text-amber-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
@@ -62,31 +94,22 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
        <div className="absolute top-5 right-5 z-20 flex flex-col gap-2">
           <Motion.button
             type="button"
-            aria-label={isCaught ? `Retirer ${pokemon.nom} de l equipe` : `Ajouter ${pokemon.nom} a l equipe`}
             whileTap={{ scale: 0.8 }}
             onClick={(e) => { e.stopPropagation(); onCatch(); }}
-            className={`p-3 rounded-full transition-all shadow-md ${isCaught ? 'bg-rose-500 text-white' : 'bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+            className={`p-3 rounded-full transition-all shadow-md ${isCaught ? 'bg-rose-500 text-white' : 'bg-slate-100/10 dark:bg-slate-800/10 backdrop-blur-sm text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
           >
              <Heart size={22} fill={isCaught ? 'white' : 'none'} />
           </Motion.button>
        </div>
        <div className="relative z-[1] mb-8 mt-4 h-48 flex items-center justify-center">
-          <div
-            className="pokemon-aura absolute inset-0 blur-3xl rounded-full"
-            style={{ backgroundColor: color, opacity: 0.4 }}
-          />
-          <img
-            src={pokemon.image}
-            alt={pokemon.nom}
-            loading="lazy"
-            className="pokemon-float-img w-48 h-48 object-contain relative z-10 drop-shadow-2xl mx-auto"
-          />
+          <div className="pokemon-aura absolute inset-0 blur-3xl rounded-full" style={{ backgroundColor: color, opacity: 0.4 }} />
+          <img src={pokemon?.image} alt={pokemon?.nom} loading="lazy" className="pokemon-float-img w-48 h-48 object-contain relative z-10 drop-shadow-2xl mx-auto" />
        </div>
-        <div className="relative z-[1] mt-4">
-           <h3 className="text-3xl font-black capitalize tracking-tighter mb-4">{pokemon.nom}</h3>
-          <div className="flex gap-2">
-             {pokemon.types.map(t => (
-                <span key={t.nom} className="px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-white shadow-lg" style={{backgroundColor: TYPE_COLORS[t.nom] || '#94A3B8'}}>{t.nom}</span>
+        <div className="relative z-[1] mt-4 text-center">
+           <h3 className="text-3xl font-black capitalize tracking-tighter mb-4">{pokemon?.nom}</h3>
+          <div className="flex flex-wrap gap-2 justify-center">
+             {pokemon?.types?.map(t => (
+                <span key={t.nom} className="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-white shadow-lg" style={{backgroundColor: TYPE_COLORS[t.nom] || '#94A3B8'}}>{t.nom}</span>
              ))}
           </div>
           <PokeBallBadge isCaught={isCaught} />
@@ -97,43 +120,23 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
   return (
     <Motion.div
       layout
-      initial={{ opacity: 0, scale: 0.85, y: 20 }}
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05, ease: [0.175, 0.885, 0.32, 1.275] }}
-      whileHover={{ y: -6, transition: { duration: 0.2 } }}
-      className="h-full"
+      transition={{ duration: 0.4, delay: index * 0.03 }}
+      whileHover={{ y: -6 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, perspective: 1000 }}
+      className="h-full group"
     >
       {isRare ? (
-        <ShineBorder
-          borderRadius={48}
-          borderWidth={4}
-          color={[color, "#ffffff", color]}
-          duration={8}
-          className={cn(
-            "p-0 h-full cursor-pointer overflow-hidden",
-            isDarkMode ? "bg-slate-900" : "bg-white"
-          )}
-        >
-          <MagicCard 
-            className={cn(
-              "border-none h-full",
-              isDarkMode ? "bg-slate-900 text-white" : "bg-white text-slate-900"
-            )}
-            gradientColor={isDarkMode ? `${color}33` : `${color}11`}
-            onClick={onClick}
-          >
+        <ShineBorder borderRadius={48} borderWidth={4} color={[color, "#ffffff", color]} duration={8} className={cn("p-0 h-full cursor-pointer overflow-hidden", isDarkMode ? "bg-slate-900" : "bg-white")}>
+          <MagicCard className={cn("border-none h-full", isDarkMode ? "bg-slate-900 text-white" : "bg-white text-slate-900")} gradientColor={isDarkMode ? `${color}33` : `${color}11`} onClick={onClick}>
             {CardContent}
           </MagicCard>
         </ShineBorder>
       ) : (
-        <MagicCard 
-          className={cn(
-            "border-4 h-full cursor-pointer",
-            isDarkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-white text-slate-900"
-          )}
-          gradientColor={isDarkMode ? `${color}33` : `${color}11`}
-          onClick={onClick}
-        >
+        <MagicCard className={cn("border-4 h-full cursor-pointer", isDarkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-white text-slate-900")} gradientColor={isDarkMode ? `${color}33` : `${color}11`} onClick={onClick}>
           {CardContent}
         </MagicCard>
       )}

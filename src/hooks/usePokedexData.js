@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { TYPE_COLORS, TYPE_CHART } from '../constants/pokemon';
 
-export function usePokedexData() {
+export function usePokedexData({ addLog } = {}) {
   const [pokemons, setPokemons] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -37,14 +37,25 @@ export function usePokedexData() {
 
   const toggleTeam = (p) => {
     setTeam(prevTeam => {
-      if (prevTeam.some(pt => pt.id === p.id)) return prevTeam.filter(pt => pt.id !== p.id);
+      if (prevTeam.some(pt => pt.id === p.id)) {
+        if (addLog) addLog('team_remove', `${p.nom} a quitte votre equipe.`, { id: p.id, nom: p.nom, image: p.image });
+        return prevTeam.filter(pt => pt.id !== p.id);
+      }
       if (prevTeam.length >= 6) return prevTeam;
+      if (addLog) addLog('team_add', `${p.nom} a rejoint votre equipe prinicipale !`, { id: p.id, nom: p.nom, image: p.image });
       return [...prevTeam, p];
     });
   };
 
   const toggleFavorite = (id) => {
-    setFavorites(prev => prev.includes(id) ? prev.filter(fid => fid !== id) : [...prev, id]);
+    setFavorites(prev => {
+       const isFav = prev.includes(id);
+       if (isFav) return prev.filter(fid => fid !== id);
+       
+       const p = pokemons.find(x => x.id === id);
+       if (p && addLog) addLog('favorite', `Vous etes desormais fan de ${p.nom} !`, { id: p.id, nom: p.nom, image: p.image });
+       return [...prev, id];
+    });
   };
 
   const getRandomPokemon = () => {
