@@ -5,6 +5,10 @@ export default function usePokemonCry(pokemonId) {
   const audioRef = useRef(null);
 
   useEffect(() => {
+    if (typeof Audio !== 'function') {
+      return undefined;
+    }
+
     // Stop any playing sound when the pokemon ID changes
     if (audioRef.current && isPlaying) {
       audioRef.current.pause();
@@ -37,7 +41,14 @@ export default function usePokemonCry(pokemonId) {
       // Reset to start before playing to allow rapid replays
       audioRef.current.currentTime = 0;
       audioRef.current.volume = 0.5; // Soft volume for ambience
-      audioRef.current.play().then(() => {
+      const playResult = audioRef.current.play();
+
+      if (!playResult || typeof playResult.then !== 'function') {
+        setIsPlaying(true);
+        return;
+      }
+
+      playResult.then(() => {
         setIsPlaying(true);
       }).catch(err => {
         console.warn("Audio autoplay blocked or failed:", err);

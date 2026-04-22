@@ -84,6 +84,7 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
        <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
           <Motion.button
             type="button"
+            aria-label={isFavorite ? `Retirer ${pokemon?.nom} des favoris` : `Ajouter ${pokemon?.nom} aux favoris`}
             whileTap={{ scale: 0.8 }}
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
             className={`p-3 rounded-full transition-all shadow-md ${isFavorite ? 'bg-amber-400 text-white' : 'bg-slate-100/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-400 hover:text-amber-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
@@ -94,6 +95,7 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
        <div className="absolute top-5 right-5 z-20 flex flex-col gap-2">
           <Motion.button
             type="button"
+            aria-label={isCaught ? `Retirer ${pokemon?.nom} de l equipe` : `Ajouter ${pokemon?.nom} a l equipe`}
             whileTap={{ scale: 0.8 }}
             onClick={(e) => { e.stopPropagation(); onCatch(); }}
             className={`p-3 rounded-full transition-all shadow-md ${isCaught ? 'bg-rose-500 text-white' : 'bg-slate-100/10 dark:bg-slate-800/10 backdrop-blur-sm text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}

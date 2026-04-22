@@ -266,7 +266,7 @@ export default function Dashboard({
 
                        return (
                           <Motion.div initial={{opacity:0, x:-20}} animate={{opacity:1, x:0}} transition={{delay: index * 0.05}} key={log.id} className="relative flex gap-6">
-                             <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-transparent shadow-sm flex-col" className={`${bg} ${color} flex h-12 w-12 shrink-0 items-center justify-center rounded-full border shadow-sm`}>
+                             <div className={`${bg} ${color} relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border shadow-sm`}>
                                 <Icon size={20} />
                              </div>
                              <div className="flex-1 pb-6 relative">

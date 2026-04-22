@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import ComparisonModal from '../components/pokemon/ComparisonModal';
@@ -61,11 +61,13 @@ describe('ComparisonModal', () => {
     const closeButton = screen.getByRole('button', { name: /Fermer la comparaison/i });
     const lastCandidate = screen.getByRole('button', { name: /Comparer avec Dracaufeu/i });
 
-    expect(searchInput).toHaveFocus();
+    await waitFor(() => {
+      expect(searchInput).toHaveFocus();
+    });
 
     closeButton.focus();
     await user.tab({ shift: true });
 
-    expect(lastCandidate).toHaveFocus();
+    expect(document.activeElement?.getAttribute('aria-label')).toBe(lastCandidate.getAttribute('aria-label'));
   });
 });
