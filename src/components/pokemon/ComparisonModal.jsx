@@ -125,7 +125,7 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
                 <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/5 rounded-full transition-all blur-xl" />
                 <img src={p1.image} alt={p1.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40 relative z-10 transition-transform group-hover:scale-110" />
                 <h4 className="text-xl font-black sm:text-2xl flex justify-center items-center gap-2">{p1.nom} <Volume2 size={16} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" /></h4>
-                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Total: {totalP1}</p>
+                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Base stat total: {totalP1}</p>
               </div>
 
               <div className="text-center flex flex-col items-center gap-4">
@@ -149,7 +149,7 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
                 <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/5 rounded-full transition-all blur-xl" />
                 <img src={p2.image} alt={p2.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40 relative z-10 transition-transform group-hover:scale-110" />
                 <h4 className="text-xl font-black sm:text-2xl flex justify-center items-center gap-2">{p2.nom} <Volume2 size={16} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" /></h4>
-                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Total: {totalP2}</p>
+                <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Base stat total: {totalP2}</p>
               </div>
             </div>
 

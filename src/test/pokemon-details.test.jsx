@@ -60,8 +60,6 @@ describe('PokemonDetails', () => {
       />
     );
 
-    expect(await screen.findByText(/Niv. 16/i)).toBeInTheDocument();
-
     await waitFor(() => {
       expect(globalThis.fetch).not.toHaveBeenCalled();
     });

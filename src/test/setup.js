@@ -9,6 +9,7 @@ const MOTION_PROPS = new Set([
   'initial',
   'layout',
   'layoutId',
+  'onAnimationComplete',
   'transition',
   'variants',
   'whileHover',
@@ -31,6 +32,17 @@ const createMotionComponent = (tag) =>
   });
 
 vi.mock('framer-motion', () => {
+  const createMotionValue = (initialValue) => {
+    let currentValue = initialValue;
+
+    return {
+      get: () => currentValue,
+      set: (nextValue) => {
+        currentValue = nextValue;
+      }
+    };
+  };
+
   const motion = new Proxy(
     {},
     {
@@ -40,7 +52,20 @@ vi.mock('framer-motion', () => {
 
   return {
     AnimatePresence: ({ children }) => children,
-    motion
+    motion,
+    useMotionValue: (initialValue) => createMotionValue(initialValue),
+    useSpring: (value) => value,
+    useTransform: (_value, _input, output) => (Array.isArray(output) ? output[0] : output),
+    useMotionTemplate: (strings, ...values) =>
+      strings.reduce((result, string, index) => {
+        const value = values[index];
+        const renderedValue =
+          value && typeof value === 'object' && typeof value.get === 'function'
+            ? value.get()
+            : value ?? '';
+
+        return result + string + renderedValue;
+      }, '')
   };
 });
 
@@ -78,6 +103,31 @@ const installMatchMediaMock = () => {
 };
 
 installMatchMediaMock();
+
+class MockAudio {
+  constructor(src = '') {
+    this.src = src;
+    this.currentTime = 0;
+    this.volume = 1;
+    this.listeners = new Map();
+  }
+
+  play() {
+    return Promise.resolve();
+  }
+
+  pause() {}
+
+  addEventListener(event, callback) {
+    this.listeners.set(event, callback);
+  }
+
+  removeEventListener(event) {
+    this.listeners.delete(event);
+  }
+}
+
+vi.stubGlobal('Audio', MockAudio);
 
 if (!window.scrollTo) {
   window.scrollTo = vi.fn();

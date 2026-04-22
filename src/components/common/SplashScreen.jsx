@@ -25,7 +25,6 @@ const SplashScreen = ({ onFinish }) => {
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
       transition={{ delay: 2.05, duration: 0.45, ease: 'easeInOut' }}
-      onAnimationComplete={onFinish}
       className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-slate-950"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(239,68,68,0.14),_transparent_32%),radial-gradient(circle_at_bottom,_rgba(34,211,238,0.18),_transparent_38%),linear-gradient(180deg,_#020617_0%,_#020617_45%,_#010409_100%)]" />
@@ -125,7 +124,7 @@ const SplashScreen = ({ onFinish }) => {
             <img
               src="/images/NDJITECH-Logo.png"
               alt="NDJITEK Lion Logo"
-              fetchpriority="high"
+              fetchPriority="high"
               decoding="async"
               className="relative h-11 w-11 object-contain opacity-90 drop-shadow-[0_0_24px_rgba(34,211,238,0.4)]"
               onError={(e) => {
