@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 
@@ -12,29 +12,28 @@ import { useGames } from './hooks/useGames';
 import { useTrainerStats } from './hooks/useTrainerStats';
 import { useActivityLog } from './hooks/useActivityLog';
 
-// Import des composants de layout & home
+// Import des composants de layout & home (gardés en statique pour le LCP)
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
 import Dashboard from './components/home/Dashboard';
 import SplashScreen from './components/common/SplashScreen';
 
-// Import des composants communs et Pokémon
+// Import des composants communs
 import { PokemonSkeleton } from './components/common/Cards';
 import PokemonCard from './components/pokemon/PokemonCard';
-import PokemonDetails from './components/pokemon/PokemonDetails';
-import ComparisonModal from './components/pokemon/ComparisonModal';
-import TeamSynergy from './components/team/TeamSynergy';
 
-// Import des jeux
-import BattleArena from './components/games/BattleArena';
-import EvolutionRush from './components/games/EvolutionRush';
-import PokeMemory from './components/games/PokeMemory';
-import PokemonGame from './components/games/PokemonGame';
-import StatClash from './components/games/StatClash';
-import TypeMasterQuiz from './components/games/TypeMasterQuiz';
-import Pokedle from './components/games/Pokedle';
-import CryQuiz from './components/games/CryQuiz';
-import RegionExplorer from './components/pokemon/RegionExplorer';
+// Composants Lazy-loadés
+const PokemonDetails = lazy(() => import('./components/pokemon/PokemonDetails'));
+const ComparisonModal = lazy(() => import('./components/pokemon/ComparisonModal'));
+const TeamSynergy = lazy(() => import('./components/team/TeamSynergy'));
+const BattleArena = lazy(() => import('./components/games/BattleArena'));
+const EvolutionRush = lazy(() => import('./components/games/EvolutionRush'));
+const PokeMemory = lazy(() => import('./components/games/PokeMemory'));
+const PokemonGame = lazy(() => import('./components/games/PokemonGame'));
+const StatClash = lazy(() => import('./components/games/StatClash'));
+const TypeMasterQuiz = lazy(() => import('./components/games/TypeMasterQuiz'));
+const Pokedle = lazy(() => import('./components/games/Pokedle'));
+const CryQuiz = lazy(() => import('./components/games/CryQuiz'));
 import { TYPE_COLORS } from './constants/pokemon';
 
 function App() {
@@ -218,68 +217,72 @@ function App() {
         />
 
         <AnimatePresence mode="wait">
-          {activeTab === 'accueil' && (
-            <Dashboard 
-              setActiveTab={setActiveTab}
-              lastPlayedTab={lastPlayedTab}
-              favorites={favorites}
-              team={team}
-              battleStats={battleStats}
-              pokemons={pokemons}
-              evolutionRushState={evolutionRushState}
-              statClashState={statClashState}
-              gameState={gameState}
-              quizState={quizState}
-              dailyChallenge={dailyChallenge}
-              handleDailyChallengeAction={handleDailyChallengeAction}
-              isDailyChallengeComplete={isDailyChallengeComplete}
-              todayKey={todayKey}
-              setSelectedPokemon={setSelectedPokemon}
-              pokedleState={pokedleState}
-              cryQuizState={cryQuizState}
-              logs={logs}
-            />
-          )}
+          <Suspense fallback={<div className="flex h-[60vh] w-full items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-4 border-rose-500 border-t-transparent" /></div>}>
+            {activeTab === 'accueil' && (
+              <Dashboard 
+                setActiveTab={setActiveTab}
+                lastPlayedTab={lastPlayedTab}
+                favorites={favorites}
+                team={team}
+                battleStats={battleStats}
+                pokemons={pokemons}
+                evolutionRushState={evolutionRushState}
+                statClashState={statClashState}
+                gameState={gameState}
+                quizState={quizState}
+                dailyChallenge={dailyChallenge}
+                handleDailyChallengeAction={handleDailyChallengeAction}
+                isDailyChallengeComplete={isDailyChallengeComplete}
+                todayKey={todayKey}
+                setSelectedPokemon={setSelectedPokemon}
+                pokedleState={pokedleState}
+                cryQuizState={cryQuizState}
+                logs={logs}
+              />
+            )}
 
-          {(isCollectionView || isTeamView) && (
-            <Motion.div key="c" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-              {/* L'Explorateur de régions a été déplacé en filtre dans le Header */}
-              {isTeamView && <TeamSynergy team={team} isDarkMode={isDarkMode} />}
-              {isTeamView && team.length === 0 ? (
-                <div role="status" className="text-center py-32 bg-white dark:bg-slate-900 rounded-[4rem] border-4 border-dashed border-slate-100 dark:border-slate-800"><Users size={80} className="mx-auto text-slate-200 dark:text-slate-800 mb-6" /><h3 className="text-3xl font-black dark:text-white">Votre équipe est vide</h3><p className="text-slate-500 mt-2 font-bold">Explorez la collection pour sélectionner 6 champions.</p></div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-6 lg:gap-8 w-full max-w-[2000px] mx-auto">
-                  {loading && isCollectionView ? Array.from({ length: 8 }).map((_, i) => <PokemonSkeleton key={i} />) : (displayedPokemons || []).map((p, i) => (
-                    <PokemonCard key={p.id} pokemon={p} index={i} isDarkMode={isDarkMode} isCaught={(team || []).some(t => t.id === p.id)} isFavorite={(favorites || []).includes(p.id)} onClick={() => setSelectedPokemon(p)} onCatch={() => toggleTeam(p)} onToggleFavorite={() => toggleFavorite(p.id)} />
-                  ))}
-                </div>
-              )}
-              {isCollectionView && !loading && (!displayedPokemons || displayedPokemons.length === 0) && (
-                <div className="py-20 text-center opacity-50 font-black uppercase tracking-widest">Aucun Pokémon trouvé dans cette région</div>
-              )}
-              {isCollectionView && totalPages > 1 && (
-                <div className="mt-16 flex justify-center items-center gap-8 pb-10">
-                   <button type="button" aria-label="Page precedente" disabled={currentPage === 1} onClick={() => setPage(p => Math.max(1, p - 1))} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronLeft/></button>
-                   <span className="font-black text-2xl dark:text-white">{currentPage} / {totalPages}</span>
-                   <button type="button" aria-label="Page suivante" disabled={currentPage === totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronRight/></button>
-                </div>
-              )}
-            </Motion.div>
-          )}
+            {(isCollectionView || isTeamView) && (
+              <Motion.div key="c" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
+                {/* L'Explorateur de régions a été déplacé en filtre dans le Header */}
+                {isTeamView && <TeamSynergy team={team} isDarkMode={isDarkMode} />}
+                {isTeamView && team.length === 0 ? (
+                  <div role="status" className="text-center py-32 bg-white dark:bg-slate-900 rounded-[4rem] border-4 border-dashed border-slate-100 dark:border-slate-800"><Users size={80} className="mx-auto text-slate-200 dark:text-slate-800 mb-6" /><h3 className="text-3xl font-black dark:text-white">Votre équipe est vide</h3><p className="text-slate-500 mt-2 font-bold">Explorez la collection pour sélectionner 6 champions.</p></div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-6 lg:gap-8 w-full max-w-[2000px] mx-auto">
+                    {loading && isCollectionView ? Array.from({ length: 8 }).map((_, i) => <PokemonSkeleton key={i} />) : (displayedPokemons || []).map((p, i) => (
+                      <PokemonCard key={p.id} pokemon={p} index={i} isDarkMode={isDarkMode} isCaught={(team || []).some(t => t.id === p.id)} isFavorite={(favorites || []).includes(p.id)} onClick={() => setSelectedPokemon(p)} onCatch={() => toggleTeam(p)} onToggleFavorite={() => toggleFavorite(p.id)} />
+                    ))}
+                  </div>
+                )}
+                {isCollectionView && !loading && (!displayedPokemons || displayedPokemons.length === 0) && (
+                  <div className="py-20 text-center opacity-50 font-black uppercase tracking-widest">Aucun Pokémon trouvé dans cette région</div>
+                )}
+                {isCollectionView && totalPages > 1 && (
+                  <div className="mt-16 flex justify-center items-center gap-8 pb-10">
+                    <button type="button" aria-label="Page precedente" disabled={currentPage === 1} onClick={() => setPage(p => Math.max(1, p - 1))} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronLeft/></button>
+                    <span className="font-black text-2xl dark:text-white">{currentPage} / {totalPages}</span>
+                    <button type="button" aria-label="Page suivante" disabled={currentPage === totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronRight/></button>
+                  </div>
+                )}
+              </Motion.div>
+            )}
 
-          {activeTab === 'combat' && <BattleArena state={battleState} onStart={startBattle} teamLength={team.length} pokemons={pokemons} onManualMove={handleManualMove} setBattleState={setBattleState} />}
-          {activeTab === 'evolution-rush' && <EvolutionRush state={evolutionRushState} difficultyOptions={EVOLUTION_RUSH_DIFFICULTIES} currentBestStreak={evolutionRushState.bestStreaks?.[evolutionRushState.difficulty] ?? 0} onChangeDifficulty={handleEvolutionRushDifficultyChange} onSelect={handleEvolutionRushSelect} onRemove={handleEvolutionRushRemove} onClear={clearEvolutionRushSelection} onValidate={validateEvolutionRushOrder} onNext={() => startEvolutionRushRound()} onRestart={() => startEvolutionRushRound({ resetProgress: true })} isDarkMode={isDarkMode} />}
-          {activeTab === 'memory' && <PokeMemory state={memoryState} onCardClick={handleMemoryClick} onRestart={startMemoryGame} />}
-          {activeTab === 'quiz' && <TypeMasterQuiz state={quizState} onAnswer={handleQuizAnswer} onNext={startNewQuiz} isDarkMode={isDarkMode} />}
-          {activeTab === 'jeu' && <PokemonGame gameState={gameState} onGuess={handleGuess} onNext={startNewGame} isDarkMode={isDarkMode} />}
-          {activeTab === 'stat-clash' && <StatClash state={statClashState} onPick={handleStatClashPick} onNext={() => startStatClashRound()} onRestart={() => startStatClashRound(true)} isDarkMode={isDarkMode} />}
-          {activeTab === 'pokedle' && <Pokedle state={pokedleState} pokemons={pokemons} onGuess={submitPokedleGuess} onRestart={startPokedle} isDarkMode={isDarkMode} />}
-          {activeTab === 'cry-quiz' && <CryQuiz state={cryQuizState} onAnswer={handleCryAnswer} onNext={startCryQuiz} isDarkMode={isDarkMode} />}
+            {activeTab === 'combat' && <BattleArena state={battleState} onStart={startBattle} teamLength={team.length} pokemons={pokemons} onManualMove={handleManualMove} setBattleState={setBattleState} />}
+            {activeTab === 'evolution-rush' && <EvolutionRush state={evolutionRushState} difficultyOptions={EVOLUTION_RUSH_DIFFICULTIES} currentBestStreak={evolutionRushState.bestStreaks?.[evolutionRushState.difficulty] ?? 0} onChangeDifficulty={handleEvolutionRushDifficultyChange} onSelect={handleEvolutionRushSelect} onRemove={handleEvolutionRushRemove} onClear={clearEvolutionRushSelection} onValidate={validateEvolutionRushOrder} onNext={() => startEvolutionRushRound()} onRestart={() => startEvolutionRushRound({ resetProgress: true })} isDarkMode={isDarkMode} />}
+            {activeTab === 'memory' && <PokeMemory state={memoryState} onCardClick={handleMemoryClick} onRestart={startMemoryGame} />}
+            {activeTab === 'quiz' && <TypeMasterQuiz state={quizState} onAnswer={handleQuizAnswer} onNext={startNewQuiz} isDarkMode={isDarkMode} />}
+            {activeTab === 'jeu' && <PokemonGame gameState={gameState} onGuess={handleGuess} onNext={startNewGame} isDarkMode={isDarkMode} />}
+            {activeTab === 'stat-clash' && <StatClash state={statClashState} onPick={handleStatClashPick} onNext={() => startStatClashRound()} onRestart={() => startStatClashRound(true)} isDarkMode={isDarkMode} />}
+            {activeTab === 'pokedle' && <Pokedle state={pokedleState} pokemons={pokemons} onGuess={submitPokedleGuess} onRestart={startPokedle} isDarkMode={isDarkMode} />}
+            {activeTab === 'cry-quiz' && <CryQuiz state={cryQuizState} onAnswer={handleCryAnswer} onNext={startCryQuiz} isDarkMode={isDarkMode} />}
+          </Suspense>
         </AnimatePresence>
 
         <AnimatePresence>
-          {selectedPokemon && <PokemonDetails pokemon={selectedPokemon} isDarkMode={isDarkMode} pokemons={pokemons || []} onClose={() => setSelectedPokemon(null)} onNavigate={(p) => setSelectedPokemon(p)} onCatch={() => toggleTeam(selectedPokemon)} isCaught={(team || []).some(t => t.id === selectedPokemon.id)} isFavorite={(favorites || []).includes(selectedPokemon.id)} onToggleFavorite={() => toggleFavorite(selectedPokemon.id)} onCompare={() => { setComparedPokemon(selectedPokemon); setSelectedPokemon(null); }} />}
-          {comparedPokemon && <ComparisonModal p1={comparedPokemon} pokemons={pokemons || []} isDarkMode={isDarkMode} onClose={() => setComparedPokemon(null)} />}
+          <Suspense fallback={null}>
+            {selectedPokemon && <PokemonDetails pokemon={selectedPokemon} isDarkMode={isDarkMode} pokemons={pokemons || []} onClose={() => setSelectedPokemon(null)} onNavigate={(p) => setSelectedPokemon(p)} onCatch={() => toggleTeam(selectedPokemon)} isCaught={(team || []).some(t => t.id === selectedPokemon.id)} isFavorite={(favorites || []).includes(selectedPokemon.id)} onToggleFavorite={() => toggleFavorite(selectedPokemon.id)} onCompare={() => { setComparedPokemon(selectedPokemon); setSelectedPokemon(null); }} />}
+            {comparedPokemon && <ComparisonModal p1={comparedPokemon} pokemons={pokemons || []} isDarkMode={isDarkMode} onClose={() => setComparedPokemon(null)} />}
+          </Suspense>
         </AnimatePresence>
       </main>
     </div>
