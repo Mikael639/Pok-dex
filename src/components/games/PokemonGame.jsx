@@ -42,7 +42,11 @@ const PokemonGame = ({ gameState, onGuess, onNext, isDarkMode }) => {
                src={gameState.target.image} 
                alt={gameState.status === 'playing' ? '' : gameState.target.nom}
                aria-hidden={gameState.status === 'playing'}
-               className={`w-full h-full object-contain filter transition-all duration-1000 ${gameState.status === 'playing' ? 'brightness-0 contrast-200 blur-sm' : 'brightness-110 scale-105'}`} 
+               className={`w-full h-full object-contain filter transition-all duration-1000 ${
+                 gameState.status === 'playing' 
+                   ? `brightness-0 ${isDarkMode ? 'invert opacity-40' : ''} contrast-200 blur-sm` 
+                   : 'brightness-110 scale-105'
+               }`} 
              />
           </div>
 
