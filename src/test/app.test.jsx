@@ -69,9 +69,11 @@ describe('App integration', () => {
 
     await screen.findByText('Bulbizarre');
 
-    expect(screen.queryByPlaceholderText('Rechercher...')).not.toBeInTheDocument();
-    expect(screen.queryByText('Salameche')).not.toBeInTheDocument();
-    expect(screen.getByText(/Analyse de synergie/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByPlaceholderText('Rechercher...')).not.toBeInTheDocument();
+      expect(screen.queryByText('Salameche')).not.toBeInTheDocument();
+    });
+    expect(await screen.findByText(/Analyse de synergie/i)).toBeInTheDocument();
   });
 
   it('ouvre la comparaison depuis la fiche Pokemon et affiche les stats comparees', async () => {

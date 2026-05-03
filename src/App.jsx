@@ -259,9 +259,9 @@ function App() {
                 )}
                 {isCollectionView && totalPages > 1 && (
                   <div className="mt-16 flex justify-center items-center gap-8 pb-10">
-                    <button type="button" aria-label="Page precedente" disabled={currentPage === 1} onClick={() => setPage(p => Math.max(1, p - 1))} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronLeft/></button>
+                    <button type="button" aria-label="Page precedente" disabled={currentPage === 1} onClick={() => { setPage(p => Math.max(1, p - 1)); document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronLeft/></button>
                     <span className="font-black text-2xl dark:text-white">{currentPage} / {totalPages}</span>
-                    <button type="button" aria-label="Page suivante" disabled={currentPage === totalPages} onClick={() => setPage(p => Math.min(totalPages, p + 1))} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronRight/></button>
+                    <button type="button" aria-label="Page suivante" disabled={currentPage === totalPages} onClick={() => { setPage(p => Math.min(totalPages, p + 1)); document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronRight/></button>
                   </div>
                 )}
               </Motion.div>
