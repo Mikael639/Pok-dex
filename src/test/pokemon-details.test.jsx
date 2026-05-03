@@ -36,11 +36,21 @@ describe('PokemonDetails', () => {
 
   it("utilise le cache local des evolutions pour eviter un nouvel appel reseau", async () => {
     localStorage.setItem(
-      'evo_cache_1',
-      JSON.stringify([
-        { id: 1, nom: 'Bulbizarre', image: 'https://img.test/1.png', condition: null },
-        { id: 2, nom: 'Herbizarre', image: 'https://img.test/2.png', condition: 'Niv. 16' }
-      ])
+      'pokemon_details_cache_1',
+      JSON.stringify({
+        chain: [
+          { id: 1, nom: 'Bulbizarre', image: 'https://img.test/1.png', condition: null },
+          { id: 2, nom: 'Herbizarre', image: 'https://img.test/2.png', condition: 'Niv. 16' }
+        ],
+        technicalData: {
+          eggGroups: ['monster'],
+          genderRate: 1,
+          hatchCounter: 20,
+          captureRate: 45,
+          baseHappiness: 70,
+          growthRate: 'medium slow'
+        }
+      })
     );
 
     installPokemonFetchMock();

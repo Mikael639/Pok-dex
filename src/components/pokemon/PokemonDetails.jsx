@@ -18,15 +18,21 @@ const floatingAnimation = {
   },
 };
 
-const getCachedEvolutionChain = (pokemonId) => {
+const getCachedPokemonData = (pokemonId) => {
   try {
-    const cachedData = localStorage.getItem(`evo_cache_${pokemonId}`);
+    const cachedData = localStorage.getItem(`pokemon_details_cache_${pokemonId}`);
     if (!cachedData) return null;
-
-    const parsedData = JSON.parse(cachedData);
-    return Array.isArray(parsedData) ? parsedData : null;
+    return JSON.parse(cachedData);
   } catch (_error) {
     return null;
+  }
+};
+
+const setCachedPokemonData = (pokemonId, data) => {
+  try {
+    localStorage.setItem(`pokemon_details_cache_${pokemonId}`, JSON.stringify(data));
+  } catch (_error) {
+    // Silent fail
   }
 };
 
@@ -58,12 +64,12 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
   const [activeSubTab, setActiveSubTab] = useState('stats'); // 'stats' | 'attaques' | 'infos'
   const [activeMoveFilter, setActiveMoveFilter] = useState('all'); // 'all' | 'physical' | 'special' | 'status'
   const [activeLearnMethod, setActiveLearnMethod] = useState('level-up'); // 'level-up' | 'machine' | 'egg' | 'tutor'
-  const [evoChain, setEvoChain] = useState(() => getCachedEvolutionChain(pokemon.id) ?? []);
-  const [loadingEvo, setLoadingEvo] = useState(() => !getCachedEvolutionChain(pokemon.id));
+  const [evoChain, setEvoChain] = useState(() => getCachedPokemonData(pokemon.id)?.chain ?? []);
+  const [loadingEvo, setLoadingEvo] = useState(() => !getCachedPokemonData(pokemon.id));
   const [movesByMethod, setMovesByMethod] = useState({ 'level-up': [], 'machine': [], 'egg': [], 'tutor': [] });
   const [isCategorized, setIsCategorized] = useState(false);
   const [loadingMoves, setLoadingMoves] = useState(false);
-  const [technicalData, setTechnicalData] = useState(null);
+  const [technicalData, setTechnicalData] = useState(() => getCachedPokemonData(pokemon.id)?.technicalData ?? null);
   const modalRef = useRef(null);
 
   const { playCry, isPlaying } = usePokemonCry(pokemon.id);
@@ -79,27 +85,12 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
     : pokemon.image;
 
   useEffect(() => {
-    const cacheKey = `evo_cache_${pokemon.id}`;
-    const cachedChain = getCachedEvolutionChain(pokemon.id);
+    const cached = getCachedPokemonData(pokemon.id);
 
-    if (cachedChain) {
-      setEvoChain(cachedChain);
+    if (cached) {
+      setEvoChain(cached.chain || []);
+      setTechnicalData(cached.technicalData || null);
       setLoadingEvo(false);
-      // We still need to fetch technical data if it's not part of the evo cache
-      if (!technicalData) {
-        fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}/`)
-          .then(r => r.json())
-          .then(speciesRes => {
-            setTechnicalData({
-              eggGroups: speciesRes.egg_groups.map(g => g.name),
-              genderRate: speciesRes.gender_rate,
-              hatchCounter: speciesRes.hatch_counter,
-              captureRate: speciesRes.capture_rate,
-              baseHappiness: speciesRes.base_happiness,
-              growthRate: speciesRes.growth_rate.name.replace(/-/g, ' ')
-            });
-          });
-      }
       return;
     }
 
@@ -123,7 +114,7 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
             if (d.known_move) return 'Capacite';
             return 'Niveau';
           }
-          if (d.trigger.name === 'use-item') return d.item.name.replace(/-/g, ' ').toUpperCase();
+          if (d.trigger.name === 'use-item') return d.item?.name.replace(/-/g, ' ').toUpperCase() || 'Objet';
           if (d.trigger.name === 'trade') return 'Echange';
           return d.trigger.name;
         };
@@ -143,18 +134,19 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
         };
 
         await processNode(curr);
-        setEvoChain(chain);
-        localStorage.setItem(cacheKey, JSON.stringify(chain));
 
-        // Store technical data from species
-        setTechnicalData({
-          eggGroups: speciesRes.egg_groups.map(g => g.name),
+        const techData = {
+          eggGroups: speciesRes.egg_groups?.map(g => g.name) || [],
           genderRate: speciesRes.gender_rate,
           hatchCounter: speciesRes.hatch_counter,
           captureRate: speciesRes.capture_rate,
           baseHappiness: speciesRes.base_happiness,
-          growthRate: speciesRes.growth_rate.name.replace(/-/g, ' ')
-        });
+          growthRate: speciesRes.growth_rate?.name.replace(/-/g, ' ') || 'Inconnu'
+        };
+
+        setEvoChain(chain);
+        setTechnicalData(techData);
+        setCachedPokemonData(pokemon.id, { chain, technicalData: techData });
       } catch (err) {
         console.error("Erreur de recuperation des evolutions :", err);
       } finally {

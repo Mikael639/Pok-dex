@@ -20,6 +20,11 @@ export function usePokedexData({ addLog } = {}) {
   // Persistence
   useEffect(() => { localStorage.setItem('pokedexTeam', JSON.stringify(team)); }, [team]);
   useEffect(() => { localStorage.setItem('pokedexFavorites', JSON.stringify(favorites)); }, [favorites]);
+  
+  // Reset page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [searchQuery, typeFilter, isFavoritesOnly]);
 
   // Loading Data
   useEffect(() => {

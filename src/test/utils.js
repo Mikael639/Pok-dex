@@ -4,7 +4,13 @@ import { EVOLUTION_CHAINS, TEST_POKEMONS } from './fixtures/pokemonFixtures';
 const buildSpeciesResponse = (id) => ({
   evolution_chain: {
     url: `https://pokeapi.co/api/v2/evolution-chain/${id}/`
-  }
+  },
+  egg_groups: [{ name: 'monster' }],
+  gender_rate: 1,
+  hatch_counter: 20,
+  capture_rate: 45,
+  base_happiness: 70,
+  growth_rate: { name: 'medium-slow' }
 });
 
 const createFetchResponse = (payload) => ({
