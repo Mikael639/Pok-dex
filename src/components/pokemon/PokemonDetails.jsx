@@ -135,13 +135,18 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
 
         await processNode(curr);
 
+        const pokemonRes = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.id}/`).then((r) => r.json());
+
         const techData = {
           eggGroups: speciesRes.egg_groups?.map(g => g.name) || [],
           genderRate: speciesRes.gender_rate,
           hatchCounter: speciesRes.hatch_counter,
           captureRate: speciesRes.capture_rate,
           baseHappiness: speciesRes.base_happiness,
-          growthRate: speciesRes.growth_rate?.name.replace(/-/g, ' ') || 'Inconnu'
+          growthRate: speciesRes.growth_rate?.name.replace(/-/g, ' ') || 'Inconnu',
+          genus: speciesRes.genera?.find(g => g.language.name === 'fr')?.genus || 'Inconnu',
+          height: pokemonRes.height / 10,
+          weight: pokemonRes.weight / 10,
         };
 
         setEvoChain(chain);
@@ -595,6 +600,42 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
                 transition={{ duration: 0.2 }}
                 className="space-y-6"
               >
+                {/* --- SECTION DESCRIPTION --- */}
+                <div className="relative overflow-hidden rounded-[2rem] border border-slate-100 bg-slate-50/30 p-5 dark:border-slate-800 dark:bg-slate-900/30">
+                  <div className="absolute -right-4 -top-4 opacity-5">
+                    <BookOpen size={120} />
+                  </div>
+                  <h3 className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-rose-500">
+                    <BookOpen size={14} /> Description
+                  </h3>
+                  <p className="relative z-10 text-sm font-medium leading-relaxed text-slate-600 dark:text-slate-300">
+                    {pokemon.description || "Aucune description disponible pour ce Pokémon."}
+                  </p>
+                </div>
+
+                {/* --- SECTION PHYSIQUE --- */}
+                <div>
+                  <h3 className="mb-4 text-base font-black uppercase tracking-widest lg:text-lg">Données Physiques</h3>
+                  {!technicalData ? (
+                    <div className="flex justify-center py-8"><PokeBallLoader size={40} showText={false} /></div>
+                  ) : (
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-rose-500/20 dark:border-slate-800 dark:bg-slate-900/50">
+                        <span className="mb-1 text-[9px] font-black uppercase tracking-widest text-slate-400">Taille</span>
+                        <span className="text-lg font-black">{technicalData.height} m</span>
+                      </div>
+                      <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-rose-500/20 dark:border-slate-800 dark:bg-slate-900/50">
+                        <span className="mb-1 text-[9px] font-black uppercase tracking-widest text-slate-400">Poids</span>
+                        <span className="text-lg font-black">{technicalData.weight} kg</span>
+                      </div>
+                      <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-rose-500/20 dark:border-slate-800 dark:bg-slate-900/50">
+                        <span className="mb-1 text-[9px] font-black uppercase tracking-widest text-slate-400">Catégorie</span>
+                        <span className="text-[10px] font-black text-center uppercase leading-tight">{technicalData.genus.replace('Pokémon ', '')}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <div>
                   <h3 className="mb-4 text-base font-black uppercase tracking-widest lg:text-lg">Données Techniques</h3>
                   {!technicalData ? (
