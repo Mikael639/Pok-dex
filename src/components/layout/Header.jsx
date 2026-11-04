@@ -31,7 +31,7 @@ export default function Header({
   activeRegion,
   setActiveRegion
 }) {
-  const { trainerTitle, trainerScore, nextTitleThreshold } = trainerStats || {};
+  const { trainerTitle, trainerScore } = trainerStats || {};
   const [showSuggestions, setShowSuggestions] = useState(false);
   const activeTabTitle = TAB_TITLES[activeTab] ?? activeTab.toUpperCase();
 

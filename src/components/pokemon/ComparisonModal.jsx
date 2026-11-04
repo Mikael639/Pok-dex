@@ -1,10 +1,10 @@
 // src/components/pokemon/ComparisonModal.jsx
 import React from 'react';
-import { motion as Motion, AnimatePresence } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import { X, Search, Volume2, Swords, ShieldAlert } from 'lucide-react';
 import useAccessibleModal from '../../hooks/useAccessibleModal';
 import usePokemonCry from '../../hooks/usePokemonCry';
-import { TYPE_CHART, TYPE_COLORS } from '../../constants/pokemon';
+import { TYPE_CHART } from '../../constants/pokemon';
 
 const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
   const modalRef = React.useRef(null);
@@ -34,9 +34,10 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
   const { playCry: playCryP2 } = usePokemonCry(p2?.id);
 
   // Play P2 sound on selection
+  const p2Id = p2?.id;
   React.useEffect(() => {
-    if (p2) playCryP2();
-  }, [p2?.id, playCryP2]);
+    if (p2Id) playCryP2();
+  }, [p2Id, playCryP2]);
 
   // Initial sound for P1
   React.useEffect(() => {

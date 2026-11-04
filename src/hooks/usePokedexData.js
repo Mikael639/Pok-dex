@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { TYPE_COLORS, TYPE_CHART } from '../constants/pokemon';
+import { readJSON } from '../lib/storage';
 
 export function usePokedexData({ addLog } = {}) {
   const [pokemons, setPokemons] = useState([]);
@@ -8,8 +8,8 @@ export function usePokedexData({ addLog } = {}) {
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [comparedPokemon, setComparedPokemon] = useState(null);
   
-  const [team, setTeam] = useState(() => JSON.parse(localStorage.getItem('pokedexTeam') || '[]'));
-  const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('pokedexFavorites') || '[]'));
+  const [team, setTeam] = useState(() => (() => { const v = readJSON('pokedexTeam', []); return Array.isArray(v) ? v : []; })());
+  const [favorites, setFavorites] = useState(() => (() => { const v = readJSON('pokedexFavorites', []); return Array.isArray(v) ? v : []; })());
   
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('Tous');
@@ -89,25 +89,11 @@ export function usePokedexData({ addLog } = {}) {
     [pokemons, searchQuery]
   );
 
-  const teamAnalysis = useMemo(() => {
-    if (team.length === 0) return null;
-    const covered = {};
-    Object.keys(TYPE_COLORS).forEach(defType => {
-      let best = 1;
-      team.forEach(p => p.types.forEach(atk => {
-        const mult = (TYPE_CHART[atk.nom] && TYPE_CHART[atk.nom][defType]) ?? 1;
-        if (mult > best) best = mult;
-      }));
-      covered[defType] = best;
-    });
-    return covered;
-  }, [team]);
-
   return {
     pokemons, loading, 
     selectedPokemon, setSelectedPokemon, 
     comparedPokemon, setComparedPokemon,
-    team, toggleTeam, teamAnalysis,
+    team, toggleTeam,
     favorites, toggleFavorite,
     searchQuery, setSearchQuery, typeFilter, setTypeFilter, 
     isFavoritesOnly, setIsFavoritesOnly, sortBy, setSortBy, page, setPage,

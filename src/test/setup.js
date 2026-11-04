@@ -43,10 +43,18 @@ vi.mock('framer-motion', () => {
     };
   };
 
+  // Les composants doivent être mis en cache par balise : sinon chaque rendu crée un
+  // nouveau type de composant et React démonte/remonte tout le sous-arbre.
+  const motionComponents = new Map();
   const motion = new Proxy(
     {},
     {
-      get: (_target, tag) => createMotionComponent(tag)
+      get: (_target, tag) => {
+        if (!motionComponents.has(tag)) {
+          motionComponents.set(tag, createMotionComponent(tag));
+        }
+        return motionComponents.get(tag);
+      }
     }
   );
 

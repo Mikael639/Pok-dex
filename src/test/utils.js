@@ -10,8 +10,11 @@ const buildSpeciesResponse = (id) => ({
   hatch_counter: 20,
   capture_rate: 45,
   base_happiness: 70,
-  growth_rate: { name: 'medium-slow' }
+  growth_rate: { name: 'medium-slow' },
+  genera: [{ language: { name: 'fr' }, genus: 'Pokémon Graine' }]
 });
+
+const buildPokemonResponse = () => ({ height: 7, weight: 69, moves: [] });
 
 const createFetchResponse = (payload) => ({
   ok: true,
@@ -32,6 +35,10 @@ export function installPokemonFetchMock() {
       if (speciesMatch) {
         const id = Number(speciesMatch[1]);
         return createFetchResponse(buildSpeciesResponse(id));
+      }
+
+      if (/\/pokemon\/\d+\/?$/.test(url)) {
+        return createFetchResponse(buildPokemonResponse());
       }
 
       const evolutionMatch = url.match(/evolution-chain\/(\d+)/);

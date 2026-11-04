@@ -1,5 +1,5 @@
 // src/components/pokemon/PokemonDetails.jsx
-import React, { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import PokeBallLoader from '../common/PokeBallLoader';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles, Star, Heart, ChevronRight, Scale, Volume2, Swords, Zap, ShieldAlert, BookOpen, Info, Dna, Target, Smile, TrendingUp } from 'lucide-react';
@@ -23,7 +23,7 @@ const getCachedPokemonData = (pokemonId) => {
     const cachedData = localStorage.getItem(`pokemon_details_cache_${pokemonId}`);
     if (!cachedData) return null;
     return JSON.parse(cachedData);
-  } catch (_error) {
+  } catch {
     return null;
   }
 };
@@ -31,7 +31,7 @@ const getCachedPokemonData = (pokemonId) => {
 const setCachedPokemonData = (pokemonId, data) => {
   try {
     localStorage.setItem(`pokemon_details_cache_${pokemonId}`, JSON.stringify(data));
-  } catch (_error) {
+  } catch {
     // Silent fail
   }
 };
@@ -41,7 +41,7 @@ const getCachedMove = (moveUrl) => {
     const moveId = moveUrl.split('/').filter(Boolean).pop();
     const cachedData = localStorage.getItem(`move_cache_${moveId}`);
     return cachedData ? JSON.parse(cachedData) : null;
-  } catch (_error) {
+  } catch {
     return null;
   }
 };
@@ -50,7 +50,7 @@ const setCachedMove = (moveUrl, data) => {
   try {
     const moveId = moveUrl.split('/').filter(Boolean).pop();
     localStorage.setItem(`move_cache_${moveId}`, JSON.stringify(data));
-  } catch (_error) {
+  } catch {
     // Fail silently if localStorage is full
   }
 };
@@ -222,7 +222,7 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
 
                 setCachedMove(m.url, moveData);
                 return { ...m, ...moveData };
-              } catch (err) {
+              } catch {
                 return { ...m, displayName: m.name.replace(/-/g, ' '), detailsLoaded: true };
               }
             })
@@ -239,6 +239,8 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
     };
 
     fetchMoves();
+  // movesByMethod est volontairement exclu : l'effet le met à jour lui-même (boucle infinie sinon).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSubTab, activeLearnMethod, pokemon.id, isCategorized]);
 
   const filteredMoves = useMemo(() => {

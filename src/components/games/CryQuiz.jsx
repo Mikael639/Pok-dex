@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { Volume2, Play, Check, X, RefreshCw, Trophy } from 'lucide-react';
+import { motion as Motion } from 'framer-motion';
+import { Volume2, Play, RefreshCw } from 'lucide-react';
 
-export default function CryQuiz({ state, onAnswer, onNext, isDarkMode }) {
+export default function CryQuiz({ state, onAnswer, onNext }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 

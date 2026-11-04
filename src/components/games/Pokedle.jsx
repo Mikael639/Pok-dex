@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { Search, ChevronUp, ChevronDown, Check, X, Hash } from 'lucide-react';
+import { Search, ChevronUp, ChevronDown, Check, X } from 'lucide-react';
 import { getGeneration } from '../../constants/gameMeta';
-import { TYPE_COLORS } from '../../constants/pokemon';
 
-export default function Pokedle({ state, pokemons, onGuess, onRestart, isDarkMode }) {
+export default function Pokedle({ state, pokemons, onGuess }) {
   const [search, setSearch] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -108,7 +107,7 @@ export default function Pokedle({ state, pokemons, onGuess, onRestart, isDarkMod
         </div>
 
         <AnimatePresence initial={false}>
-          {[...state.guesses].reverse().map((guess, idx) => (
+          {[...state.guesses].reverse().map((guess) => (
             <Motion.div
               key={guess.pokemon.id}
               initial={{ opacity: 0, y: 10 }}

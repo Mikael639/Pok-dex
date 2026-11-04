@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { Zap, Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Star, Shield, Flame, Crown, LayoutGrid, Music } from 'lucide-react';
+import { motion as Motion } from 'framer-motion';
+import { Zap, Activity, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Star, Shield, Flame, Crown, LayoutGrid, Music } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
 import { EXPERIENCE_META } from '../../constants/gameMeta';
 import { QuickCard } from '../common/Cards';
@@ -16,7 +16,6 @@ export default function Dashboard({
   statClashState,
   gameState,
   quizState,
-  todayKey,
   setSelectedPokemon,
   pokedleState,
   cryQuizState,
@@ -70,7 +69,7 @@ export default function Dashboard({
     <Motion.div key="h" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} className="space-y-12 pb-20">
        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.45fr_0.95fr]">
           <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-900 shadow-2xl dark:border-slate-800 lg:rounded-[4rem]">
-            <img src="/images/home_aesthetic.png" loading="lazy" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
+            <img src="/images/home_aesthetic.webp" loading="lazy" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/55 to-rose-950/30" />
             <div className="relative flex min-h-[320px] flex-col justify-between p-6 lg:min-h-[450px] lg:p-12">
                <h1 className="text-4xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight uppercase font-['Outfit'] italic drop-shadow-2xl">Écrivez votre <br/><span className="text-rose-500">Légende</span>.</h1>

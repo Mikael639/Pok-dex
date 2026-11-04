@@ -78,13 +78,16 @@ npm run test:watch
   - thème
   - activité quotidienne
   - dernier onglet joué
-- Les cris Pokémon utilisés dans le quiz audio proviennent de PokeAPI
+- Les fiches détaillées (évolutions, attaques, taille/poids) et les cris Pokémon du quiz audio sont récupérés depuis PokeAPI, puis mis en cache dans le `localStorage`
+- Les lectures du `localStorage` sont tolérantes : une donnée corrompue est ignorée au lieu de faire planter l'application
 
 ## Arborescence utile
 
 - `src/App.jsx` : orchestration générale de l'application
 - `src/components/` : pages, layout, modales, cartes et mini-jeux
 - `src/hooks/` : logique métier, persistance locale et gestion des jeux
+- `src/lib/` : utilitaires partagés (`cn`, lecture sûre du `localStorage`)
+- `src/utils/` : logique pure des mini-jeux
 - `src/constants/` : métadonnées des modes, types et générations
 - `src/test/` : tests Vitest et Testing Library
 - `public/pokedex.json` : dataset local des 1025 Pokémon
@@ -92,4 +95,10 @@ npm run test:watch
 
 ## Vérification
 
-Le `README` a été remis à jour en fonction de l'état actuel du projet et des écrans générés depuis l'application locale le 22 avril 2026.
+Avant de proposer une modification, ces trois commandes doivent passer :
+
+```bash
+npm run lint
+npm run test
+npm run build
+```

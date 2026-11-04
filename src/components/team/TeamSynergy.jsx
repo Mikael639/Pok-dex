@@ -26,7 +26,7 @@ export default function TeamSynergy({ team, isDarkMode }) {
       });
     });
 
-    const criticalWeaknesses = Object.entries(weaknesses).filter(([_, count]) => count >= 3).sort((a, b) => b[1] - a[1]);
+    const criticalWeaknesses = Object.entries(weaknesses).filter(([, count]) => count >= 3).sort((a, b) => b[1] - a[1]);
     const topResistances = Object.entries(resistances).sort((a, b) => b[1] - a[1]).slice(0, 4);
 
     return { weaknesses, resistances, criticalWeaknesses, topResistances };

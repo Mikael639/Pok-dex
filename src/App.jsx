@@ -34,7 +34,6 @@ const StatClash = lazy(() => import('./components/games/StatClash'));
 const TypeMasterQuiz = lazy(() => import('./components/games/TypeMasterQuiz'));
 const Pokedle = lazy(() => import('./components/games/Pokedle'));
 const CryQuiz = lazy(() => import('./components/games/CryQuiz'));
-import { TYPE_COLORS } from './constants/pokemon';
 
 function App() {
   // --- ÉTATS UI & LAYOUT ---
@@ -53,14 +52,14 @@ function App() {
   const isSidebarVisible = isDesktopViewport || isMobileMenuOpen;
 
   // --- LOG ACTIVITY ---
-  const { logs, addLog, clearLogs } = useActivityLog();
+  const { logs, addLog } = useActivityLog();
 
   // --- HOOKS GLOBAUX ---
   const {
     pokemons, loading, 
     selectedPokemon, setSelectedPokemon, 
     comparedPokemon, setComparedPokemon,
-    team, toggleTeam, teamAnalysis,
+    team, toggleTeam,
     favorites, toggleFavorite,
     searchQuery, setSearchQuery, typeFilter, setTypeFilter, 
     isFavoritesOnly, setIsFavoritesOnly, sortBy, setSortBy, page, setPage,
@@ -68,7 +67,7 @@ function App() {
   } = usePokedexData({ addLog });
 
   const {
-    todayKey, dailyActivity, markDailyFlag, dailyFeaturedPokemon, dailyChallenge, isDailyChallengeComplete
+    markDailyFlag, dailyFeaturedPokemon, dailyChallenge, isDailyChallengeComplete
   } = useDailyActivity(pokemons, selectedPokemon, favorites);
 
   const {
@@ -78,7 +77,7 @@ function App() {
     evolutionRushState, startEvolutionRushRound, handleEvolutionRushDifficultyChange, handleEvolutionRushSelect, handleEvolutionRushRemove, clearEvolutionRushSelection, validateEvolutionRushOrder,
     memoryState, startMemoryGame, handleMemoryClick,
     battleState, setBattleState, battleStats, startBattle, handleManualMove,
-    pokedleState, submitPokedleGuess, startPokedle,
+    pokedleState, submitPokedleGuess,
     cryQuizState, startCryQuiz, handleCryAnswer
   } = useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTab: (tab) => setActiveTab(tab), addLog });
 
@@ -209,6 +208,8 @@ function App() {
           sortBy={sortBy}
           setSortBy={setSortBy}
           isFavoritesOnly={isFavoritesOnly}
+          setIsFavoritesOnly={setIsFavoritesOnly}
+          getRandomPokemon={getRandomPokemon}
           setPage={setPage}
           isDarkMode={isDarkMode}
           trainerStats={trainerStats}
@@ -233,7 +234,6 @@ function App() {
                 dailyChallenge={dailyChallenge}
                 handleDailyChallengeAction={handleDailyChallengeAction}
                 isDailyChallengeComplete={isDailyChallengeComplete}
-                todayKey={todayKey}
                 setSelectedPokemon={setSelectedPokemon}
                 pokedleState={pokedleState}
                 cryQuizState={cryQuizState}
@@ -273,8 +273,8 @@ function App() {
             {activeTab === 'quiz' && <TypeMasterQuiz state={quizState} onAnswer={handleQuizAnswer} onNext={startNewQuiz} isDarkMode={isDarkMode} />}
             {activeTab === 'jeu' && <PokemonGame gameState={gameState} onGuess={handleGuess} onNext={startNewGame} isDarkMode={isDarkMode} />}
             {activeTab === 'stat-clash' && <StatClash state={statClashState} onPick={handleStatClashPick} onNext={() => startStatClashRound()} onRestart={() => startStatClashRound(true)} isDarkMode={isDarkMode} />}
-            {activeTab === 'pokedle' && <Pokedle state={pokedleState} pokemons={pokemons} onGuess={submitPokedleGuess} onRestart={startPokedle} isDarkMode={isDarkMode} />}
-            {activeTab === 'cry-quiz' && <CryQuiz state={cryQuizState} onAnswer={handleCryAnswer} onNext={startCryQuiz} isDarkMode={isDarkMode} />}
+            {activeTab === 'pokedle' && <Pokedle state={pokedleState} pokemons={pokemons} onGuess={submitPokedleGuess} />}
+            {activeTab === 'cry-quiz' && <CryQuiz state={cryQuizState} onAnswer={handleCryAnswer} onNext={startCryQuiz} />}
           </Suspense>
         </AnimatePresence>
 

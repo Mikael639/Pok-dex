@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useEffectEvent } from 'react';
 import { INITIAL_BATTLE_STATE, getGeneration } from '../constants/gameMeta';
 import { TYPE_CHART } from '../constants/pokemon';
+import { readJSON } from '../lib/storage';
 import { 
   getEvolutionRushDifficulty, 
   getInitialEvolutionRushBestStreaks, 
@@ -15,7 +16,7 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
   const [todayKey] = useState(() => getTodayKey());
 
   // --- ÉTATS ---
-  const [battleStats, setBattleStats] = useState(() => JSON.parse(localStorage.getItem('pokedexBattleStats') || '{"wins": 0, "losses": 0}'));
+  const [battleStats, setBattleStats] = useState(() => readJSON('pokedexBattleStats', { wins: 0, losses: 0 }));
   const [memoryState, setMemoryState] = useState({ cards: [], flipped: [], solved: [], moves: 0, startTime: null, endTime: null });
   const [gameState, setGameState] = useState({
     target: null, choices: [], status: 'playing', score: 0, streak: 0, bestStreak: 0, 
@@ -40,7 +41,7 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
   });
 
   const [pokedleState, setPokedleState] = useState(() => {
-    const saved = JSON.parse(localStorage.getItem(`pokedleState_${getTodayKey()}`) || '{"target": null, "guesses": [], "status": "playing"}');
+    const saved = readJSON(`pokedleState_${getTodayKey()}`, { target: null, guesses: [], status: 'playing' });
     return saved;
   });
 
@@ -281,7 +282,7 @@ export function useGames({ pokemons, team, markDailyFlag, activeTab, setActiveTa
         } else return { ...s, playerTeam: nextPlayerTeam, currentTurn: 'player', logs: newLogs, attackAnim: animData };
       }
     });
-  }, []);
+  }, [addLog]);
 
   const runAutomatedBattleTurn = useEffectEvent(() => {
     handleManualMove('normal');
