@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { readJSON } from '../lib/storage';
 
 /**
  * Hook gérant la timeline d'activités épiques du Dresseur.
@@ -6,8 +7,8 @@ import { useState, useCallback, useEffect } from 'react';
  */
 export function useActivityLog() {
   const [logs, setLogs] = useState(() => {
-    const saved = localStorage.getItem('pokedex_activity_log');
-    return saved ? JSON.parse(saved) : [];
+    const saved = readJSON('pokedex_activity_log', []);
+    return Array.isArray(saved) ? saved : [];
   });
 
   // Sauvegarde à chaque changement
@@ -21,7 +22,7 @@ export function useActivityLog() {
    */
   const addLog = useCallback((type, message, metadata = null) => {
     const newLog = {
-      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      id: Date.now().toString() + Math.random().toString(36).slice(2, 11),
       type,
       message,
       metadata,

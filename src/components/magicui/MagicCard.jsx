@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef } from "react";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import React, { useCallback, useEffect } from "react";
+import { motion as Motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { cn } from "../../lib/utils";
 
 /**
@@ -13,7 +13,6 @@ export function MagicCard({
   className,
   gradientSize = 200,
   gradientColor = "#ffffff20",
-  gradientOpacity = 0.8,
   onClick,
 }) {
   const mouseX = useMotionValue(-gradientSize);
@@ -31,7 +30,7 @@ export function MagicCard({
   const handleMouseLeave = useCallback(() => {
     mouseX.set(-gradientSize);
     mouseY.set(-gradientSize);
-  }, [mouseX, gradientSize]);
+  }, [mouseX, mouseY, gradientSize]);
 
   useEffect(() => {
     mouseX.set(-gradientSize);
@@ -49,7 +48,7 @@ export function MagicCard({
       )}
     >
       <div className="relative z-10 w-full">{children}</div>
-      <motion.div
+      <Motion.div
         className="pointer-events-none absolute -inset-px rounded-[3rem] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background: useMotionTemplate`

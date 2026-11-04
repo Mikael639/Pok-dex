@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { Volume2, Play, Check, X, RefreshCw, Trophy } from 'lucide-react';
+import { motion as Motion } from 'framer-motion';
+import { Volume2, Play, RefreshCw } from 'lucide-react';
 
-export default function CryQuiz({ state, onAnswer, onNext, isDarkMode }) {
+export default function CryQuiz({ state, onAnswer, onNext }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -38,12 +38,12 @@ export default function CryQuiz({ state, onAnswer, onNext, isDarkMode }) {
           <Motion.div
             animate={isPlaying ? { scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] } : {}}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="absolute -inset-8 bg-rose-500/20 rounded-full blur-3xl"
+            className="absolute -inset-8 bg-brand-500/20 rounded-full blur-3xl"
           />
           <button
             onClick={playCry}
             disabled={!cryUrl || state.status !== 'playing'}
-            className="relative z-10 w-32 h-32 bg-rose-500 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 active:scale-95 disabled:opacity-50 disabled:scale-100"
+            className="relative z-10 w-32 h-32 bg-brand-500 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 active:scale-95 disabled:opacity-50 disabled:scale-100"
           >
             {isPlaying ? <Volume2 size={48} className="animate-pulse" /> : <Play size={48} className="ml-2" />}
           </button>
@@ -57,7 +57,7 @@ export default function CryQuiz({ state, onAnswer, onNext, isDarkMode }) {
            <div className="w-px h-12 bg-slate-100 dark:bg-slate-800" />
            <div className="text-center px-4">
               <div className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 mb-2">Milleur record</div>
-              <div className="text-4xl font-black text-rose-500 tabular-nums">{state.highscore}</div>
+              <div className="text-4xl font-black text-brand-500 tabular-nums">{state.highscore}</div>
            </div>
         </div>
       </div>
@@ -75,8 +75,8 @@ export default function CryQuiz({ state, onAnswer, onNext, isDarkMode }) {
               onClick={() => onAnswer(p.id)}
               className={`group relative aspect-square bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 shadow-2xl transition-all border border-slate-100 dark:border-slate-800 overflow-hidden ${
                 reveal 
-                  ? (isCorrect ? 'border-emerald-500 ring-8 ring-emerald-500/10 scale-105 shadow-emerald-500/20' : (isSelected ? 'border-rose-500 grayscale' : 'border-transparent opacity-30 scale-95'))
-                  : 'border-transparent hover:border-rose-400 hover:-translate-y-3 hover:shadow-rose-500/10'
+                  ? (isCorrect ? 'border-emerald-500 ring-8 ring-emerald-500/10 scale-105 shadow-emerald-500/20' : (isSelected ? 'border-brand-500 grayscale' : 'border-transparent opacity-30 scale-95'))
+                  : 'border-transparent hover:border-brand-400 hover:-translate-y-3 hover:shadow-brand-500/10'
               }`}
             >
               <div className="relative z-10 h-full flex flex-col items-center justify-center">
@@ -90,14 +90,14 @@ export default function CryQuiz({ state, onAnswer, onNext, isDarkMode }) {
                 
                 {reveal && (
                   <Motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="absolute inset-x-0 -bottom-2 text-center">
-                     <span className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-xl ${isCorrect ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`}>
+                     <span className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-xl ${isCorrect ? 'bg-emerald-500 text-white' : 'bg-brand-500 text-white'}`}>
                         {p.nom}
                      </span>
                   </Motion.div>
                 )}
               </div>
               
-              <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity ${isCorrect ? 'from-emerald-500' : 'from-rose-500'}`} />
+              <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity ${isCorrect ? 'from-emerald-500' : 'from-brand-500'}`} />
             </button>
           );
         })}

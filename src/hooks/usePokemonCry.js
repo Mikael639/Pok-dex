@@ -34,7 +34,9 @@ export default function usePokemonCry(pokemonId) {
         }
       };
     }
-  }, [pokemonId]); // Deliberately not including isPlaying
+  // isPlaying est volontairement exclu : il ne doit pas relancer l'initialisation de l'audio.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pokemonId]);
 
   const playCry = useCallback(() => {
     if (audioRef.current && pokemonId) {

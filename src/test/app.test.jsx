@@ -5,7 +5,7 @@ import App from '../App';
 import { TEST_POKEMONS } from './fixtures/pokemonFixtures';
 import { installPokemonFetchMock } from './utils';
 
-const DAILY_CHALLENGE_CTA_PATTERN = /Voir le Pokemon du jour|Ouvrir la fiche du jour|Lancer le quiz|Jouer a Stat Clash|Ouvrir Evolution Rush/i;
+const DAILY_CHALLENGE_CTA_PATTERN = /Voir le Pokemon du jour|Ouvrir la fiche du jour|Ouvrir Evolution Rush/i;
 
 afterEach(() => {
   vi.useRealTimers();
@@ -42,12 +42,6 @@ async function openBattleTab(user) {
   const navigation = screen.getByRole('navigation');
   await user.click(within(navigation).getByRole('button', { name: /Ar.ne Battle/i }));
   await screen.findByRole('heading', { name: /Arene Master/i });
-}
-
-async function openStatClashTab(user) {
-  const navigation = screen.getByRole('navigation');
-  await user.click(within(navigation).getByRole('button', { name: /Stat Clash/i }));
-  await screen.findByText(/Quelle equipe domine cette statistique/i);
 }
 
 async function openEvolutionRushTab(user) {
@@ -131,21 +125,6 @@ describe('App integration', () => {
     expect(screen.getByRole('button', { name: /Attaque/i })).toBeInTheDocument();
   });
 
-  it('ouvre Stat Clash et revele une manche apres un choix', async () => {
-    const user = userEvent.setup();
-
-    await renderApp();
-    await openStatClashTab(user);
-
-    const choices = screen.getAllByRole('button', { name: /Choisir /i });
-    expect(choices).toHaveLength(2);
-
-    await user.click(choices[0]);
-
-    expect(await screen.findByRole('button', { name: /Suivant/i })).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveTextContent(/Bien vu|Rate|Egalite/i);
-  });
-
   it('ouvre Evolution Rush et valide une manche', async () => {
     const user = userEvent.setup();
 
@@ -190,11 +169,9 @@ describe('App integration', () => {
 
     await waitFor(() => {
       const dialog = screen.queryByRole('dialog', { name: /Fiche de/i });
-      const quizHeading = screen.queryByRole('heading', { name: /Master Type/i });
-      const statClashPrompt = screen.queryByText(/Quelle equipe domine cette statistique/i);
       const evolutionButton = screen.queryByRole('button', { name: /Relancer Evolution Rush/i });
 
-      expect(dialog || quizHeading || statClashPrompt || evolutionButton).toBeTruthy();
+      expect(dialog || evolutionButton).toBeTruthy();
     });
   });
 });

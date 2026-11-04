@@ -36,10 +36,6 @@ export function useDailyActivity(pokemons, selectedPokemon, favorites) {
           helper: 'Collection du jour',
           visualPokemon: dailyFeaturedPokemon
         };
-      case 'quiz-answer':
-        return { ...dailyChallengeBase, description: 'Reponds a une seule question de types pour debloquer ton badge strategiste.', helper: 'Precision tactique', visualPokemon: null };
-      case 'stat-clash-reveal':
-        return { ...dailyChallengeBase, description: 'Choisis un Pokemon dans Stat Clash et revele le verdict de la manche.', helper: 'Lecture des stats', visualPokemon: null };
       case 'evolution-validate':
         return { ...dailyChallengeBase, description: 'Remets une lignee dans le bon ordre puis valide-la pour marquer ton passage du jour.', helper: 'Chronologie evolutive', visualPokemon: null };
       default:
@@ -51,8 +47,6 @@ export function useDailyActivity(pokemons, selectedPokemon, favorites) {
     switch (dailyChallenge.id) {
       case 'spotlight-view': return dailyFeaturedPokemon ? dailyActivity.viewedPokemonIds.includes(dailyFeaturedPokemon.id) : false;
       case 'spotlight-favorite': return dailyFeaturedPokemon ? favorites.includes(dailyFeaturedPokemon.id) : false;
-      case 'quiz-answer': return dailyActivity.quizAnswered;
-      case 'stat-clash-reveal': return dailyActivity.statClashRevealed;
       case 'evolution-validate': return dailyActivity.evolutionValidated;
       default: return false;
     }

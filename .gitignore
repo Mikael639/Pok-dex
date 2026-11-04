@@ -25,12 +25,4 @@ yarn-error.log*
 
 # AI / IDE
 .gemini/
-.vs/
 .vscode/
-bin/
-obj/
-*.pyc
-
-# Local Config
-.pokedex_config
-pokedex_team_react.json

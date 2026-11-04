@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { Zap, Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Star, Shield, Flame, Crown, LayoutGrid, Music } from 'lucide-react';
+import { motion as Motion } from 'framer-motion';
+import { Zap, Activity, Trophy, Gamepad2, GitBranch, Sparkles, Star, Shield, Flame, Crown, Music } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
 import { EXPERIENCE_META } from '../../constants/gameMeta';
 import { QuickCard } from '../common/Cards';
@@ -13,12 +13,8 @@ export default function Dashboard({
   battleStats,
   pokemons,
   evolutionRushState,
-  statClashState,
   gameState,
-  quizState,
-  todayKey,
   setSelectedPokemon,
-  pokedleState,
   cryQuizState,
   dailyChallenge,
   handleDailyChallengeAction,
@@ -47,19 +43,16 @@ export default function Dashboard({
   const teamCoverageCount = teamAnalysis ? Object.values(teamAnalysis).filter((multiplier) => multiplier >= 2).length : 0;
 
   const dashboardProgressStats = [
-    { label: 'Favoris', value: favorites?.length || 0, helper: 'Pokemon suivis', tone: 'text-rose-500', Icon: Star },
-    { label: 'Equipe', value: `${team?.length || 0}/6`, helper: 'Champions actifs', tone: 'text-indigo-500', Icon: Shield },
+    { label: 'Favoris', value: favorites?.length || 0, helper: 'Pokemon suivis', tone: 'text-brand-500', Icon: Star },
+    { label: 'Equipe', value: `${team?.length || 0}/6`, helper: 'Champions actifs', tone: 'text-sky-500', Icon: Shield },
     { label: 'Victoires', value: battleStats?.wins || 0, helper: 'Arene Battle', tone: 'text-emerald-500', Icon: Flame },
-    { label: 'Record', value: Math.max(gameState?.highscore || 0, quizState?.highscore || 0, overallEvolutionRushBestStreak, statClashState?.bestStreak || 0, cryQuizState?.highscore || 0), helper: 'Tous defis', tone: 'text-amber-500', Icon: Crown }
+    { label: 'Record', value: Math.max(gameState?.highscore || 0, overallEvolutionRushBestStreak, cryQuizState?.highscore || 0), helper: 'Tous defis', tone: 'text-amber-500', Icon: Crown }
   ];
 
   const dashboardGameCards = [
-    { id: 'quiz', icon: <Trophy size={24} className="text-amber-500" />, title: 'Master Type', text: `Record: ${quizState?.highscore || 0}` },
-    { id: 'jeu', icon: <Gamepad2 size={24} className="text-indigo-500" />, title: 'Silhouette', text: `Record: ${gameState?.highscore || 0}` },
-    { id: 'evolution-rush', icon: <GitBranch size={24} className="text-violet-500" />, title: 'Evolution Rush', text: `Meilleur: ${overallEvolutionRushBestStreak}` },
-    { id: 'stat-clash', icon: <BarChart3 size={24} className="text-cyan-500" />, title: 'Stat Clash', text: `Serie max: ${statClashState?.bestStreak || 0}` },
-    { id: 'pokedle', icon: <LayoutGrid size={24} className="text-emerald-500" />, title: 'Pokédle Daily', text: pokedleState?.status === 'won' ? '🎯 Défi Réussi !' : '🧩 Devinette active' },
-    { id: 'cry-quiz', icon: <Music size={24} className="text-rose-500" />, title: 'Qui est-ce ?', text: `Record: ${cryQuizState?.highscore || 0}` },
+    { id: 'jeu', icon: <Gamepad2 size={24} className="text-sky-500" />, title: 'Silhouette', text: `Record: ${gameState?.highscore || 0}` },
+    { id: 'evolution-rush', icon: <GitBranch size={24} className="text-sky-500" />, title: 'Evolution Rush', text: `Meilleur: ${overallEvolutionRushBestStreak}` },
+    { id: 'cry-quiz', icon: <Music size={24} className="text-brand-500" />, title: 'Qui est-ce ?', text: `Record: ${cryQuizState?.highscore || 0}` },
     { id: 'combat', icon: <Activity size={24} className="text-emerald-500" />, title: 'Arène Battle', text: `${battleStats?.wins || 0} victoire${(battleStats?.wins || 0) > 1 ? 's' : ''}` }
   ];
 
@@ -70,10 +63,10 @@ export default function Dashboard({
     <Motion.div key="h" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} className="space-y-12 pb-20">
        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.45fr_0.95fr]">
           <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-900 shadow-2xl dark:border-slate-800 lg:rounded-[4rem]">
-            <img src="/images/home_aesthetic.png" loading="lazy" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/55 to-rose-950/30" />
+            <img src="/images/home_aesthetic.webp" loading="lazy" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/55 to-brand-950/30" />
             <div className="relative flex min-h-[320px] flex-col justify-between p-6 lg:min-h-[450px] lg:p-12">
-               <h1 className="text-4xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight uppercase font-['Outfit'] italic drop-shadow-2xl">Écrivez votre <br/><span className="text-rose-500">Légende</span>.</h1>
+               <h1 className="text-4xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight uppercase font-['Outfit'] italic drop-shadow-2xl">Écrivez votre <br/><span className="text-brand-500">Légende</span>.</h1>
                <div className="flex flex-wrap gap-4 mt-2">
                   <span className="rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.4em] text-white/90 backdrop-blur-2xl">Dashboard joueur</span>
                   <span className="rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.4em] text-white/70 backdrop-blur-2xl">Dernier defi : {continueMode.label}</span>
@@ -109,9 +102,9 @@ export default function Dashboard({
             </div>
           </div>
           <div className="glass-card relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] p-6 lg:rounded-[4rem] lg:p-10">
-             <div className="absolute top-0 right-0 p-4 opacity-10 lg:p-8"><Zap size={80} className="text-rose-500 lg:size-[120px]" /></div>
+             <div className="absolute top-0 right-0 p-4 opacity-10 lg:p-8"><Zap size={80} className="text-brand-500 lg:size-[120px]" /></div>
              <div className="relative z-10">
-                <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.3em] text-rose-500 lg:mb-4">Progression reelle</span>
+                <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.3em] text-brand-500 lg:mb-4">Progression reelle</span>
                 <h2 className="mb-2 text-2xl font-black uppercase leading-none tracking-tighter lg:text-4xl">Tableau de bord<br />du dresseur</h2>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 opacity-80">Collection, records et impulsion du moment</p>
              </div>
@@ -119,7 +112,7 @@ export default function Dashboard({
                 <div>
                    <div className="mb-2 flex justify-between text-[10px] font-black uppercase tracking-widest"><span>Collection</span><span>{collectionProgress}%</span></div>
                    <div className="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-                      <Motion.div initial={{width: 0}} animate={{width: `${collectionProgress}%`}} className="h-full bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]" />
+                      <Motion.div initial={{width: 0}} animate={{width: `${collectionProgress}%`}} className="h-full bg-brand-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]" />
                    </div>
                    <div className="mt-2 text-xs font-bold text-slate-500">{pokemons.length} Pokemon deja indexes sur 1025.</div>
                 </div>
@@ -127,7 +120,7 @@ export default function Dashboard({
                     {dashboardProgressStats.map((stat) => {
                        const IconComponent = stat.Icon;
                        return (
-                       <div key={stat.label} className="relative overflow-hidden rounded-3xl bg-slate-100 p-6 dark:bg-slate-800/50 group hover:shadow-2xl hover:shadow-rose-500/5 transition-all duration-500 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+                       <div key={stat.label} className="relative overflow-hidden rounded-3xl bg-slate-100 p-6 dark:bg-slate-800/50 group hover:shadow-2xl hover:shadow-brand-500/5 transition-all duration-500 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
                           <div className="relative z-10">
                              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{stat.label}</div>
                              <div className={`mt-3 text-3xl font-black leading-none ${stat.tone}`}>{stat.value}</div>
@@ -142,11 +135,7 @@ export default function Dashboard({
                     <div className="grid gap-4 sm:grid-cols-2">
                        <div className="rounded-2xl bg-slate-50 px-5 py-4 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
                           <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Evolution Rush</div>
-                          <div className="mt-1 text-2xl font-black text-violet-500">{overallEvolutionRushBestStreak}</div>
-                       </div>
-                       <div className="rounded-2xl bg-slate-50 px-5 py-4 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
-                          <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Stat Clash</div>
-                          <div className="mt-1 text-2xl font-black text-cyan-500">{statClashState.bestStreak}</div>
+                          <div className="mt-1 text-2xl font-black text-sky-500">{overallEvolutionRushBestStreak}</div>
                        </div>
                     </div>
                  </div>
@@ -155,21 +144,21 @@ export default function Dashboard({
        </div>
 
        <div className="grid grid-cols-1 gap-12 xl:grid-cols-[1.15fr_0.95fr_1fr]">
-           <button type="button" onClick={() => setActiveTab(continueMode.id)} aria-label={continueMode.cta} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-10 text-left shadow-2xl shadow-rose-500/5 transition-all hover:-translate-y-2 hover:border-rose-300 dark:border-slate-800 dark:bg-slate-900 duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 via-transparent to-amber-400/5 opacity-80" />
+           <button type="button" onClick={() => setActiveTab(continueMode.id)} aria-label={continueMode.cta} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-10 text-left shadow-2xl shadow-brand-500/5 transition-all hover:-translate-y-2 hover:border-brand-300 dark:border-slate-800 dark:bg-slate-900 duration-500">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 via-transparent to-amber-400/5 opacity-80" />
               <div className="relative flex h-full flex-col justify-between gap-10">
                  <div className="flex items-start justify-between gap-8">
                     <div>
-                       <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-rose-500">Continuer l aventure</div>
+                       <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-brand-500">Continuer l aventure</div>
                        <h3 className="text-3xl font-black uppercase tracking-tight dark:text-white leading-tight">Prochain<br/>Objectif</h3>
                        <p className="mt-4 max-w-md text-sm font-bold text-slate-400 leading-relaxed uppercase tracking-tighter italic">{continueMode.label}</p>
                     </div>
-                    <div className="rounded-3xl bg-slate-50 p-5 text-rose-500 transition-all duration-700 group-hover:scale-110 group-hover:bg-rose-50 dark:bg-slate-800 outline outline-0 group-hover:outline-8 outline-rose-500/10">
+                    <div className="rounded-3xl bg-slate-50 p-5 text-brand-500 transition-all duration-700 group-hover:scale-110 group-hover:bg-brand-50 dark:bg-slate-800 outline outline-0 group-hover:outline-8 outline-brand-500/10">
                        <ContinueModeIcon size={38} />
                     </div>
                  </div>
                  <div className="flex flex-wrap gap-4">
-                    <span className="rounded-xl bg-slate-900 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-white dark:bg-white dark:text-slate-900 group-hover:bg-rose-500 transition-colors shadow-lg">{continueMode.cta}</span>
+                    <span className="rounded-xl bg-slate-900 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-white dark:bg-white dark:text-slate-900 group-hover:bg-brand-500 transition-colors shadow-lg">{continueMode.cta}</span>
                     <span className="rounded-xl bg-slate-50 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:bg-slate-800 dark:text-slate-500">Reprise automatique</span>
                  </div>
               </div>
@@ -213,18 +202,18 @@ export default function Dashboard({
               </div>
            </button>
            
-           <div className="rounded-[2.5rem] border border-slate-100 bg-white p-10 shadow-2xl shadow-indigo-500/5 dark:border-slate-800 dark:bg-slate-900 duration-500">
+           <div className="rounded-[2.5rem] border border-slate-100 bg-white p-10 shadow-2xl shadow-sky-500/5 dark:border-slate-800 dark:bg-slate-900 duration-500">
               <div className="mb-8 flex items-center justify-between gap-6">
                  <div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-500">Equipe active</div>
+                    <div className="text-[10px] font-black uppercase tracking-[0.4em] text-sky-500">Equipe active</div>
                     <h3 className="mt-3 text-2xl font-black uppercase tracking-tight dark:text-white leading-tight">Prete pour<br />la ligue</h3>
                  </div>
-                 <button type="button" onClick={() => setActiveTab('equipe')} className="rounded-xl bg-indigo-50 px-5 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all shadow-sm shadow-indigo-500/10">Explorer</button>
+                 <button type="button" onClick={() => setActiveTab('equipe')} className="rounded-xl bg-sky-50 px-5 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-sky-600 hover:bg-sky-600 hover:text-white transition-all shadow-sm shadow-sky-500/10">Explorer</button>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                  <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
                     <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Slots</div>
-                    <div className="mt-2 text-3xl font-black text-indigo-500">{team.length}/6</div>
+                    <div className="mt-2 text-3xl font-black text-sky-500">{team.length}/6</div>
                     <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">Pokemon equipes</div>
                  </div>
                  <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
@@ -234,7 +223,7 @@ export default function Dashboard({
                  </div>
               </div>
               <div className="mt-8 grid grid-cols-3 gap-4">
-                 {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-slate-50 bg-slate-50/50 p-4 text-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:border-indigo-200 dark:bg-slate-950 dark:border-slate-900" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} loading="lazy" className="mx-auto h-14 w-14 object-contain transition-transform hover:scale-110 drop-shadow-md" /></button>) : <div role="status" className="col-span-3 rounded-2xl border-2 border-dashed border-slate-100 px-6 py-10 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-300 dark:border-slate-800">Compose ton equipe pour debloquer un resume strategique ici.</div>}
+                 {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-slate-50 bg-slate-50/50 p-4 text-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:border-sky-200 dark:bg-slate-950 dark:border-slate-900" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} loading="lazy" className="mx-auto h-14 w-14 object-contain transition-transform hover:scale-110 drop-shadow-md" /></button>) : <div role="status" className="col-span-3 rounded-2xl border-2 border-dashed border-slate-100 px-6 py-10 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-300 dark:border-slate-800">Compose ton equipe pour debloquer un resume strategique ici.</div>}
               </div>
             </div>
          </div>
@@ -242,16 +231,16 @@ export default function Dashboard({
         {/* --- TIMELINE EPIQUE --- */}
         <section className="space-y-6">
            <div className="flex items-center gap-4">
-              <div className="rounded-2xl bg-rose-500/10 p-3 text-rose-500">
+              <div className="rounded-2xl bg-brand-500/10 p-3 text-brand-500">
                  <Crown size={24} />
               </div>
               <div>
-                 <div className="text-[10px] font-black uppercase tracking-[0.3em] text-rose-500">Journal de Bord</div>
+                 <div className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-500">Journal de Bord</div>
                  <h3 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Timeline Epique</h3>
               </div>
            </div>
            
-           <div className="relative rounded-[2.5rem] border border-slate-100 bg-white p-6 md:p-10 shadow-2xl shadow-rose-500/5 dark:border-slate-800 dark:bg-slate-900">
+           <div className="relative rounded-[2.5rem] border border-slate-100 bg-white p-6 md:p-10 shadow-2xl shadow-brand-500/5 dark:border-slate-800 dark:bg-slate-900">
               {logs && logs.length > 0 ? (
                  <div className="max-h-[300px] overflow-y-auto pr-4 custom-scrollbar space-y-6">
                     {logs.slice(0, 15).map((log, index) => {
@@ -260,7 +249,7 @@ export default function Dashboard({
                        let bg = 'bg-slate-100 dark:bg-slate-800';
                        
                        if(log.type === 'favorite') { Icon = Star; color = 'text-amber-500'; bg = 'bg-amber-500/10 border-amber-500/20'; }
-                       else if(log.type === 'team_add') { Icon = Shield; color = 'text-indigo-500'; bg = 'bg-indigo-500/10 border-indigo-500/20'; }
+                       else if(log.type === 'team_add') { Icon = Shield; color = 'text-sky-500'; bg = 'bg-sky-500/10 border-sky-500/20'; }
                        else if(log.type === 'team_remove') { Icon = Shield; color = 'text-slate-400'; bg = 'bg-slate-100 dark:bg-slate-800'; }
                        else if(log.type === 'win') { Icon = Trophy; color = 'text-emerald-500'; bg = 'bg-emerald-500/10 border-emerald-500/20'; }
 
@@ -294,7 +283,7 @@ export default function Dashboard({
        <section className="space-y-6">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
              <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-rose-500">Jeux et defis</div>
+                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-500">Jeux et defis</div>
                 <h3 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Tous les records a portee de clic</h3>
              </div>
              <p className="max-w-2xl text-sm font-bold text-slate-500">Sélectionne un mode d'entraînement pour tester tes connaissances, améliorer tes stratégies et inscrire ton nom dans la légende.</p>

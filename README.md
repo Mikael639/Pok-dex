@@ -8,15 +8,12 @@ Poké-Master est un Pokédex moderne construit avec React et Vite. L'application
 - Collection de 1025 Pokémon avec recherche, tri, filtres par type et génération
 - Fiches détaillées avec navigation, comparaison et ajout aux favoris
 - Gestion d'équipe jusqu'à 6 Pokémon avec analyse de synergie
-- Arène de combat avec plusieurs modes
+- Arène de combat (J1 vs IA, PvP local, spectateur) avec illustrations des Pokémon
 - Mini-jeux inclus :
-  - `Master Type`
   - `Silhouette`
   - `Poké-Memory`
   - `Evolution Rush`
-  - `Stat Clash`
-  - `Pokédle Daily`
-  - `Cry Quiz`
+  - `Cry Quiz` (« Qui est-ce ? »)
 
 ## Captures d'écran
 
@@ -36,9 +33,15 @@ Poké-Master est un Pokédex moderne construit avec React et Vite. L'application
 
 ![Menu de l'arène de combat](./screenshots/readme-battle.png)
 
-### Pokédle Daily
+## Charte graphique
 
-![Écran Pokédle Daily](./screenshots/readme-pokedle.png)
+| Rôle | Couleur | Utilisation |
+|---|---|---|
+| Amber Red | `#E8472A` (classes `brand-*`) | Accent principal : boutons, onglet actif, alertes |
+| Sky Blue | `#87CEEB` (classes `sky-*`) | Accent secondaire : lueurs, statistiques, ciel de l'arène |
+| Cloudy White | `#F5F8FB` (classes `slate-*`) | Fonds clairs ; son pendant « nuit bleutée » en mode sombre |
+
+Les échelles sont définies une seule fois dans `src/index.css` (bloc `@theme`) : changer une valeur suffit à recolorer toute l'application.
 
 ## Stack technique
 
@@ -78,13 +81,16 @@ npm run test:watch
   - thème
   - activité quotidienne
   - dernier onglet joué
-- Les cris Pokémon utilisés dans le quiz audio proviennent de PokeAPI
+- Les fiches détaillées (évolutions, attaques, taille/poids) et les cris Pokémon du quiz audio sont récupérés depuis PokeAPI, puis mis en cache dans le `localStorage`
+- Les lectures du `localStorage` sont tolérantes : une donnée corrompue est ignorée au lieu de faire planter l'application
 
 ## Arborescence utile
 
 - `src/App.jsx` : orchestration générale de l'application
 - `src/components/` : pages, layout, modales, cartes et mini-jeux
 - `src/hooks/` : logique métier, persistance locale et gestion des jeux
+- `src/lib/` : utilitaires partagés (`cn`, lecture sûre du `localStorage`)
+- `src/utils/` : logique pure des mini-jeux
 - `src/constants/` : métadonnées des modes, types et générations
 - `src/test/` : tests Vitest et Testing Library
 - `public/pokedex.json` : dataset local des 1025 Pokémon
@@ -92,4 +98,10 @@ npm run test:watch
 
 ## Vérification
 
-Le `README` a été remis à jour en fonction de l'état actuel du projet et des écrans générés depuis l'application locale le 22 avril 2026.
+Avant de proposer une modification, ces trois commandes doivent passer :
+
+```bash
+npm run lint
+npm run test
+npm run build
+```

@@ -1,5 +1,5 @@
 import { 
-  Activity, Brain, Trophy, Gamepad2, GitBranch, BarChart3, Sparkles, Heart, LayoutGrid, Music
+  Activity, Brain, Gamepad2, GitBranch, Sparkles, Heart, Music
 } from 'lucide-react';
 
 export const INITIAL_BATTLE_STATE = {
@@ -11,19 +11,10 @@ export const INITIAL_BATTLE_STATE = {
   isFighting: false,
   playerActive: 0,
   enemyActive: 0,
-  attackAnim: null,
+  winnerPokemon: null,
   mode: 'menu',
   currentTurn: 'player'
 };
-
-export const STAT_CLASH_OPTIONS = [
-  { id: 'HP', label: 'HP', keys: ['HP'] },
-  { id: 'Attack', label: 'Attaque', keys: ['Attack'] },
-  { id: 'Defense', label: 'Defense', keys: ['Defense'] },
-  { id: 'SpAttack', label: 'Attaque Spe', keys: ['SpAttack', 'Sp. Attack'] },
-  { id: 'SpDefense', label: 'Defense Spe', keys: ['SpDefense', 'Sp. Defense'] },
-  { id: 'Speed', label: 'Vitesse', keys: ['Speed'] }
-];
 
 export const TAB_TITLES = {
   accueil: 'Bienvenue, Champion',
@@ -32,10 +23,7 @@ export const TAB_TITLES = {
   combat: 'Arene Battle',
   'evolution-rush': 'Evolution Rush',
   memory: 'Poke-Memory',
-  quiz: 'Master Type',
   jeu: 'Silhouette',
-  'stat-clash': 'Stat Clash',
-  pokedle: 'Pokédle Daily',
   'cry-quiz': 'Qui est-ce ?'
 };
 
@@ -45,7 +33,7 @@ export const EVOLUTION_RUSH_DIFFICULTIES = [
   { id: 'maitre', label: 'Maitre', helper: 'chaine complete', minChainLength: 3, targetLength: null }
 ];
 
-export const TRACKED_EXPERIENCE_TABS = ['combat', 'memory', 'quiz', 'jeu', 'evolution-rush', 'stat-clash', 'pokedle', 'cry-quiz'];
+export const TRACKED_EXPERIENCE_TABS = ['combat', 'memory', 'jeu', 'evolution-rush', 'cry-quiz'];
 
 export const EXPERIENCE_META = {
   combat: {
@@ -62,13 +50,6 @@ export const EXPERIENCE_META = {
     cta: 'Relancer le memory',
     icon: Brain
   },
-  quiz: {
-    id: 'quiz',
-    label: 'Master Type',
-    description: 'Travaille les matchups de types avec un défi rapide.',
-    cta: 'Relancer le quiz',
-    icon: Trophy
-  },
   jeu: {
     id: 'jeu',
     label: 'Silhouette',
@@ -82,20 +63,6 @@ export const EXPERIENCE_META = {
     description: "Recompose une lignée d'évolution et garde ta série vivante.",
     cta: 'Continuer Evolution Rush',
     icon: GitBranch
-  },
-  'stat-clash': {
-    id: 'stat-clash',
-    label: 'Stat Clash',
-    description: 'Choisis le bon Pokémon en duel de stats et monte ton record.',
-    cta: 'Continuer Stat Clash',
-    icon: BarChart3
-  },
-  pokedle: {
-    id: 'pokedle',
-    label: 'Pokédle Daily',
-    description: 'Devine le Pokémon du jour en comparant ses caractéristiques.',
-    cta: 'Lancer le Pokédle',
-    icon: LayoutGrid
   },
   'cry-quiz': {
     id: 'cry-quiz',
@@ -118,11 +85,6 @@ export const POKEMON_GENERATIONS = [
   { gen: 9, start: 906, end: 1025 },
 ];
 
-export const getGeneration = (id) => {
-  const g = POKEMON_GENERATIONS.find(g => id >= g.start && id <= g.end);
-  return g ? g.gen : 9;
-};
-
 export const DAILY_CHALLENGE_ROTATION = [
   {
     id: 'spotlight-view',
@@ -130,7 +92,7 @@ export const DAILY_CHALLENGE_ROTATION = [
     reward: 'Badge Eclaireur',
     cta: 'Voir le Pokemon du jour',
     icon: Sparkles,
-    accent: 'from-amber-500/20 via-rose-500/5 to-transparent',
+    accent: 'from-amber-500/20 via-brand-500/5 to-transparent',
     glow: 'bg-amber-400/20'
   },
   {
@@ -139,26 +101,8 @@ export const DAILY_CHALLENGE_ROTATION = [
     reward: 'Insigne Collection',
     cta: 'Ouvrir la fiche du jour',
     icon: Heart,
-    accent: 'from-rose-500/20 via-white/5 to-transparent',
-    glow: 'bg-rose-400/20'
-  },
-  {
-    id: 'quiz-answer',
-    title: 'Reponds a une question Master Type',
-    reward: 'Badge Strategiste',
-    cta: 'Lancer le quiz',
-    icon: Trophy,
-    accent: 'from-amber-500/20 via-yellow-500/5 to-transparent',
-    glow: 'bg-amber-400/20'
-  },
-  {
-    id: 'stat-clash-reveal',
-    title: 'Revele une manche de Stat Clash',
-    reward: 'Badge Analyste',
-    cta: 'Jouer a Stat Clash',
-    icon: BarChart3,
-    accent: 'from-cyan-500/20 via-sky-500/5 to-transparent',
-    glow: 'bg-cyan-400/20'
+    accent: 'from-brand-500/20 via-white/5 to-transparent',
+    glow: 'bg-brand-400/20'
   },
   {
     id: 'evolution-validate',
@@ -166,7 +110,7 @@ export const DAILY_CHALLENGE_ROTATION = [
     reward: 'Insigne Chronologie',
     cta: 'Ouvrir Evolution Rush',
     icon: GitBranch,
-    accent: 'from-violet-500/20 via-fuchsia-500/5 to-transparent',
-    glow: 'bg-violet-400/20'
+    accent: 'from-sky-500/20 via-sky-500/5 to-transparent',
+    glow: 'bg-sky-400/20'
   }
 ];

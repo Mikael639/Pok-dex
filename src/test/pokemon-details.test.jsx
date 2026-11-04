@@ -27,7 +27,8 @@ describe('PokemonDetails', () => {
     expect(await screen.findByText(/Niv. 16/i)).toBeInTheDocument();
     expect(screen.getByAltText('Herbizarre')).toBeInTheDocument();
     expect(screen.getByAltText('Florizarre')).toBeInTheDocument();
-    expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+    // espèce + chaîne d'évolution + données du Pokémon (taille, poids)
+    expect(globalThis.fetch).toHaveBeenCalledTimes(3);
 
     fireEvent.click(screen.getByAltText('Herbizarre'));
 

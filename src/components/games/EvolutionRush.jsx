@@ -44,7 +44,7 @@ const EvolutionRush = ({
           </div>
           <div className="rounded-[1.5rem] bg-white px-5 py-3 text-center shadow-xl dark:bg-slate-900">
             <div className="text-[9px] font-black uppercase tracking-[0.25em] text-slate-400">Serie</div>
-            <div className="mt-1 text-2xl font-black text-rose-500">{state.streak}</div>
+            <div className="mt-1 text-2xl font-black text-brand-500">{state.streak}</div>
           </div>
           <div className="rounded-[1.5rem] bg-white px-5 py-3 text-center shadow-xl dark:bg-slate-900">
             <div className="text-[9px] font-black uppercase tracking-[0.25em] text-slate-400">Record</div>
@@ -83,7 +83,7 @@ const EvolutionRush = ({
                     onClick={() => onChangeDifficulty(difficulty.id)}
                     className={`rounded-full px-5 py-3 text-sm font-black uppercase tracking-widest transition-all ${
                       isActive
-                        ? 'bg-rose-500 text-white shadow-2xl'
+                        ? 'bg-brand-500 text-white shadow-2xl'
                         : isDarkMode
                           ? 'bg-slate-950 text-slate-400 hover:bg-slate-800 hover:text-white'
                           : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
@@ -102,7 +102,7 @@ const EvolutionRush = ({
 
         {state.status === 'loading' && (
           <div className="space-y-6 py-10 text-center sm:py-16">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-rose-500 text-white shadow-2xl">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-white shadow-2xl">
               <Sparkles size={34} className="animate-pulse" />
             </div>
             <div>
@@ -116,14 +116,14 @@ const EvolutionRush = ({
 
         {state.status === 'error' && (
           <div className="space-y-5 py-10 text-center sm:py-16">
-            <h4 className="text-2xl font-black uppercase tracking-tighter text-rose-500">Impossible de lancer la manche</h4>
+            <h4 className="text-2xl font-black uppercase tracking-tighter text-brand-500">Impossible de lancer la manche</h4>
             <p role="status" className="text-sm font-black uppercase tracking-widest text-slate-400">
               {state.feedback}
             </p>
             <button
               type="button"
               onClick={onRestart}
-              className="rounded-[1.5rem] bg-rose-500 px-8 py-4 text-sm font-black uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-105 active:scale-95"
+              className="rounded-[1.5rem] bg-brand-500 px-8 py-4 text-sm font-black uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-105 active:scale-95"
             >
               Reessayer
             </button>
@@ -155,7 +155,7 @@ const EvolutionRush = ({
                     onClick={() => pokemon && onRemove(pokemon.id)}
                     className={`min-h-32 rounded-[1.5rem] border-2 border-dashed p-4 text-center shadow-inner transition-all sm:min-h-36 ${
                       pokemon
-                        ? 'border-rose-500 bg-rose-500/10'
+                        ? 'border-brand-500 bg-brand-500/10'
                         : isDarkMode
                           ? 'border-slate-700 bg-slate-950/70'
                           : 'border-slate-200 bg-slate-50'
@@ -187,7 +187,7 @@ const EvolutionRush = ({
                     type="button"
                     onClick={onClear}
                     disabled={state.selectedOrder.length === 0}
-                    className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-500 transition-all hover:text-rose-500 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-slate-800"
+                    className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-500 transition-all hover:text-brand-500 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-slate-800"
                   >
                     <RotateCcw size={14} />
                     Effacer
@@ -204,8 +204,8 @@ const EvolutionRush = ({
                     onClick={() => onSelect(pokemon.id)}
                     className={`rounded-[1.5rem] border-2 p-4 text-left shadow-lg transition-all ${
                       isDarkMode
-                        ? 'border-slate-800 bg-slate-950 hover:-translate-y-1 hover:border-rose-500'
-                        : 'border-slate-100 bg-slate-50 hover:-translate-y-1 hover:border-rose-500'
+                        ? 'border-slate-800 bg-slate-950 hover:-translate-y-1 hover:border-brand-500'
+                        : 'border-slate-100 bg-slate-50 hover:-translate-y-1 hover:border-brand-500'
                     }`}
                   >
                     <div className="flex items-center gap-4">
@@ -228,7 +228,7 @@ const EvolutionRush = ({
                   type="button"
                   onClick={onValidate}
                   disabled={state.selectedOrder.length !== state.chain.length}
-                  className="rounded-[1.5rem] bg-rose-500 px-8 py-4 text-sm font-black uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-[1.5rem] bg-brand-500 px-8 py-4 text-sm font-black uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Valider l ordre
                 </button>
