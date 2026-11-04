@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
-import { Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 
 // Import des constantes
@@ -18,14 +17,13 @@ import Header from './components/layout/Header';
 import Dashboard from './components/home/Dashboard';
 import SplashScreen from './components/common/SplashScreen';
 
-// Import des composants communs
-import { PokemonSkeleton } from './components/common/Cards';
-import PokemonCard from './components/pokemon/PokemonCard';
+// Import des vues Collection et Équipe
+import PokemonBrowser from './components/pokemon/PokemonBrowser';
+import TeamView from './components/team/TeamView';
 
 // Composants Lazy-loadés
 const PokemonDetails = lazy(() => import('./components/pokemon/PokemonDetails'));
 const ComparisonModal = lazy(() => import('./components/pokemon/ComparisonModal'));
-const TeamSynergy = lazy(() => import('./components/team/TeamSynergy'));
 const BattleArena = lazy(() => import('./components/games/BattleArena'));
 const EvolutionRush = lazy(() => import('./components/games/EvolutionRush'));
 const PokeMemory = lazy(() => import('./components/games/PokeMemory'));
@@ -152,10 +150,6 @@ function App() {
     return list.filter(p => p.id >= gen.start && p.id <= gen.end);
   }, [filteredPokemons, activeRegion]);
 
-  const totalPages = Math.max(1, Math.ceil((regionalFilteredPokemons?.length || 0) / 32));
-  const currentPage = Math.min(page, totalPages);
-  const paginatedPokemons = (regionalFilteredPokemons || []).slice((currentPage - 1) * 32, currentPage * 32);
-  const displayedPokemons = isTeamView ? (team || []) : paginatedPokemons;
 
   return (
     <>
@@ -183,7 +177,7 @@ function App() {
         teamCount={team?.length || 0}
       />
 
-      <main id="main-content" className={`flex-1 transition-all duration-700 h-screen overflow-y-auto p-4 sm:p-6 lg:p-12 ${isSidebarOpen ? 'lg:ml-80' : 'lg:ml-24'} ml-0 scroll-smooth custom-scrollbar`}>
+      <main id="main-content" className={`flex h-dvh min-w-0 flex-1 flex-col overflow-hidden p-3 transition-all duration-700 sm:p-5 lg:px-10 lg:py-6 ${isSidebarOpen ? 'lg:ml-80' : 'lg:ml-24'} ml-0`}>
         <Header 
           activeTab={activeTab}
           pokemonsLength={pokemons?.length || 0}
@@ -207,8 +201,10 @@ function App() {
           setActiveRegion={setActiveRegion}
         />
 
+        {/* Zone de contenu : chaque page remplit la hauteur restante (défilement interne uniquement en secours) */}
+        <div id="page-content" className="relative min-h-0 flex-1 overflow-y-auto custom-scrollbar">
         <AnimatePresence mode="wait">
-          <Suspense fallback={<div className="flex h-[60vh] w-full items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent" /></div>}>
+          <Suspense fallback={<div className="flex h-full min-h-[40vh] w-full items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent" /></div>}>
             {activeTab === 'accueil' && (
               <Dashboard 
                 setActiveTab={setActiveTab}
@@ -228,29 +224,33 @@ function App() {
               />
             )}
 
-            {(isCollectionView || isTeamView) && (
-              <Motion.div key="c" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-                {/* L'Explorateur de régions a été déplacé en filtre dans le Header */}
-                {isTeamView && <TeamSynergy team={team} isDarkMode={isDarkMode} />}
-                {isTeamView && team.length === 0 ? (
-                  <div role="status" className="text-center py-32 bg-white dark:bg-slate-900 rounded-[4rem] border-4 border-dashed border-slate-100 dark:border-slate-800"><Users size={80} className="mx-auto text-slate-200 dark:text-slate-800 mb-6" /><h3 className="text-3xl font-black dark:text-white">Votre équipe est vide</h3><p className="text-slate-500 mt-2 font-bold">Explorez la collection pour sélectionner 6 champions.</p></div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-6 lg:gap-8 w-full max-w-[2000px] mx-auto">
-                    {loading && isCollectionView ? Array.from({ length: 8 }).map((_, i) => <PokemonSkeleton key={i} />) : (displayedPokemons || []).map((p, i) => (
-                      <PokemonCard key={p.id} pokemon={p} index={i} isDarkMode={isDarkMode} isCaught={(team || []).some(t => t.id === p.id)} isFavorite={(favorites || []).includes(p.id)} onClick={() => setSelectedPokemon(p)} onCatch={() => toggleTeam(p)} onToggleFavorite={() => toggleFavorite(p.id)} />
-                    ))}
-                  </div>
-                )}
-                {isCollectionView && !loading && (!displayedPokemons || displayedPokemons.length === 0) && (
-                  <div className="py-20 text-center opacity-50 font-black uppercase tracking-widest">Aucun Pokémon trouvé dans cette région</div>
-                )}
-                {isCollectionView && totalPages > 1 && (
-                  <div className="mt-16 flex justify-center items-center gap-8 pb-10">
-                    <button type="button" aria-label="Page precedente" disabled={currentPage === 1} onClick={() => { setPage(p => Math.max(1, p - 1)); document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronLeft/></button>
-                    <span className="font-black text-2xl dark:text-white">{currentPage} / {totalPages}</span>
-                    <button type="button" aria-label="Page suivante" disabled={currentPage === totalPages} onClick={() => { setPage(p => Math.min(totalPages, p + 1)); document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' }); }} className="p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-xl disabled:opacity-20"><ChevronRight/></button>
-                  </div>
-                )}
+            {isCollectionView && (
+              <Motion.div key="collection" className="h-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <PokemonBrowser
+                  pokemons={regionalFilteredPokemons}
+                  loading={loading}
+                  page={page}
+                  setPage={setPage}
+                  team={team || []}
+                  favorites={favorites || []}
+                  isDarkMode={isDarkMode}
+                  onSelect={setSelectedPokemon}
+                  onCatch={toggleTeam}
+                  onToggleFavorite={toggleFavorite}
+                />
+              </Motion.div>
+            )}
+
+            {isTeamView && (
+              <Motion.div key="team" className="h-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <TeamView
+                  team={team || []}
+                  favorites={favorites || []}
+                  isDarkMode={isDarkMode}
+                  onSelect={setSelectedPokemon}
+                  onCatch={toggleTeam}
+                  onToggleFavorite={toggleFavorite}
+                />
               </Motion.div>
             )}
 
@@ -261,6 +261,7 @@ function App() {
             {activeTab === 'cry-quiz' && <CryQuiz state={cryQuizState} onAnswer={handleCryAnswer} onNext={startCryQuiz} />}
           </Suspense>
         </AnimatePresence>
+        </div>
 
         <AnimatePresence>
           <Suspense fallback={null}>

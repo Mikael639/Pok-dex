@@ -1,32 +1,18 @@
-// src/components/common/QuickCard.jsx
+// src/components/common/Cards.jsx
 import React from 'react';
 
 /**
- * Petite carte interactive utilisée sur le tableau de bord pour les accès rapides.
- */
-export const QuickCard = ({ icon, title, text, onClick }) => {
-  return (
-    <button type="button" onClick={onClick} className="w-full text-left p-10 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-800 hover:border-brand-500/50 transition-all cursor-pointer group relative overflow-hidden">
-       <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">{icon}</div>
-       <div className="p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl inline-block mb-8 group-hover:scale-110 transition-transform shadow-inner">{icon}</div>
-       <h4 className="text-xl font-black dark:text-white mb-3 tracking-tight uppercase leading-tight">{title}</h4>
-       <p className="text-slate-500 font-bold text-xs tracking-widest uppercase opacity-80">{text}</p>
-    </button>
-  );
-};
-
-/**
- * Affichage factice (Skeleton) utilisé pendant le chargement des Pokémon.
+ * Affichage factice (Skeleton) d'une tuile Pokémon, utilisé pendant le chargement.
  */
 export const PokemonSkeleton = () => {
   return (
-    <div className="p-8 rounded-[3rem] bg-white dark:bg-slate-900 border-4 border-transparent shadow-xl relative overflow-hidden">
-       <div className="relative mb-8 mt-4 h-48 bg-slate-100 dark:bg-slate-800 rounded-full w-48 mx-auto skeleton-box" />
-       <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-3/4 mb-4 skeleton-box" />
-       <div className="flex gap-2">
-          <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-16 skeleton-box" />
-          <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-16 skeleton-box" />
-       </div>
+    <div className="flex h-full min-h-0 flex-col gap-2 rounded-2xl border-2 border-transparent bg-white p-3 shadow-md dark:bg-slate-900 sm:rounded-3xl">
+      <div className="skeleton-box mx-auto min-h-0 w-3/4 flex-1 rounded-full bg-slate-100 dark:bg-slate-800" />
+      <div className="skeleton-box mx-auto h-4 w-2/3 rounded-lg bg-slate-100 dark:bg-slate-800" />
+      <div className="mx-auto flex gap-1">
+        <div className="skeleton-box h-4 w-10 rounded-md bg-slate-100 dark:bg-slate-800" />
+        <div className="skeleton-box h-4 w-10 rounded-md bg-slate-100 dark:bg-slate-800" />
+      </div>
     </div>
   );
 };

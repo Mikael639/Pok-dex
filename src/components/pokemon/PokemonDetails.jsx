@@ -41,7 +41,7 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 50 }}
-        className={`relative flex max-h-[96vh] w-full max-w-4xl flex-col overflow-hidden rounded-[1.75rem] shadow-2xl sm:max-h-[98vh] sm:rounded-[3rem] md:flex-row ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
+        className={`relative flex max-h-[96dvh] w-full max-w-4xl flex-col overflow-hidden rounded-[1.75rem] shadow-2xl sm:max-h-[98dvh] sm:rounded-[3rem] md:flex-row ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
       >
         <button
           type="button"

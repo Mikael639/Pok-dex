@@ -1,7 +1,7 @@
 // src/components/games/PokeMemory.jsx
 import React from 'react';
 import { motion as Motion } from 'framer-motion';
-import { Shuffle, Trophy } from 'lucide-react';
+import { RotateCcw, Trophy } from 'lucide-react';
 
 function MemoryPokeBall({ active }) {
   return (
@@ -19,7 +19,7 @@ function MemoryPokeBall({ active }) {
       <Motion.div
         animate={active ? { rotate: [0, -16, 12, 0], y: [0, -5, 0] } : { rotate: [0, -4, 0], y: [0, -2, 0] }}
         transition={{ duration: 0.8, ease: 'easeInOut' }}
-        className="relative flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20 md:h-24 md:w-24"
+        className="relative flex aspect-square h-[58%] items-center justify-center"
       >
         <Motion.div
           animate={active ? { rotateX: -62, y: -13 } : { rotateX: 0, y: 0 }}
@@ -55,76 +55,80 @@ const PokeMemory = ({ state, onCardClick, onRestart }) => {
   const isWon = state.endTime !== null && state.cards.length > 0;
 
   return (
-    <div className="mx-auto mt-2 max-w-4xl space-y-4 px-2 pb-6 sm:px-4 md:mt-4 md:space-y-6">
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="text-center md:text-left">
-          <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-900 dark:text-white sm:text-3xl md:text-4xl">Poke-Memory</h2>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Tentez de trouver les 6 paires</p>
-        </div>
-        <div className="flex items-center justify-center gap-3 sm:gap-4">
-          <div className="rounded-2xl border-4 border-slate-100 bg-white px-4 py-2 text-center shadow-md dark:border-slate-800 dark:bg-slate-900 md:px-6 md:py-4">
-            <div className="mb-1 text-[8px] font-black uppercase text-slate-400 opacity-50">Essais</div>
-            <div className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">{state.moves}</div>
+    <div className="mx-auto flex h-full min-h-[22rem] w-full max-w-5xl flex-col gap-2 sm:gap-3">
+      <div className="flex shrink-0 items-center justify-between gap-3">
+        <p className="min-w-0 text-[10px] font-black uppercase tracking-widest text-slate-500 sm:text-xs">Tentez de trouver les 6 paires</p>
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="rounded-2xl border-2 border-slate-100 bg-white px-4 py-1 text-center shadow-md dark:border-slate-800 dark:bg-slate-900 sm:px-6 sm:py-2">
+            <div className="text-[8px] font-black uppercase text-slate-400">Essais</div>
+            <div className="text-xl font-black leading-tight tracking-tighter text-slate-900 dark:text-white sm:text-2xl">{state.moves}</div>
           </div>
-          <button type="button" aria-label="Relancer le Poke-Memory" onClick={onRestart} className="flex items-center justify-center rounded-2xl bg-brand-500 p-3 text-white shadow-md transition-all hover:rotate-6 md:p-4">
-            <Shuffle size={20} />
+          <button type="button" aria-label="Relancer le Poke-Memory" onClick={onRestart} className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-500 text-white shadow-md transition-all hover:rotate-6 sm:h-14 sm:w-14">
+            <RotateCcw size={20} />
           </button>
         </div>
       </div>
 
-      {isWon && (
-        <Motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="space-y-3 rounded-[2rem] border-4 border-emerald-500/20 bg-emerald-500/10 p-5 text-center sm:p-6">
-          <Trophy size={48} className="mx-auto text-emerald-500" />
-          <h3 className="text-2xl font-black uppercase text-emerald-500 sm:text-3xl">Incroyable !</h3>
-          <p className="font-bold text-slate-500">Victoire en {state.moves} coups.</p>
-          <button type="button" onClick={onRestart} className="rounded-2xl bg-emerald-500 px-10 py-4 font-black uppercase text-white shadow-xl transition-all hover:scale-105">
-            Rejouer
-          </button>
-        </Motion.div>
-      )}
+      <div className="relative min-h-0 flex-1">
+        <div role="grid" aria-label="Grille du Poke-Memory" className="grid h-full grid-cols-3 grid-rows-4 gap-2 sm:gap-3 lg:grid-cols-4 lg:grid-rows-3 lg:gap-4">
+          {state.cards.map((card, index) => {
+            const flipped = state.flipped.includes(index);
+            const solved = state.solved.includes(index);
+            const active = flipped || solved;
+            const cardLabel = solved
+              ? `Paire trouvee ${card.nom}`
+              : flipped
+                ? `Carte revelee ${card.nom}`
+                : `Carte cachee ${index + 1}`;
 
-      <div role="grid" aria-label="Grille du Poke-Memory" className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:grid-cols-4">
-        {state.cards.map((card, index) => {
-          const flipped = state.flipped.includes(index);
-          const solved = state.solved.includes(index);
-          const active = flipped || solved;
-          const cardLabel = solved
-            ? `Paire trouvee ${card.nom}`
-            : flipped
-              ? `Carte revelee ${card.nom}`
-              : `Carte cachee ${index + 1}`;
+            return (
+              // La cellule est un conteneur : la carte prend le plus grand carré qui y tient.
+              <div key={card.uniqueId} className="flex min-h-0 min-w-0 items-center justify-center" style={{ containerType: 'size' }}>
+                <button
+                  type="button"
+                  role="gridcell"
+                  aria-label={cardLabel}
+                  aria-pressed={active}
+                  disabled={isWon || solved || flipped}
+                  className="relative cursor-pointer"
+                  style={{ width: 'min(100cqw, 100cqh)', height: 'min(100cqw, 100cqh)' }}
+                  onClick={() => !isWon && onCardClick(index)}
+                >
+                  <Motion.div
+                    animate={{ rotateY: active ? 180 : 0 }}
+                    transition={{ duration: 0.6, type: 'spring', stiffness: 260, damping: 20 }}
+                    className="relative h-full w-full"
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                    <div className="absolute inset-0 rounded-xl border-[3px] border-slate-300 p-1 shadow dark:border-slate-700 sm:rounded-2xl sm:border-4 md:rounded-3xl" style={{ backfaceVisibility: 'hidden' }}>
+                      <MemoryPokeBall active={flipped} />
+                    </div>
 
-          return (
-            <button
-              type="button"
-              role="gridcell"
-              aria-label={cardLabel}
-              aria-pressed={active}
-              disabled={isWon || solved || flipped}
-              key={card.uniqueId}
-              className="relative aspect-square cursor-pointer"
-              onClick={() => !isWon && onCardClick(index)}
-            >
-              <Motion.div
-                animate={{ rotateY: active ? 180 : 0 }}
-                transition={{ duration: 0.6, type: 'spring', stiffness: 260, damping: 20 }}
-                className="relative h-full w-full"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="absolute inset-0 rounded-xl border-4 border-slate-300 p-1 shadow dark:border-slate-700 sm:rounded-2xl md:rounded-3xl" style={{ backfaceVisibility: 'hidden' }}>
-                  <MemoryPokeBall active={flipped} />
-                </div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl border-[3px] border-brand-500 bg-white p-1.5 shadow dark:bg-slate-800 sm:rounded-2xl sm:border-4 sm:p-2 md:rounded-3xl" style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}>
+                      <img src={card.image} alt={card.nom} className="min-h-0 w-full flex-1 object-contain drop-shadow-xl" />
+                      <span className="mt-0.5 w-full truncate text-center text-[8px] font-black uppercase text-brand-500 sm:text-[10px]">
+                        {card.nom}
+                      </span>
+                    </div>
+                  </Motion.div>
+                </button>
+              </div>
+            );
+          })}
+        </div>
 
-                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl border-4 border-brand-500 bg-white p-2 shadow dark:bg-slate-800 sm:rounded-2xl md:rounded-3xl" style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}>
-                  <img src={card.image} alt={card.nom} className="mb-1 h-full w-full object-contain drop-shadow-2xl" />
-                  <span className="mt-1 w-full truncate text-center text-[8px] font-black uppercase text-brand-500 sm:mt-2 sm:text-[10px]">
-                    {card.nom}
-                  </span>
-                </div>
-              </Motion.div>
-            </button>
-          );
-        })}
+        {isWon && (
+          <Motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="absolute inset-0 z-20 flex items-center justify-center rounded-[2rem] bg-white/70 p-4 backdrop-blur-sm dark:bg-slate-950/70">
+            <div className="space-y-3 rounded-[2rem] border-4 border-emerald-500/30 bg-white p-6 text-center shadow-2xl dark:bg-slate-900 sm:p-8">
+              <Trophy size={44} className="mx-auto text-emerald-500" />
+              <h3 className="text-2xl font-black uppercase text-emerald-500 sm:text-3xl">Incroyable !</h3>
+              <p className="font-bold text-slate-500">Victoire en {state.moves} coups.</p>
+              <button type="button" onClick={onRestart} className="rounded-2xl bg-emerald-500 px-10 py-3 font-black uppercase text-white shadow-xl transition-all hover:scale-105">
+                Rejouer
+              </button>
+            </div>
+          </Motion.div>
+        )}
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export default function PokemonHero({ pokemon }) {
 
   return (
     <div
-      className="relative flex min-h-[280px] flex-col items-center justify-center overflow-hidden p-5 sm:p-6 md:w-1/2 md:p-8"
+      className="relative flex shrink-0 flex-col items-center justify-center overflow-hidden p-3 sm:p-6 md:min-h-[280px] md:w-1/2 md:p-8"
       style={{ background: `linear-gradient(135deg, ${TYPE_COLORS[pokemon.types[0].nom]} 0%, #000 150%)` }}
     >
       <div className="absolute inset-0 z-0 bg-black/10" />
@@ -96,12 +96,12 @@ export default function PokemonHero({ pokemon }) {
           <img
             src={imageUrl}
             alt={pokemon.nom}
-            className="relative h-36 w-36 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.58)] transition-transform duration-700 hover:scale-110 sm:h-40 sm:w-40 md:h-48 md:w-48"
+            className="relative h-24 w-24 object-contain drop-shadow-[0_28px_60px_rgba(0,0,0,0.58)] transition-transform duration-700 hover:scale-110 sm:h-40 sm:w-40 md:h-48 md:w-48"
           />
         </Motion.div>
       </Motion.div>
-      <div className="z-10 mt-4 text-center text-white">
-        <h2 className="mb-1 text-2xl font-black uppercase tracking-tighter sm:text-3xl md:text-4xl">{pokemon.nom}</h2>
+      <div className="z-10 mt-2 text-center text-white sm:mt-4">
+        <h2 className="mb-1 text-xl font-black uppercase tracking-tighter sm:text-3xl md:text-4xl">{pokemon.nom}</h2>
         <div className="mb-3 flex flex-wrap justify-center gap-2">
           {pokemon.types.map((t) => (
             <span key={t.nom} className="rounded-full bg-white/20 px-3 py-1 text-[9px] font-black uppercase tracking-widest backdrop-blur-xl sm:px-4 md:text-[10px]">
