@@ -8,7 +8,7 @@ Poké-Master est un Pokédex moderne construit avec React et Vite. L'application
 - Collection de 1025 Pokémon avec recherche, tri, filtres par type et génération
 - Fiches détaillées avec navigation, comparaison et ajout aux favoris
 - Gestion d'équipe jusqu'à 6 Pokémon avec analyse de synergie
-- Arène de combat (J1 vs IA, PvP local, spectateur) avec sprites animés
+- Arène de combat (J1 vs IA, PvP local, spectateur) avec illustrations des Pokémon
 - Mini-jeux inclus :
   - `Silhouette`
   - `Poké-Memory`

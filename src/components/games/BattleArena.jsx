@@ -11,40 +11,15 @@ const MENU_MODES = [
   { id: 'auto', title: 'Spectateur', desc: 'Combat auto', icon: Shuffle }
 ];
 
-const SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown';
-
-/**
- * Sprite animé (GIF Showdown) : de dos pour le joueur, de face pour l'adversaire.
- * Chaîne de repli : dos -> face -> artwork officiel.
- */
-const FighterSprite = ({ pokemon, side }) => {
-  const frontUrl = `${SPRITE_BASE}/${pokemon?.id}.gif`;
-  const primaryUrl = side === 'player' ? `${SPRITE_BASE}/back/${pokemon?.id}.gif` : frontUrl;
-
-  const handleError = (event) => {
-    const img = event.currentTarget;
-    if (img.dataset.fallback === 'artwork') return;
-    if (img.dataset.fallback === 'front' || side !== 'player') {
-      img.dataset.fallback = 'artwork';
-      img.style.imageRendering = 'auto';
-      img.src = pokemon.image;
-      return;
-    }
-    img.dataset.fallback = 'front';
-    img.src = frontUrl;
-  };
-
-  return (
-    <img
-      key={pokemon?.id}
-      src={primaryUrl}
-      onError={handleError}
-      alt={pokemon?.nom}
-      style={{ imageRendering: 'pixelated' }}
-      className="relative z-10 mx-auto h-28 w-auto max-w-full object-contain drop-shadow-[0_12px_14px_rgba(11,21,35,0.35)] sm:h-36 md:h-48 lg:h-60"
-    />
-  );
-};
+/** Illustration fixe du Pokémon (artwork officiel). */
+const FighterSprite = ({ pokemon }) => (
+  <img
+    key={pokemon?.id}
+    src={pokemon?.image}
+    alt={pokemon?.nom}
+    className="relative z-10 mx-auto h-32 w-auto max-w-full object-contain drop-shadow-[0_14px_16px_rgba(11,21,35,0.30)] sm:h-40 md:h-52 lg:h-64"
+  />
+);
 
 const hpTone = (hp) => (hp > 50 ? 'bg-emerald-500' : hp > 20 ? 'bg-amber-400' : 'bg-brand-500');
 
@@ -80,12 +55,12 @@ const FighterPanel = ({ pokemon, team, activeIndex, title, isTurn }) => {
 };
 
 /** Un Pokémon posé sur sa plateforme, avec sa carte d'état. */
-const FighterSlot = ({ pokemon, team, activeIndex, side, title, isTurn }) => (
+const FighterSlot = ({ pokemon, team, activeIndex, title, isTurn }) => (
   <div className="flex w-full flex-col items-center gap-3 md:gap-5">
     <FighterPanel pokemon={pokemon} team={team} activeIndex={activeIndex} title={title} isTurn={isTurn} />
     <div className="relative flex w-full items-end justify-center pb-3 md:pb-5">
       <div aria-hidden="true" className="absolute bottom-0 left-1/2 h-5 w-3/5 max-w-[16rem] -translate-x-1/2 rounded-[50%] bg-slate-900/20 blur-[2px] md:h-7 dark:bg-black/50" />
-      <FighterSprite pokemon={pokemon} side={side} />
+      <FighterSprite pokemon={pokemon} />
     </div>
   </div>
 );
@@ -268,8 +243,8 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
       <section aria-label="Terrain de combat" className="relative overflow-hidden rounded-[2rem] border-4 border-white bg-gradient-to-b from-sky-300 via-sky-100 to-slate-50 shadow-xl md:rounded-[3rem] dark:border-slate-800 dark:from-sky-950 dark:via-slate-900 dark:to-slate-950">
         <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-slate-200/80 to-transparent dark:from-black/40" />
         <div className="relative grid grid-cols-1 items-end gap-6 p-4 sm:p-6 md:p-10 lg:grid-cols-2 lg:gap-16 lg:p-12">
-          <FighterSlot pokemon={pActive} team={state.playerTeam} activeIndex={state.playerActive} side="player" title="Joueur 1" isTurn={isPlayerTurn} />
-          <FighterSlot pokemon={eActive} team={state.enemyTeam} activeIndex={state.enemyActive} side="enemy" title={isPvp ? 'Joueur 2' : 'Adversaire'} isTurn={!isPlayerTurn} />
+          <FighterSlot pokemon={pActive} team={state.playerTeam} activeIndex={state.playerActive} title="Joueur 1" isTurn={isPlayerTurn} />
+          <FighterSlot pokemon={eActive} team={state.enemyTeam} activeIndex={state.enemyActive} title={isPvp ? 'Joueur 2' : 'Adversaire'} isTurn={!isPlayerTurn} />
         </div>
       </section>
 
