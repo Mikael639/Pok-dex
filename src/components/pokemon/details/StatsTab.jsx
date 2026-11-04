@@ -21,14 +21,14 @@ export default function StatsTab({ pokemon, pokemons, isDarkMode, evoChain, load
     >
       <div className="mb-4 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
         <h3 className="text-base font-black uppercase tracking-widest lg:text-lg">Statistiques</h3>
-        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap">
+        <div className="grid w-full grid-cols-[auto_1fr_1fr] gap-2 sm:flex sm:w-auto sm:flex-wrap">
           <button type="button" aria-label={isFavorite ? `Retirer ${pokemon.nom} des favoris` : `Ajouter ${pokemon.nom} aux favoris`} onClick={onToggleFavorite} className={`rounded-2xl p-3 shadow-lg transition-all ${isFavorite ? 'bg-amber-400 text-white shadow-amber-400/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700'}`}>
             <Star size={20} fill={isFavorite ? 'white' : 'none'} />
           </button>
-          <button type="button" onClick={onCatch} className={`flex min-w-0 items-center justify-center gap-2 rounded-2xl px-4 py-3 font-black shadow-lg transition-all sm:px-6 ${isCaught ? 'bg-brand-500 text-white shadow-brand-500/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700'}`}>
+          <button type="button" onClick={onCatch} className={`flex min-w-0 items-center justify-center gap-1.5 rounded-2xl px-2 py-3 font-black shadow-lg transition-all sm:gap-2 sm:px-6 ${isCaught ? 'bg-brand-500 text-white shadow-brand-500/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700'}`}>
             <Heart size={20} fill={isCaught ? 'white' : 'none'} /> <span className="truncate text-xs sm:text-sm md:text-base">{isCaught ? 'LIBERER' : 'CAPTURER'}</span>
           </button>
-          <button type="button" onClick={onCompare} className="col-span-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-100 px-4 py-3 font-black text-slate-500 shadow-lg transition-all hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 sm:col-auto sm:w-auto sm:px-5">
+          <button type="button" onClick={onCompare} className="flex w-full items-center justify-center gap-1.5 rounded-2xl bg-slate-100 px-2 py-3 font-black text-slate-500 shadow-lg transition-all hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 sm:col-auto sm:w-auto sm:px-5">
             <Scale size={18} /> <span className="text-xs sm:text-sm md:text-base">COMPARER</span>
           </button>
         </div>

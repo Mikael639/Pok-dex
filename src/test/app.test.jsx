@@ -153,7 +153,8 @@ describe('App integration', () => {
     await user.click(screen.getByRole('button', { name: /Passer en Debutant/i }));
 
     expect(await screen.findByText(/Remettez 2 Pokemon dans le bon ordre/i)).toBeInTheDocument();
-    expect(screen.getByText(/Mode actuel : Debutant - 2 etapes/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Passer en Debutant/i })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('group', { name: /Niveau : Debutant, 2 etapes/i })).toBeInTheDocument();
   });
 
   it("affiche le defi du jour sur l'accueil et ouvre son action principale", async () => {

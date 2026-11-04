@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion as Motion } from 'framer-motion';
 import { Volume2, Play, RefreshCw } from 'lucide-react';
 
@@ -18,51 +18,45 @@ export default function CryQuiz({ state, onAnswer, onNext }) {
     }
   };
 
-  useEffect(() => {
-    if (state.status === 'playing') {
-      // Auto-play on start? Maybe better to let user click play
-    }
-  }, [state.status]);
-
   return (
-    <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-4xl mx-auto space-y-12">
+    <Motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto flex h-full min-h-[28rem] w-full max-w-4xl flex-col gap-2 sm:gap-4">
       <audio ref={audioRef} src={cryUrl} onEnded={() => setIsPlaying(false)} />
-      
-      <div className="flex flex-col items-center justify-center space-y-10 py-8">
-        <div className="text-center space-y-3">
-          <h2 className="text-5xl font-black uppercase tracking-tight italic drop-shadow-sm">Qui est ce cri ?</h2>
-          <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] opacity-70">Écoute bien et identifie le Pokémon correspondant</p>
-        </div>
 
-        <div className="relative mt-8">
+      <div className="shrink-0 text-center">
+        <h2 className="text-xl font-black uppercase italic tracking-tight sm:text-4xl">Qui est ce cri ?</h2>
+        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400 sm:text-[10px]">Ecoute bien et identifie le Pokemon correspondant</p>
+      </div>
+
+      {/* Lecteur + scores : occupe l'espace libre */}
+      <div className="flex min-h-[8rem] flex-1 items-center justify-center gap-5 sm:gap-12">
+        <div className="text-center">
+          <div className="mb-1 text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Score</div>
+          <div className="text-3xl font-black tabular-nums sm:text-4xl">{state.score}</div>
+        </div>
+        <div className="relative">
           <Motion.div
             animate={isPlaying ? { scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] } : {}}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="absolute -inset-8 bg-brand-500/20 rounded-full blur-3xl"
+            className="absolute -inset-5 rounded-full bg-brand-500/20 blur-2xl"
           />
           <button
+            type="button"
+            aria-label="Ecouter le cri"
             onClick={playCry}
             disabled={!cryUrl || state.status !== 'playing'}
-            className="relative z-10 w-32 h-32 bg-brand-500 text-white rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110 active:scale-95 disabled:opacity-50 disabled:scale-100"
+            className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-brand-500 text-white shadow-2xl transition-transform hover:scale-110 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 sm:h-28 sm:w-28"
           >
-            {isPlaying ? <Volume2 size={48} className="animate-pulse" /> : <Play size={48} className="ml-2" />}
+            {isPlaying ? <Volume2 size={36} className="animate-pulse" /> : <Play size={36} className="ml-1" />}
           </button>
         </div>
-
-        <div className="flex items-center gap-10 pt-6">
-           <div className="text-center px-4">
-              <div className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 mb-2">Score actuel</div>
-              <div className="text-4xl font-black tabular-nums">{state.score}</div>
-           </div>
-           <div className="w-px h-12 bg-slate-100 dark:bg-slate-800" />
-           <div className="text-center px-4">
-              <div className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 mb-2">Milleur record</div>
-              <div className="text-4xl font-black text-brand-500 tabular-nums">{state.highscore}</div>
-           </div>
+        <div className="text-center">
+          <div className="mb-1 text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Record</div>
+          <div className="text-3xl font-black tabular-nums text-brand-500 sm:text-4xl">{state.highscore}</div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
+      {/* 4 choix : la taille des cartes suit l'espace disponible */}
+      <div className="grid h-[34%] min-h-[7rem] shrink-0 grid-cols-4 gap-2 sm:gap-4">
         {state.choices.map((p) => {
           const isSelected = state.selectedId === p.id;
           const isCorrect = state.target.id === p.id;
@@ -70,50 +64,47 @@ export default function CryQuiz({ state, onAnswer, onNext }) {
 
           return (
             <button
+              type="button"
               key={p.id}
+              aria-label={reveal ? p.nom : 'Choisir ce Pokemon'}
               disabled={reveal}
               onClick={() => onAnswer(p.id)}
-              className={`group relative aspect-square bg-white dark:bg-slate-900 rounded-[2.5rem] p-10 shadow-2xl transition-all border border-slate-100 dark:border-slate-800 overflow-hidden ${
-                reveal 
-                  ? (isCorrect ? 'border-emerald-500 ring-8 ring-emerald-500/10 scale-105 shadow-emerald-500/20' : (isSelected ? 'border-brand-500 grayscale' : 'border-transparent opacity-30 scale-95'))
-                  : 'border-transparent hover:border-brand-400 hover:-translate-y-3 hover:shadow-brand-500/10'
+              className={`group relative min-h-0 min-w-0 overflow-hidden rounded-2xl border-2 bg-white p-2 shadow-lg transition-all dark:bg-slate-900 sm:rounded-[2rem] sm:p-4 ${
+                reveal
+                  ? (isCorrect ? 'border-emerald-500 ring-4 ring-emerald-500/10' : (isSelected ? 'border-brand-500 grayscale' : 'border-transparent opacity-30'))
+                  : 'border-slate-100 hover:border-brand-400 dark:border-slate-800'
               }`}
             >
-              <div className="relative z-10 h-full flex flex-col items-center justify-center">
-                <img
-                  src={p.image}
-                  alt=""
-                  className={`w-full h-full object-contain drop-shadow-2xl transition-all duration-1000 ${
-                    reveal ? 'brightness-100' : 'brightness-0 opacity-40 group-hover:opacity-100'
-                  }`}
-                />
-                
-                {reveal && (
-                  <Motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="absolute inset-x-0 -bottom-2 text-center">
-                     <span className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-xl ${isCorrect ? 'bg-emerald-500 text-white' : 'bg-brand-500 text-white'}`}>
-                        {p.nom}
-                     </span>
-                  </Motion.div>
-                )}
-              </div>
-              
-              <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity ${isCorrect ? 'from-emerald-500' : 'from-brand-500'}`} />
+              <img
+                src={p.image}
+                alt=""
+                className={`h-full w-full object-contain drop-shadow-xl transition-all duration-700 ${
+                  reveal ? 'brightness-100' : 'brightness-0 opacity-40 group-hover:opacity-100'
+                }`}
+              />
+              {reveal && (
+                <span className={`absolute inset-x-1 bottom-1 truncate rounded-md px-1 py-0.5 text-center text-[8px] font-black uppercase tracking-wider text-white shadow sm:text-[10px] ${isCorrect ? 'bg-emerald-500' : 'bg-brand-500'}`}>
+                  {p.nom}
+                </span>
+              )}
             </button>
           );
         })}
       </div>
 
-      {state.status === 'revealed' && (
-        <Motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center">
+      {/* Zone d'action à hauteur réservée : la page ne « saute » pas à la révélation */}
+      <div className="flex h-12 shrink-0 items-center justify-center">
+        {state.status === 'revealed' && (
           <button
+            type="button"
             onClick={onNext}
-            className="flex items-center gap-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest shadow-2xl transition-all hover:scale-105 active:scale-95"
+            className="flex h-full items-center gap-3 rounded-2xl bg-slate-900 px-8 text-sm font-black uppercase tracking-widest text-white shadow-xl transition-all hover:scale-105 active:scale-95 dark:bg-white dark:text-slate-900"
           >
             {state.selectedId === state.target.id ? 'Manche suivante' : 'Réessayer'}
-            <RefreshCw size={20} />
+            <RefreshCw size={18} />
           </button>
-        </Motion.div>
-      )}
+        )}
+      </div>
     </Motion.div>
   );
 }

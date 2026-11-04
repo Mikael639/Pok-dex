@@ -1,10 +1,20 @@
 import React, { useMemo } from 'react';
 import { motion as Motion } from 'framer-motion';
-import { Zap, Activity, Trophy, Gamepad2, GitBranch, Sparkles, Star, Shield, Flame, Crown, Music } from 'lucide-react';
+import { Zap, Activity, Gamepad2, GitBranch, Sparkles, Star, Shield, Flame, Crown, Music, Brain, Trophy } from 'lucide-react';
 import { TYPE_COLORS, TYPE_CHART } from '../../constants/pokemon';
 import { EXPERIENCE_META } from '../../constants/gameMeta';
-import { QuickCard } from '../common/Cards';
 
+const LOG_STYLES = {
+  favorite: { Icon: Star, tone: 'text-amber-500 bg-amber-500/10' },
+  team_add: { Icon: Shield, tone: 'text-sky-500 bg-sky-500/10' },
+  team_remove: { Icon: Shield, tone: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+  win: { Icon: Trophy, tone: 'text-emerald-500 bg-emerald-500/10' }
+};
+
+/**
+ * Tableau de bord : tient dans un seul écran (aucun défilement).
+ * Mobile : héros + défi du jour + raccourcis + équipe. Grand écran : trois colonnes + journal résumé.
+ */
 export default function Dashboard({
   setActiveTab,
   lastPlayedTab,
@@ -21,279 +31,180 @@ export default function Dashboard({
   isDailyChallengeComplete,
   logs
 }) {
-  const continueMode = (EXPERIENCE_META && EXPERIENCE_META[lastPlayedTab]) || (EXPERIENCE_META && EXPERIENCE_META['evolution-rush']) || { label: 'Aventure', cta: 'Lancer', icon: Zap };
-  const ContinueModeIcon = continueMode.icon || Zap;
+  const continueMode = EXPERIENCE_META?.[lastPlayedTab] || EXPERIENCE_META?.['evolution-rush'] || { label: 'Aventure', cta: 'Lancer', icon: Zap };
   const collectionProgress = Math.round(((pokemons?.length || 0) / 1025) * 100);
   const overallEvolutionRushBestStreak = Math.max(0, ...Object.values(evolutionRushState?.bestStreaks || {}));
+  const bestRecord = Math.max(gameState?.highscore || 0, overallEvolutionRushBestStreak, cryQuizState?.highscore || 0);
 
-  const teamAnalysis = useMemo(() => {
-    if (!team || team.length === 0) return null;
-    const covered = {};
-    Object.keys(TYPE_COLORS || {}).forEach(defType => {
-      let best = 1;
-      team.forEach(p => p?.types?.forEach(atk => {
-        const mult = (TYPE_CHART && TYPE_CHART[atk.nom] && TYPE_CHART[atk.nom][defType]) ?? 1;
-        if (mult > best) best = mult;
-      }));
-      covered[defType] = best;
-    });
-    return covered;
+  const teamCoverageCount = useMemo(() => {
+    if (!team || team.length === 0) return 0;
+    return Object.keys(TYPE_COLORS).filter((defType) =>
+      team.some((p) => p?.types?.some((atk) => (TYPE_CHART?.[atk.nom]?.[defType] ?? 1) >= 2))
+    ).length;
   }, [team]);
 
-  const teamCoverageCount = teamAnalysis ? Object.values(teamAnalysis).filter((multiplier) => multiplier >= 2).length : 0;
-
-  const dashboardProgressStats = [
-    { label: 'Favoris', value: favorites?.length || 0, helper: 'Pokemon suivis', tone: 'text-brand-500', Icon: Star },
-    { label: 'Equipe', value: `${team?.length || 0}/6`, helper: 'Champions actifs', tone: 'text-sky-500', Icon: Shield },
-    { label: 'Victoires', value: battleStats?.wins || 0, helper: 'Arene Battle', tone: 'text-emerald-500', Icon: Flame },
-    { label: 'Record', value: Math.max(gameState?.highscore || 0, overallEvolutionRushBestStreak, cryQuizState?.highscore || 0), helper: 'Tous defis', tone: 'text-amber-500', Icon: Crown }
+  const heroStats = [
+    { label: 'Favoris', value: favorites?.length || 0, Icon: Star },
+    { label: 'Equipe', value: `${team?.length || 0}/6`, Icon: Shield },
+    { label: 'Victoires', value: battleStats?.wins || 0, Icon: Flame },
+    { label: 'Record', value: bestRecord, Icon: Crown }
   ];
 
-  const dashboardGameCards = [
-    { id: 'jeu', icon: <Gamepad2 size={24} className="text-sky-500" />, title: 'Silhouette', text: `Record: ${gameState?.highscore || 0}` },
-    { id: 'evolution-rush', icon: <GitBranch size={24} className="text-sky-500" />, title: 'Evolution Rush', text: `Meilleur: ${overallEvolutionRushBestStreak}` },
-    { id: 'cry-quiz', icon: <Music size={24} className="text-brand-500" />, title: 'Qui est-ce ?', text: `Record: ${cryQuizState?.highscore || 0}` },
-    { id: 'combat', icon: <Activity size={24} className="text-emerald-500" />, title: 'Arène Battle', text: `${battleStats?.wins || 0} victoire${(battleStats?.wins || 0) > 1 ? 's' : ''}` }
+  const gameShortcuts = [
+    { id: 'combat', Icon: Activity, title: 'Arène', text: `${battleStats?.wins || 0} vict.`, tone: 'text-emerald-500' },
+    { id: 'memory', Icon: Brain, title: 'Memory', text: '6 paires', tone: 'text-brand-500' },
+    { id: 'jeu', Icon: Gamepad2, title: 'Silhouette', text: `Record ${gameState?.highscore || 0}`, tone: 'text-sky-500' },
+    { id: 'evolution-rush', Icon: GitBranch, title: 'Evolution', text: `Best ${overallEvolutionRushBestStreak}`, tone: 'text-amber-500' },
+    { id: 'cry-quiz', Icon: Music, title: 'Qui est-ce', text: `Record ${cryQuizState?.highscore || 0}`, tone: 'text-brand-500' }
   ];
 
   const DailyChallengeIcon = dailyChallenge.icon || Sparkles;
   const dailyChallengeStatusLabel = isDailyChallengeComplete ? 'Defi termine' : 'Objectif disponible';
+  const recentLogs = (logs || []).slice(0, 3);
 
   return (
-    <Motion.div key="h" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} className="space-y-12 pb-20">
-       <div className="grid grid-cols-1 gap-8 xl:grid-cols-[1.45fr_0.95fr]">
-          <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-white bg-slate-900 shadow-2xl dark:border-slate-800 lg:rounded-[4rem]">
-            <img src="/images/home_aesthetic.webp" loading="lazy" className="absolute inset-0 h-full w-full object-contain transition-transform duration-1000 hover:scale-105" alt="Hero" />
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/55 to-brand-950/30" />
-            <div className="relative flex min-h-[320px] flex-col justify-between p-6 lg:min-h-[450px] lg:p-12">
-               <h1 className="text-4xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight uppercase font-['Outfit'] italic drop-shadow-2xl">Écrivez votre <br/><span className="text-brand-500">Légende</span>.</h1>
-               <div className="flex flex-wrap gap-4 mt-2">
-                  <span className="rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.4em] text-white/90 backdrop-blur-2xl">Dashboard joueur</span>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.4em] text-white/70 backdrop-blur-2xl">Dernier defi : {continueMode.label}</span>
-               </div>
-               <p className="max-w-xl text-sm font-medium text-white/60 lg:text-base leading-relaxed">Pilotez votre progression, relancez votre dernier defi et gardez un oeil sur votre equipe sans quitter l accueil.</p>
-                <div className="flex flex-wrap gap-5 lg:gap-6">
-                   <button type="button" onClick={() => setActiveTab('collection')} className="rounded-2xl bg-white px-8 py-4 text-[10px] font-black uppercase tracking-widest text-slate-950 shadow-[0_20px_40px_rgba(255,255,255,0.15)] transition-all hover:scale-105 active:scale-95 lg:px-10 lg:py-5 lg:text-xs">Explorer la collection</button>
-                   <button type="button" aria-label={continueMode.cta} onClick={() => setActiveTab(continueMode.id)} className="rounded-2xl border border-white/20 bg-slate-800/20 px-8 py-4 text-[10px] font-black uppercase tracking-widest text-white shadow-2xl backdrop-blur-2xl transition-all hover:bg-white/10 lg:px-10 lg:py-5 lg:text-xs">{continueMode.cta}</button>
-                </div>
-                <div className="grid gap-4 sm:grid-cols-3">
-                   <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-white/5 p-6 backdrop-blur-3xl group transition-all hover:bg-white/10">
-                      <div className="relative z-10">
-                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Favoris</div>
-                         <div className="mt-2 text-3xl font-black text-white">{favorites.length}</div>
-                      </div>
-                      <Star size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-5 transition-all duration-700 group-hover:-rotate-12 group-hover:scale-110 group-hover:opacity-20" />
-                   </div>
-                   <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-white/5 p-6 backdrop-blur-3xl group transition-all hover:bg-white/10">
-                      <div className="relative z-10">
-                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Equipe</div>
-                         <div className="mt-2 text-3xl font-black text-white">{team.length}/6</div>
-                      </div>
-                      <Shield size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-5 transition-all duration-700 group-hover:rotate-12 group-hover:scale-110 group-hover:opacity-20" />
-                   </div>
-                   <div className="relative overflow-hidden rounded-[2rem] border border-white/5 bg-white/5 p-6 backdrop-blur-3xl group transition-all hover:bg-white/10">
-                      <div className="relative z-10">
-                         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Victoires</div>
-                         <div className="mt-2 text-3xl font-black text-white">{battleStats.wins}</div>
-                      </div>
-                      <Trophy size={72} strokeWidth={1} className="absolute -bottom-4 -right-4 text-white opacity-10 transition-all duration-500 group-hover:-rotate-12 group-hover:scale-110 group-hover:opacity-30" />
-                   </div>
-                </div>
-            </div>
+    <Motion.div key="h" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="flex h-full min-h-[30rem] flex-col gap-2 sm:gap-3 lg:gap-4">
+      <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-[minmax(0,1fr)_auto_auto] gap-2 sm:gap-3 lg:grid-cols-[1.35fr_1fr_1fr] lg:grid-rows-1 lg:gap-4">
+        {/* Héros */}
+        <div className="relative flex min-h-0 flex-col justify-between overflow-hidden rounded-[1.5rem] border-2 border-white bg-slate-900 p-4 shadow-xl dark:border-slate-800 sm:rounded-[2rem] sm:p-6 lg:p-8">
+          <img src="/images/home_aesthetic.webp" alt="" aria-hidden="true" className="absolute inset-0 hidden h-full w-full object-cover opacity-70 sm:block" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950/70 to-slate-950/30" />
+          <div className="relative">
+            <h1 className="font-['Outfit'] text-2xl font-black uppercase italic leading-[1.05] tracking-tight text-white drop-shadow-2xl sm:text-4xl lg:text-5xl xl:text-6xl">
+              Écrivez votre <span className="text-brand-500">Légende</span>.
+            </h1>
+            <p className="mt-2 hidden max-w-md text-sm font-medium leading-relaxed text-white/60 sm:block">
+              Pilotez votre progression, relancez votre dernier defi et gardez un oeil sur votre equipe.
+            </p>
           </div>
-          <div className="glass-card relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] p-6 lg:rounded-[4rem] lg:p-10">
-             <div className="absolute top-0 right-0 p-4 opacity-10 lg:p-8"><Zap size={80} className="text-brand-500 lg:size-[120px]" /></div>
-             <div className="relative z-10">
-                <span className="mb-2 block text-[10px] font-black uppercase tracking-[0.3em] text-brand-500 lg:mb-4">Progression reelle</span>
-                <h2 className="mb-2 text-2xl font-black uppercase leading-none tracking-tighter lg:text-4xl">Tableau de bord<br />du dresseur</h2>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 opacity-80">Collection, records et impulsion du moment</p>
-             </div>
-             <div className="relative z-10 mt-8 space-y-6">
-                <div>
-                   <div className="mb-2 flex justify-between text-[10px] font-black uppercase tracking-widest"><span>Collection</span><span>{collectionProgress}%</span></div>
-                   <div className="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-                      <Motion.div initial={{width: 0}} animate={{width: `${collectionProgress}%`}} className="h-full bg-brand-500 shadow-[0_0_15px_rgba(244,63,94,0.5)]" />
-                   </div>
-                   <div className="mt-2 text-xs font-bold text-slate-500">{pokemons.length} Pokemon deja indexes sur 1025.</div>
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                    {dashboardProgressStats.map((stat) => {
-                       const IconComponent = stat.Icon;
-                       return (
-                       <div key={stat.label} className="relative overflow-hidden rounded-3xl bg-slate-100 p-6 dark:bg-slate-800/50 group hover:shadow-2xl hover:shadow-brand-500/5 transition-all duration-500 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                          <div className="relative z-10">
-                             <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{stat.label}</div>
-                             <div className={`mt-3 text-3xl font-black leading-none ${stat.tone}`}>{stat.value}</div>
-                             <div className="mt-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 opacity-60">{stat.helper}</div>
-                          </div>
-                          <IconComponent size={100} strokeWidth={1} className={`absolute -bottom-6 -right-6 opacity-5 transition-all duration-700 group-hover:-translate-y-4 group-hover:scale-125 group-hover:opacity-15 ${stat.tone}`} />
-                       </div>
-                    )})}
-                 </div>
-                 <div className="rounded-[2.5rem] border border-slate-100 bg-white/40 p-8 backdrop-blur-3xl dark:border-slate-800 dark:bg-slate-900/40 shadow-sm">
-                    <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Records a surveiller</div>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                       <div className="rounded-2xl bg-slate-50 px-5 py-4 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
-                          <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Evolution Rush</div>
-                          <div className="mt-1 text-2xl font-black text-sky-500">{overallEvolutionRushBestStreak}</div>
-                       </div>
-                    </div>
-                 </div>
-             </div>
-          </div>
-       </div>
 
-       <div className="grid grid-cols-1 gap-12 xl:grid-cols-[1.15fr_0.95fr_1fr]">
-           <button type="button" onClick={() => setActiveTab(continueMode.id)} aria-label={continueMode.cta} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-10 text-left shadow-2xl shadow-brand-500/5 transition-all hover:-translate-y-2 hover:border-brand-300 dark:border-slate-800 dark:bg-slate-900 duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 via-transparent to-amber-400/5 opacity-80" />
-              <div className="relative flex h-full flex-col justify-between gap-10">
-                 <div className="flex items-start justify-between gap-8">
-                    <div>
-                       <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-brand-500">Continuer l aventure</div>
-                       <h3 className="text-3xl font-black uppercase tracking-tight dark:text-white leading-tight">Prochain<br/>Objectif</h3>
-                       <p className="mt-4 max-w-md text-sm font-bold text-slate-400 leading-relaxed uppercase tracking-tighter italic">{continueMode.label}</p>
-                    </div>
-                    <div className="rounded-3xl bg-slate-50 p-5 text-brand-500 transition-all duration-700 group-hover:scale-110 group-hover:bg-brand-50 dark:bg-slate-800 outline outline-0 group-hover:outline-8 outline-brand-500/10">
-                       <ContinueModeIcon size={38} />
-                    </div>
-                 </div>
-                 <div className="flex flex-wrap gap-4">
-                    <span className="rounded-xl bg-slate-900 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-white dark:bg-white dark:text-slate-900 group-hover:bg-brand-500 transition-colors shadow-lg">{continueMode.cta}</span>
-                    <span className="rounded-xl bg-slate-50 px-6 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:bg-slate-800 dark:text-slate-500">Reprise automatique</span>
-                 </div>
+          <div className="relative mt-3 flex flex-wrap gap-2 sm:gap-3">
+            <button type="button" onClick={() => setActiveTab('collection')} className="rounded-xl bg-white px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-slate-950 shadow-lg transition-all hover:scale-[1.03] active:scale-95 sm:px-6 sm:py-3">
+              Explorer la collection
+            </button>
+            <button type="button" aria-label={continueMode.cta} onClick={() => setActiveTab(continueMode.id)} className="rounded-xl border border-white/25 bg-white/10 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur transition-all hover:bg-white/20 active:scale-95 sm:px-6 sm:py-3">
+              {continueMode.cta}
+            </button>
+          </div>
+
+          <div className="relative mt-3 grid grid-cols-4 gap-2 sm:gap-3">
+            {heroStats.map(({ label, value, Icon }) => (
+              <div key={label} className="rounded-xl border border-white/10 bg-white/10 px-2 py-2 backdrop-blur sm:rounded-2xl sm:px-4 sm:py-3">
+                <div className="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest text-white/50 sm:text-[10px]">
+                  <Icon size={11} className="hidden sm:block" /> {label}
+                </div>
+                <div className="text-lg font-black leading-tight text-white sm:text-2xl">{value}</div>
               </div>
-           </button>
-           
-           <button type="button" aria-label={dailyChallenge?.cta} onClick={handleDailyChallengeAction} className="group relative overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-10 text-left shadow-2xl shadow-amber-500/5 transition-all hover:-translate-y-2 hover:border-amber-300 dark:border-slate-800 dark:bg-slate-900 duration-500">
-              <div className={`absolute inset-0 bg-gradient-to-br ${dailyChallenge?.accent}`} />
-              <div className="relative flex h-full flex-col gap-8">
-                 <div className="flex items-start justify-between gap-4">
-                    <div>
-                       <div className="mb-4 text-[10px] font-black uppercase tracking-[0.4em] text-amber-500">Defi du jour</div>
-                       <h3 className="text-2xl font-black uppercase tracking-tight dark:text-white leading-tight">{dailyChallenge?.title}</h3>
-                       <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 opacity-60 leading-snug">{dailyChallenge?.description}</p>
-                    </div>
-                    <div className="rounded-3xl bg-slate-50 p-5 text-amber-500 transition-all duration-700 group-hover:scale-110 group-hover:bg-amber-50 dark:bg-slate-800 outline outline-0 group-hover:outline-8 outline-amber-500/10">
-                       <DailyChallengeIcon size={34} />
-                    </div>
-                 </div>
-                 <div className="flex items-center justify-center py-4">
-                    {dailyChallenge?.visualPokemon ? (
-                       <div className="relative">
-                          <div className={`absolute inset-0 scale-150 rounded-full blur-3xl ${dailyChallenge?.glow} opacity-20`} />
-                          <img src={dailyChallenge.visualPokemon.image} alt={dailyChallenge.visualPokemon.nom} loading="lazy" className="relative z-10 h-32 w-32 object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-all duration-700 group-hover:scale-110 group-hover:rotate-6" />
-                       </div>
-                    ) : (
-                       <div className={`relative flex h-32 w-32 items-center justify-center rounded-full ${isDailyChallengeComplete ? 'bg-emerald-500 text-white shadow-[0_20px_40px_rgba(16,185,129,0.3)]' : 'bg-slate-50 text-slate-300 dark:bg-slate-800 dark:text-slate-600 border border-slate-100 dark:border-slate-700'}`}>
-                          <DailyChallengeIcon size={48} />
-                          {isDailyChallengeComplete && <Sparkles size={20} className="absolute -right-1 -top-1 text-amber-200" />}
-                       </div>
-                    )}
-                 </div>
-                 <div className="rounded-[2rem] border border-slate-100 bg-slate-50/50 p-6 backdrop-blur-2xl dark:border-slate-800 dark:bg-slate-800/30">
-                    <div className="flex items-center justify-between gap-4">
-                       <div>
-                          <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">{dailyChallenge?.reward}</div>
-                          <div className={`mt-2 text-xs font-black uppercase tracking-[0.2em] ${isDailyChallengeComplete ? 'text-emerald-500' : 'text-slate-400'}`}>{dailyChallengeStatusLabel}</div>
-                       </div>
-                       <span className={`rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] ${isDailyChallengeComplete ? 'bg-emerald-500 text-white shadow-lg' : 'bg-white text-slate-300 dark:bg-slate-900 dark:text-slate-600 border border-slate-100 dark:border-slate-700'}`}>{isDailyChallengeComplete ? '1 / 1' : '0 / 1'}</span>
-                    </div>
-                 </div>
-              </div>
-           </button>
-           
-           <div className="rounded-[2.5rem] border border-slate-100 bg-white p-10 shadow-2xl shadow-sky-500/5 dark:border-slate-800 dark:bg-slate-900 duration-500">
-              <div className="mb-8 flex items-center justify-between gap-6">
-                 <div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.4em] text-sky-500">Equipe active</div>
-                    <h3 className="mt-3 text-2xl font-black uppercase tracking-tight dark:text-white leading-tight">Prete pour<br />la ligue</h3>
-                 </div>
-                 <button type="button" onClick={() => setActiveTab('equipe')} className="rounded-xl bg-sky-50 px-5 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-sky-600 hover:bg-sky-600 hover:text-white transition-all shadow-sm shadow-sky-500/10">Explorer</button>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                 <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-                    <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Slots</div>
-                    <div className="mt-2 text-3xl font-black text-sky-500">{team.length}/6</div>
-                    <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">Pokemon equipes</div>
-                 </div>
-                 <div className="rounded-2xl bg-slate-50 p-5 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-                    <div className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Typage</div>
-                    <div className="mt-2 text-3xl font-black text-emerald-500">{teamCoverageCount}</div>
-                    <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">Points forts</div>
-                 </div>
-              </div>
-              <div className="mt-8 grid grid-cols-3 gap-4">
-                 {team.length > 0 ? team.slice(0, 6).map((p) => <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} className="rounded-2xl border border-slate-50 bg-slate-50/50 p-4 text-center transition-all hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:border-sky-200 dark:bg-slate-950 dark:border-slate-900" onClick={() => setSelectedPokemon(p)}><img src={p.image} alt={p.nom} loading="lazy" className="mx-auto h-14 w-14 object-contain transition-transform hover:scale-110 drop-shadow-md" /></button>) : <div role="status" className="col-span-3 rounded-2xl border-2 border-dashed border-slate-100 px-6 py-10 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-300 dark:border-slate-800">Compose ton equipe pour debloquer un resume strategique ici.</div>}
+            ))}
+          </div>
+        </div>
+
+        {/* Défi du jour : bandeau compact sur mobile, grande carte sur grand écran */}
+        <button type="button" aria-label={dailyChallenge?.cta} onClick={handleDailyChallengeAction} className="group relative flex min-h-0 flex-col overflow-hidden rounded-2xl border-2 border-amber-200 bg-white p-3 text-left shadow-lg transition-all hover:border-amber-400 dark:border-amber-500/30 dark:bg-slate-900 lg:rounded-[2rem] lg:border-slate-100 lg:p-6 lg:shadow-xl lg:dark:border-slate-800">
+          <div className={`absolute inset-0 hidden bg-gradient-to-br lg:block ${dailyChallenge?.accent}`} />
+          <div className="relative flex items-center justify-between gap-3 lg:items-start">
+            <div className="flex min-w-0 items-center gap-3 lg:block">
+              <div className="shrink-0 rounded-xl bg-amber-500/10 p-2.5 text-amber-500 lg:hidden"><DailyChallengeIcon size={22} /></div>
+              <div className="min-w-0">
+                <div className="text-[9px] font-black uppercase tracking-[0.25em] text-amber-500 lg:text-[10px] lg:tracking-[0.3em]">Defi du jour</div>
+                <h3 className="truncate text-xs font-black uppercase leading-tight tracking-tight dark:text-white sm:text-sm lg:mt-1 lg:whitespace-normal lg:text-lg xl:text-xl">{dailyChallenge?.title}</h3>
+                <p className="mt-2 hidden text-[10px] font-bold uppercase leading-snug tracking-widest text-slate-400 lg:block">{dailyChallenge?.description}</p>
               </div>
             </div>
-         </div>
-
-        {/* --- TIMELINE EPIQUE --- */}
-        <section className="space-y-6">
-           <div className="flex items-center gap-4">
-              <div className="rounded-2xl bg-brand-500/10 p-3 text-brand-500">
-                 <Crown size={24} />
+            <span className={`shrink-0 rounded-lg px-2.5 py-1 text-[9px] font-black uppercase tracking-widest lg:hidden ${isDailyChallengeComplete ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400 dark:bg-slate-800'}`}>
+              {isDailyChallengeComplete ? 'OK' : 'A faire'}
+            </span>
+            <div className="hidden shrink-0 rounded-2xl bg-slate-50 p-3 text-amber-500 dark:bg-slate-800 lg:block">
+              <DailyChallengeIcon size={26} />
+            </div>
+          </div>
+          <div className="relative hidden min-h-0 flex-1 items-center justify-center py-2 lg:flex">
+            {dailyChallenge?.visualPokemon ? (
+              <img src={dailyChallenge.visualPokemon.image} alt={dailyChallenge.visualPokemon.nom} loading="lazy" className="h-full max-h-56 w-full object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.2)] transition-transform duration-500 group-hover:scale-105" />
+            ) : (
+              <div className={`flex h-24 w-24 items-center justify-center rounded-full ${isDailyChallengeComplete ? 'bg-emerald-500 text-white' : 'bg-slate-50 text-slate-300 dark:bg-slate-800'}`}>
+                <DailyChallengeIcon size={40} />
               </div>
-              <div>
-                 <div className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-500">Journal de Bord</div>
-                 <h3 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Timeline Epique</h3>
-              </div>
-           </div>
-           
-           <div className="relative rounded-[2.5rem] border border-slate-100 bg-white p-6 md:p-10 shadow-2xl shadow-brand-500/5 dark:border-slate-800 dark:bg-slate-900">
-              {logs && logs.length > 0 ? (
-                 <div className="max-h-[300px] overflow-y-auto pr-4 custom-scrollbar space-y-6">
-                    {logs.slice(0, 15).map((log, index) => {
-                       let Icon = Activity;
-                       let color = 'text-slate-500';
-                       let bg = 'bg-slate-100 dark:bg-slate-800';
-                       
-                       if(log.type === 'favorite') { Icon = Star; color = 'text-amber-500'; bg = 'bg-amber-500/10 border-amber-500/20'; }
-                       else if(log.type === 'team_add') { Icon = Shield; color = 'text-sky-500'; bg = 'bg-sky-500/10 border-sky-500/20'; }
-                       else if(log.type === 'team_remove') { Icon = Shield; color = 'text-slate-400'; bg = 'bg-slate-100 dark:bg-slate-800'; }
-                       else if(log.type === 'win') { Icon = Trophy; color = 'text-emerald-500'; bg = 'bg-emerald-500/10 border-emerald-500/20'; }
+            )}
+          </div>
+          <div className="relative hidden items-center justify-between gap-3 rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-3 dark:border-slate-800 dark:bg-slate-800/30 lg:flex">
+            <div className="min-w-0">
+              <div className="truncate text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">{dailyChallenge?.reward}</div>
+              <div className={`text-xs font-black uppercase tracking-widest ${isDailyChallengeComplete ? 'text-emerald-500' : 'text-slate-400'}`}>{dailyChallengeStatusLabel}</div>
+            </div>
+            <span className={`shrink-0 rounded-xl px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ${isDailyChallengeComplete ? 'bg-emerald-500 text-white' : 'bg-white text-slate-400 dark:bg-slate-900'}`}>
+              {isDailyChallengeComplete ? 'OK' : 'A faire'}
+            </span>
+          </div>
+        </button>
 
-                       return (
-                          <Motion.div initial={{opacity:0, x:-20}} animate={{opacity:1, x:0}} transition={{delay: index * 0.05}} key={log.id} className="relative flex gap-6">
-                             <div className={`${bg} ${color} relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border shadow-sm`}>
-                                <Icon size={20} />
-                             </div>
-                             <div className="flex-1 pb-6 relative">
-                                {index !== Math.min(logs.length, 15) - 1 && <div className="absolute top-14 bottom-0 left-[-38px] w-px bg-slate-200 dark:bg-slate-800" />}
-                                <h4 className="text-sm md:text-base font-black uppercase tracking-tight text-slate-900 dark:text-wrap dark:text-slate-100">{log.message}</h4>
-                                <div className="mt-1 flex items-center gap-3">
-                                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                                </div>
-                             </div>
-                             {log.metadata && log.metadata.image && (
-                               <img src={log.metadata.image} alt="Sprite" className="h-12 w-12 object-contain bg-slate-50 dark:bg-slate-950 rounded-xl p-1 border border-slate-100 dark:border-slate-800" />
-                             )}
-                          </Motion.div>
-                       );
-                    })}
-                 </div>
+        {/* Équipe + collection (colonne droite sur grand écran, bandeau compact sur mobile) */}
+        <div className="flex min-h-0 flex-col gap-2 rounded-[1.5rem] border-2 border-slate-100 bg-white p-3 shadow-xl dark:border-slate-800 dark:bg-slate-900 sm:gap-3 sm:rounded-[2rem] sm:p-5">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-sky-500">Equipe active</div>
+              <div className="text-xs font-bold text-slate-500">{team.length}/6 Pokemon{teamCoverageCount > 0 ? ` • ${teamCoverageCount} points forts` : ''}</div>
+            </div>
+            <button type="button" onClick={() => setActiveTab('equipe')} className="rounded-xl bg-sky-50 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-sky-600 transition-all hover:bg-sky-600 hover:text-white dark:bg-sky-500/10">
+              Gerer
+            </button>
+          </div>
+
+          <div className="grid grid-cols-6 gap-1.5 sm:gap-2 lg:min-h-0 lg:flex-1 lg:grid-cols-3 lg:grid-rows-2 lg:gap-3">
+            {Array.from({ length: 6 }).map((_, index) => {
+              const p = team[index];
+              return p ? (
+                <button type="button" key={p.id} aria-label={`Voir ${p.nom}`} onClick={() => setSelectedPokemon(p)} className="flex aspect-square min-h-0 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 p-1 lg:aspect-auto lg:p-2 transition-all hover:bg-white hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/50">
+                  <img src={p.image} alt="" className="h-full w-full object-contain" />
+                </button>
               ) : (
-                 <div className="text-center py-10">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Aucun evenement recent.</p>
-                 </div>
-              )}
-           </div>
-        </section>
+                <div key={`empty-${index}`} className="aspect-square rounded-xl border-2 border-dashed border-slate-200 lg:aspect-auto dark:border-slate-700" />
+              );
+            })}
+          </div>
 
-       <section className="space-y-6">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-             <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-500">Jeux et defis</div>
-                <h3 className="text-2xl font-black uppercase tracking-tighter dark:text-white">Tous les records a portee de clic</h3>
-             </div>
-             <p className="max-w-2xl text-sm font-bold text-slate-500">Sélectionne un mode d'entraînement pour tester tes connaissances, améliorer tes stratégies et inscrire ton nom dans la légende.</p>
+          <div>
+            <div className="mb-1 flex justify-between text-[10px] font-black uppercase tracking-widest"><span>Collection</span><span>{collectionProgress}%</span></div>
+            <div className="h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+              <Motion.div initial={{ width: 0 }} animate={{ width: `${collectionProgress}%` }} className="h-full bg-brand-500" />
+            </div>
+            <div className="mt-1 hidden text-[11px] font-bold text-slate-500 lg:block">{pokemons.length} Pokemon indexes sur 1025.</div>
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7">
-             {dashboardGameCards.map((card) => (
-                <QuickCard key={card.id} icon={card.icon} title={card.title} text={card.text} onClick={() => setActiveTab(card.id)} />
-             ))}
-          </div>
-       </section>
+        </div>
+      </div>
+
+      {/* Raccourcis jeux + journal résumé */}
+      <div className="grid shrink-0 grid-cols-1 gap-2 sm:gap-3 xl:grid-cols-[1.6fr_1fr] xl:gap-4">
+        <div className="grid grid-cols-5 gap-1.5 sm:gap-3">
+          {gameShortcuts.map(({ id, Icon, title, text, tone }) => (
+            <button type="button" key={id} aria-label={`${title} : ${text}`} onClick={() => setActiveTab(id)} className="group flex min-w-0 flex-col items-center gap-0.5 rounded-xl border-2 border-slate-100 bg-white px-1 py-2 text-center shadow-md transition-all hover:border-brand-500/50 active:scale-95 dark:border-slate-800 dark:bg-slate-900 sm:rounded-2xl sm:p-3">
+              <Icon size={22} className={`${tone} transition-transform group-hover:scale-110`} />
+              <span className="w-full truncate text-[8px] font-black uppercase tracking-tight dark:text-white min-[400px]:text-[9px] sm:text-xs">{title}</span>
+              <span className="hidden w-full truncate text-[9px] font-bold uppercase tracking-wider text-slate-400 sm:block">{text}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="hidden rounded-2xl border-2 border-slate-100 bg-white p-3 shadow-md dark:border-slate-800 dark:bg-slate-900 xl:block">
+          <div className="mb-1.5 text-[10px] font-black uppercase tracking-[0.3em] text-brand-500">Journal de Bord</div>
+          {recentLogs.length > 0 ? (
+            <ul className="space-y-1">
+              {recentLogs.map((log) => {
+                const { Icon, tone } = LOG_STYLES[log.type] || { Icon: Activity, tone: 'text-slate-500 bg-slate-100 dark:bg-slate-800' };
+                return (
+                  <li key={log.id} className="flex items-center gap-2">
+                    <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${tone}`}><Icon size={12} /></span>
+                    <span className="min-w-0 flex-1 truncate text-xs font-bold text-slate-700 dark:text-slate-200">{log.message}</span>
+                    <span className="shrink-0 text-[10px] font-black text-slate-400">{new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="py-2 text-[10px] font-black uppercase tracking-widest text-slate-400">Aucun evenement recent.</p>
+          )}
+        </div>
+      </div>
     </Motion.div>
   );
 }
