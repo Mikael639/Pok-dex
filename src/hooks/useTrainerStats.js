@@ -1,17 +1,15 @@
 import { useMemo } from 'react';
 
-export function useTrainerStats({ team, favorites, battleStats, gameState, quizState, statClashState, cryQuizState }) {
+export function useTrainerStats({ team, favorites, battleStats, gameState, cryQuizState }) {
   const trainerScore = useMemo(() => {
     const pointsTeam = (team?.length || 0) * 25;
     const pointsFavorites = (favorites?.length || 0) * 10;
     const pointsWins = (battleStats?.wins || 0) * 100;
-    const pointsQuiz = (quizState?.highscore || 0) * 5;
     const pointsSilhouette = (gameState?.highscore || 0) * 5;
-    const pointsClash = (statClashState?.bestStreak || 0) * 50;
     const pointsCry = (cryQuizState?.highscore || 0) * 40;
 
-    return pointsTeam + pointsFavorites + pointsWins + pointsQuiz + pointsSilhouette + pointsClash + pointsCry;
-  }, [team, favorites, battleStats, gameState, quizState, statClashState, cryQuizState]);
+    return pointsTeam + pointsFavorites + pointsWins + pointsSilhouette + pointsCry;
+  }, [team, favorites, battleStats, gameState, cryQuizState]);
 
   const trainerTitle = useMemo(() => {
     if (trainerScore < 500) return 'Novice de Bourg-Palette';

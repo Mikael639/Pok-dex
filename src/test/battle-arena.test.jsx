@@ -12,7 +12,6 @@ const baseSelectionState = {
   isFighting: false,
   playerActive: 0,
   enemyActive: 0,
-  attackAnim: null,
   mode: 'selection',
   currentTurn: 'player'
 };

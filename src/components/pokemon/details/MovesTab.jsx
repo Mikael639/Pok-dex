@@ -35,7 +35,7 @@ export default function MovesTab({ isDarkMode, moves }) {
             <button
               key={f.id}
               onClick={() => setActiveMoveFilter(f.id)}
-              className={`rounded-lg px-2 py-1 text-[8px] font-black uppercase transition-all ${activeMoveFilter === f.id ? 'bg-rose-500 text-white shadow-md' : 'bg-slate-100 text-slate-400 dark:bg-slate-800'}`}
+              className={`rounded-lg px-2 py-1 text-[8px] font-black uppercase transition-all ${activeMoveFilter === f.id ? 'bg-brand-500 text-white shadow-md' : 'bg-slate-100 text-slate-400 dark:bg-slate-800'}`}
             >
               {f.icon ? <f.icon size={12} /> : f.label}
             </button>
@@ -73,14 +73,14 @@ export default function MovesTab({ isDarkMode, moves }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
               key={`${move.name}-${i}`}
-              className={`group relative flex items-center justify-between rounded-2xl border-2 p-3 transition-all hover:border-rose-500 ${isDarkMode ? 'border-slate-800 bg-slate-900/50' : 'border-slate-50 bg-slate-50/50'}`}
+              className={`group relative flex items-center justify-between rounded-2xl border-2 p-3 transition-all hover:border-brand-500 ${isDarkMode ? 'border-slate-800 bg-slate-900/50' : 'border-slate-50 bg-slate-50/50'}`}
             >
               <div className="flex items-center gap-4">
                 <div className="flex h-10 w-10 flex-col items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                   <span className="text-[7px] font-black uppercase text-slate-400">
                     {activeLearnMethod === 'level-up' ? 'Niv.' : activeLearnMethod === 'machine' ? 'CT' : activeLearnMethod === 'egg' ? 'Œuf' : 'Mtr'}
                   </span>
-                  <span className="text-sm font-black text-rose-500">{activeLearnMethod === 'level-up' ? move.level : '-'}</span>
+                  <span className="text-sm font-black text-brand-500">{activeLearnMethod === 'level-up' ? move.level : '-'}</span>
                 </div>
                 <div>
                   <h4 className="text-xs font-black uppercase tracking-wider">{move.displayName || move.name.replace(/-/g, ' ')}</h4>

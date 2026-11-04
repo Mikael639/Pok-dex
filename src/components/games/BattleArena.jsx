@@ -3,6 +3,7 @@ import React from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { Activity, Shield, Users, Shuffle, ChevronLeft, Trophy, Search, X } from 'lucide-react';
 import useAccessibleModal from '../../hooks/useAccessibleModal';
+import { INITIAL_BATTLE_STATE } from '../../constants/gameMeta';
 
 const MENU_MODES = [
   { id: 'ia', title: 'J1 vs IA', desc: 'Le defi classique', icon: Shield },
@@ -10,35 +11,89 @@ const MENU_MODES = [
   { id: 'auto', title: 'Spectateur', desc: 'Combat auto', icon: Shuffle }
 ];
 
-const emptyBattleState = {
-  playerTeam: [],
-  enemyTeam: [],
-  logs: [],
-  turn: 0,
-  winner: null,
-  isFighting: false,
-  playerActive: 0,
-  enemyActive: 0,
-  attackAnim: null,
-  mode: 'menu',
-  currentTurn: 'player'
+const SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown';
+
+/**
+ * Sprite animé (GIF Showdown) : de dos pour le joueur, de face pour l'adversaire.
+ * Chaîne de repli : dos -> face -> artwork officiel.
+ */
+const FighterSprite = ({ pokemon, side }) => {
+  const frontUrl = `${SPRITE_BASE}/${pokemon?.id}.gif`;
+  const primaryUrl = side === 'player' ? `${SPRITE_BASE}/back/${pokemon?.id}.gif` : frontUrl;
+
+  const handleError = (event) => {
+    const img = event.currentTarget;
+    if (img.dataset.fallback === 'artwork') return;
+    if (img.dataset.fallback === 'front' || side !== 'player') {
+      img.dataset.fallback = 'artwork';
+      img.style.imageRendering = 'auto';
+      img.src = pokemon.image;
+      return;
+    }
+    img.dataset.fallback = 'front';
+    img.src = frontUrl;
+  };
+
+  return (
+    <img
+      key={pokemon?.id}
+      src={primaryUrl}
+      onError={handleError}
+      alt={pokemon?.nom}
+      style={{ imageRendering: 'pixelated' }}
+      className="relative z-10 mx-auto h-28 w-auto max-w-full object-contain drop-shadow-[0_12px_14px_rgba(11,21,35,0.35)] sm:h-36 md:h-48 lg:h-60"
+    />
+  );
 };
+
+const hpTone = (hp) => (hp > 50 ? 'bg-emerald-500' : hp > 20 ? 'bg-amber-400' : 'bg-brand-500');
+
+/** Carte d'état d'un combattant : nom, barre de vie, Pokémon restants. */
+const FighterPanel = ({ pokemon, team, activeIndex, title, isTurn }) => {
+  const hp = Math.round(pokemon?.currentHP || 0);
+  const remaining = team.filter((member) => member.currentHP > 0).length;
+
+  return (
+    <div className={`w-full max-w-sm rounded-2xl border-2 bg-white/90 p-3 shadow-lg backdrop-blur md:p-4 dark:bg-slate-900/90 ${isTurn ? 'border-brand-500' : 'border-white dark:border-slate-800'}`}>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <span className="truncate text-sm font-black uppercase tracking-tight md:text-lg">{pokemon?.nom}</span>
+        <span className={`shrink-0 rounded-full px-2 py-0.5 text-[8px] font-black uppercase tracking-widest md:text-[10px] ${isTurn ? 'bg-brand-500 text-white' : 'bg-slate-100 text-slate-400 dark:bg-slate-800'}`}>
+          {isTurn ? 'A jouer' : title}
+        </span>
+      </div>
+      <div role="progressbar" aria-label={`Vie de ${pokemon?.nom ?? title}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={hp} className="h-3 overflow-hidden rounded-full bg-slate-200 md:h-4 dark:bg-slate-800">
+        <div style={{ width: `${hp}%` }} className={`h-full rounded-full transition-[width] duration-500 ${hpTone(hp)}`} />
+      </div>
+      <div className="mt-2 flex items-center justify-between">
+        <span className="text-[10px] font-black text-slate-500 md:text-xs">{hp} / 100 PV</span>
+        <div className="flex gap-1" aria-label={`${remaining} Pokemon restants sur ${team.length}`}>
+          {team.map((member, index) => (
+            <span
+              key={`${member.id}-${index}`}
+              className={`h-2 w-2 rounded-full md:h-2.5 md:w-2.5 ${member.currentHP <= 0 ? 'bg-slate-300 dark:bg-slate-700' : index === activeIndex ? 'bg-brand-500' : 'bg-sky-400'}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/** Un Pokémon posé sur sa plateforme, avec sa carte d'état. */
+const FighterSlot = ({ pokemon, team, activeIndex, side, title, isTurn }) => (
+  <div className="flex w-full flex-col items-center gap-3 md:gap-5">
+    <FighterPanel pokemon={pokemon} team={team} activeIndex={activeIndex} title={title} isTurn={isTurn} />
+    <div className="relative flex w-full items-end justify-center pb-3 md:pb-5">
+      <div aria-hidden="true" className="absolute bottom-0 left-1/2 h-5 w-3/5 max-w-[16rem] -translate-x-1/2 rounded-[50%] bg-slate-900/20 blur-[2px] md:h-7 dark:bg-black/50" />
+      <FighterSprite pokemon={pokemon} side={side} />
+    </div>
+  </div>
+);
 
 const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBattleState }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [damagePopups, setDamagePopups] = React.useState([]);
   const winnerModalRef = React.useRef(null);
 
-  React.useEffect(() => {
-    if (state.attackAnim) {
-       setDamagePopups(prev => [...prev, state.attackAnim]);
-       const animId = state.attackAnim.id;
-       setTimeout(() => setDamagePopups(prev => prev.filter(p => p.id !== animId)), 1500);
-    }
-  }, [state.attackAnim]);
-
-  const getShowdownSprite = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
-  const shakeAnimation = { x: [0, -12, 12, -12, 12, 0], filter: ['brightness(1)', 'brightness(1.5)', 'brightness(1)'], transition: { duration: 0.4 } };
   const filteredSelection = pokemons.filter((pokemon) => pokemon.nom.toLowerCase().includes(searchTerm.toLowerCase()));
   const pActive = state.playerTeam[state.playerActive];
   const eActive = state.enemyTeam[state.enemyActive];
@@ -49,7 +104,7 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
 
   const resetBattle = () => {
     setSearchTerm('');
-    setBattleState(emptyBattleState);
+    setBattleState(INITIAL_BATTLE_STATE);
   };
 
   useAccessibleModal(winnerModalRef, resetBattle);
@@ -58,8 +113,8 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
     return (
       <div className="mx-auto flex max-w-4xl flex-col items-center justify-center space-y-6 px-2 py-8 text-center animate-fade-in sm:px-4 md:space-y-12 md:py-20">
         <div className="relative">
-          <div className="absolute inset-0 scale-110 rounded-full bg-rose-500/20 blur-3xl animate-pulse" />
-          <div className="relative rounded-[2rem] bg-rose-500 p-6 shadow-2xl ring-4 ring-rose-500/20 md:rounded-[3rem] md:p-10 md:ring-8">
+          <div className="absolute inset-0 scale-110 rounded-full bg-brand-500/20 blur-3xl" />
+          <div className="relative rounded-[2rem] bg-brand-500 p-6 shadow-2xl ring-4 ring-brand-500/20 md:rounded-[3rem] md:p-10 md:ring-8">
             <Activity size={48} className="text-white md:h-20 md:w-20" />
           </div>
         </div>
@@ -76,19 +131,19 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
               key={mode.id}
               onClick={() => onStart(mode.id)}
               disabled={teamLength < 6}
-              className={`group relative overflow-hidden rounded-[1.5rem] border-4 bg-white p-5 shadow-xl transition-all md:rounded-[2.5rem] md:p-8 dark:bg-slate-900 ${teamLength < 6 ? 'cursor-not-allowed grayscale opacity-30' : 'border-slate-100 hover:scale-[1.03] hover:border-rose-500 active:scale-95 dark:border-slate-800'}`}
+              className={`group relative overflow-hidden rounded-[1.5rem] border-4 bg-white p-5 shadow-xl transition-all md:rounded-[2.5rem] md:p-8 dark:bg-slate-900 ${teamLength < 6 ? 'cursor-not-allowed grayscale opacity-30' : 'border-slate-100 hover:scale-[1.03] hover:border-brand-500 active:scale-95 dark:border-slate-800'}`}
             >
               <div className="relative z-10 flex flex-col items-center">
-                <mode.icon size={32} className="mb-3 text-rose-500 transition-transform group-hover:scale-110 md:mb-4 md:h-10 md:w-10" />
+                <mode.icon size={32} className="mb-3 text-brand-500 transition-transform group-hover:scale-110 md:mb-4 md:h-10 md:w-10" />
                 <h3 className="mb-1 text-xs font-black uppercase tracking-tighter sm:text-sm md:mb-2 md:text-xl">{mode.title}</h3>
-                <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 transition-colors group-hover:text-rose-500 md:text-[10px]">{mode.desc}</p>
+                <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 transition-colors group-hover:text-brand-500 md:text-[10px]">{mode.desc}</p>
               </div>
             </button>
           ))}
         </div>
 
         {teamLength < 6 && (
-          <div className="mx-auto max-w-sm rounded-xl border-2 border-rose-500/20 bg-rose-500/10 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-rose-500 animate-pulse md:rounded-2xl md:px-10 md:py-5 md:text-sm">
+          <div className="mx-auto max-w-sm rounded-xl border-2 border-brand-500/20 bg-brand-500/10 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-brand-500 md:rounded-2xl md:px-10 md:py-5 md:text-sm">
             Veuillez selectionner 6 Pokemon dans votre equipe ({teamLength}/6)
           </div>
         )}
@@ -99,12 +154,12 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
   if (state.mode === 'selection') {
     return (
       <div className="relative mx-auto max-w-6xl space-y-5 px-2 pb-16 animate-fade-in sm:px-4 md:space-y-8 md:pb-20">
-        <button type="button" onClick={resetBattle} className="group absolute -top-8 left-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-colors hover:text-rose-500 md:left-0">
+        <button type="button" onClick={resetBattle} className="group absolute -top-8 left-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-colors hover:text-brand-500 md:left-0">
           <ChevronLeft size={16} /> Retour
         </button>
 
         <div className="pt-8 text-center">
-          <h2 className="mb-2 text-2xl font-black uppercase italic text-rose-500 md:text-4xl">Joueur 2</h2>
+          <h2 className="mb-2 text-2xl font-black uppercase italic text-brand-500 md:text-4xl">Joueur 2</h2>
           <p className="text-[8px] font-bold uppercase tracking-widest text-slate-500 md:text-sm">Composez votre equipe ({state.enemyTeam.length}/6)</p>
         </div>
 
@@ -116,13 +171,13 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
             placeholder="Rechercher..."
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            className="w-full rounded-xl border-2 border-slate-100 bg-white py-3 pl-12 pr-4 text-xs font-bold shadow-xl ring-rose-500/20 focus:ring-4 md:rounded-[2rem] md:border-4 md:px-6 md:py-4 md:pl-14 md:text-sm dark:border-slate-800 dark:bg-slate-900"
+            className="w-full rounded-xl border-2 border-slate-100 bg-white py-3 pl-12 pr-4 text-xs font-bold shadow-xl ring-brand-500/20 focus:ring-4 md:rounded-[2rem] md:border-4 md:px-6 md:py-4 md:pl-14 md:text-sm dark:border-slate-800 dark:bg-slate-900"
           />
         </div>
 
         <div className="mb-6 grid grid-cols-3 gap-2 sm:mb-8 md:grid-cols-6 md:gap-4">
           {state.enemyTeam.map((pokemon, index) => (
-            <div key={`${pokemon.id}-${index}`} className="relative flex flex-col items-center overflow-hidden rounded-xl bg-rose-500 p-2 shadow-xl group md:rounded-3xl md:p-4">
+            <div key={`${pokemon.id}-${index}`} className="relative flex flex-col items-center overflow-hidden rounded-xl bg-brand-500 p-2 shadow-xl group md:rounded-3xl md:p-4">
               <button type="button" aria-label={`Retirer ${pokemon.nom} de l equipe adverse`} onClick={() => setBattleState((previousState) => ({ ...previousState, enemyTeam: previousState.enemyTeam.filter((_, currentIndex) => currentIndex !== index) }))} className="absolute right-1 top-1 rounded-full bg-white/20 p-1 text-white">
                 <X size={10} />
               </button>
@@ -148,7 +203,7 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
               }));
               setSearchTerm('');
             }}
-            className="w-full rounded-xl bg-slate-900 py-4 font-black text-white shadow-2xl transition-all hover:bg-rose-500 hover:text-white md:rounded-[2rem] md:py-6 dark:bg-white dark:text-slate-900"
+            className="w-full rounded-xl bg-slate-900 py-4 font-black text-white shadow-2xl transition-all hover:bg-brand-500 hover:text-white md:rounded-[2rem] md:py-6 dark:bg-white dark:text-slate-900"
           >
             VALIDE & COMBAT
           </button>
@@ -171,7 +226,7 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
                     enemyTeam: [...previousState.enemyTeam, { ...pokemon, currentHP: 100 }]
                   }));
                 }}
-                className={`flex flex-col items-center rounded-xl border-2 p-2 shadow-md transition-all md:rounded-2xl md:p-4 ${isAlreadySelected ? 'border-rose-500 bg-rose-500 text-white' : 'border-transparent bg-white hover:border-rose-500 dark:bg-slate-900'} disabled:cursor-not-allowed disabled:opacity-80`}
+                className={`flex flex-col items-center rounded-xl border-2 p-2 shadow-md transition-all md:rounded-2xl md:p-4 ${isAlreadySelected ? 'border-brand-500 bg-brand-500 text-white' : 'border-transparent bg-white hover:border-brand-500 dark:bg-slate-900'} disabled:cursor-not-allowed disabled:opacity-80`}
               >
                 <img src={pokemon.image} alt={pokemon.nom} className="h-10 w-10 object-contain md:h-12 md:w-12" />
                 <span className="mt-1 w-full truncate text-[8px] font-black uppercase md:text-[10px]">{pokemon.nom}</span>
@@ -183,22 +238,25 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
     );
   }
 
+  const controlsOwner = showPlayerControls ? 'Joueur 1' : showEnemyControls ? 'Joueur 2' : null;
+  const waitingMessage = state.mode === 'auto' ? 'Combat automatique en cours...' : "L'adversaire prepare son attaque...";
+
   return (
-    <div className="relative space-y-6 px-2 pb-16 text-slate-900 animate-fade-in sm:px-4 md:space-y-12 md:pb-20 dark:text-white">
+    <div className="relative space-y-5 px-2 pb-16 text-slate-900 sm:px-4 md:space-y-8 md:pb-20 dark:text-white">
       {!state.winner && (
-        <button type="button" onClick={resetBattle} className="absolute -top-8 left-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-rose-500 md:left-0">
+        <button type="button" onClick={resetBattle} className="absolute -top-8 left-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-brand-500 md:left-0">
           <ChevronLeft size={16} /> Abandonner
         </button>
       )}
 
       <AnimatePresence>
         {state.winner && (
-          <Motion.div role="alertdialog" aria-modal="true" initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-xl">
-            <div ref={winnerModalRef} tabIndex={-1} className="relative rounded-[2rem] border-4 border-rose-500 bg-white p-6 text-center shadow-2xl sm:p-8 md:rounded-[4rem] md:border-8 md:p-16 dark:bg-slate-900">
-              <Trophy size={48} className="mx-auto mb-4 animate-bounce text-amber-500 md:h-24 md:w-24" />
+          <Motion.div role="alertdialog" aria-modal="true" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-xl">
+            <div ref={winnerModalRef} tabIndex={-1} className="relative rounded-[2rem] border-4 border-brand-500 bg-white p-6 text-center shadow-2xl sm:p-8 md:rounded-[4rem] md:border-8 md:p-16 dark:bg-slate-900">
+              <Trophy size={48} className="mx-auto mb-4 text-amber-500 md:h-24 md:w-24" />
               <h2 className="mb-2 text-2xl font-black uppercase tracking-tighter sm:text-3xl md:text-7xl">WINNER !</h2>
-              <div aria-live="assertive" className="mb-6 text-base font-black uppercase italic text-rose-500 sm:text-lg md:mb-12 md:text-4xl">{state.winner}</div>
-              <button type="button" data-autofocus onClick={resetBattle} className="rounded-[2rem] bg-rose-500 px-8 py-3 text-base font-black text-white shadow-2xl sm:px-10 sm:py-4 sm:text-lg md:px-16 md:py-6 md:text-2xl">
+              <div aria-live="assertive" className="mb-6 text-base font-black uppercase italic text-brand-500 sm:text-lg md:mb-12 md:text-4xl">{state.winner}</div>
+              <button type="button" data-autofocus onClick={resetBattle} className="rounded-[2rem] bg-brand-500 px-8 py-3 text-base font-black text-white shadow-2xl sm:px-10 sm:py-4 sm:text-lg md:px-16 md:py-6 md:text-2xl">
                 RETOUR AU MENU
               </button>
             </div>
@@ -206,93 +264,46 @@ const BattleArena = ({ state, onStart, teamLength, pokemons, onManualMove, setBa
         )}
       </AnimatePresence>
 
-      <div className="relative flex min-h-[360px] flex-col items-center gap-4 rounded-[2rem] border-4 border-white bg-slate-900/5 p-4 shadow-inner sm:p-6 md:gap-12 md:rounded-[4rem] md:border-8 md:p-16 lg:grid lg:min-h-[500px] lg:grid-cols-2 dark:bg-slate-900/40">
-        <Motion.div animate={state.attackAnim?.target === 'player' ? shakeAnimation : {}} className={`w-full space-y-3 text-center transition-all duration-500 md:space-y-6 ${isPlayerTurn ? 'scale-[1.02] md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
-          <div className="relative">
-            <div className={`absolute inset-0 scale-150 rounded-full blur-3xl transition-all ${isPlayerTurn ? 'bg-blue-500/30' : 'bg-transparent'}`} />
-            
-            {/* Pop-up Damage Player */}
-            <AnimatePresence>
-               {damagePopups.filter(p => p.target === 'player').map(p => (
-                  <Motion.div key={p.id} initial={{ opacity: 0, y: 0, scale: 0.5 }} animate={{ opacity: 1, y: -40, scale: 1.2 }} exit={{ opacity: 0 }} className={`absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-3xl font-black md:text-5xl drop-shadow-2xl ${p.isSuper ? 'text-amber-400' : p.isResisted ? 'text-slate-400' : 'text-rose-500'}`}>
-                     -{p.damage}
-                  </Motion.div>
-               ))}
-            </AnimatePresence>
+      {/* Scène : ciel Sky Blue, sol et plateformes — les Pokémon sont le point focal */}
+      <section aria-label="Terrain de combat" className="relative overflow-hidden rounded-[2rem] border-4 border-white bg-gradient-to-b from-sky-300 via-sky-100 to-slate-50 shadow-xl md:rounded-[3rem] dark:border-slate-800 dark:from-sky-950 dark:via-slate-900 dark:to-slate-950">
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-slate-200/80 to-transparent dark:from-black/40" />
+        <div className="relative grid grid-cols-1 items-end gap-6 p-4 sm:p-6 md:p-10 lg:grid-cols-2 lg:gap-16 lg:p-12">
+          <FighterSlot pokemon={pActive} team={state.playerTeam} activeIndex={state.playerActive} side="player" title="Joueur 1" isTurn={isPlayerTurn} />
+          <FighterSlot pokemon={eActive} team={state.enemyTeam} activeIndex={state.enemyActive} side="enemy" title={isPvp ? 'Joueur 2' : 'Adversaire'} isTurn={!isPlayerTurn} />
+        </div>
+      </section>
 
-            <Motion.img key={pActive?.id} initial={{ x: -50 }} animate={{ x: 0 }} src={getShowdownSprite(pActive?.id)} onError={(e) => { e.target.onError = null; e.target.src = pActive?.image; }} alt={pActive?.nom} className="relative mx-auto h-24 w-24 object-contain drop-shadow-2xl sm:h-32 sm:w-32 md:h-64 md:w-64 lg:w-80" />
-          </div>
-          <div role="progressbar" aria-label={`Vie de ${pActive?.nom ?? 'Joueur 1'}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pActive?.currentHP || 0)} className="relative mx-auto h-4 w-full max-w-sm overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-lg md:h-6 md:border-4 dark:bg-slate-800">
-            <Motion.div animate={{ width: pActive ? `${pActive.currentHP}%` : '0%' }} className="h-full bg-gradient-to-r from-blue-500 to-cyan-400" />
-            <span className="absolute inset-0 flex items-center justify-center text-[8px] font-black md:text-[10px]">{Math.round(pActive?.currentHP || 0)}%</span>
-          </div>
-          <div className="text-base font-black uppercase tracking-tighter sm:text-lg md:text-2xl">{pActive?.nom}</div>
-
-          {showPlayerControls && (
-            <div className="mt-3 grid w-full max-w-sm grid-cols-2 gap-2 md:mt-4 md:gap-4">
-              <button type="button" onClick={() => onManualMove('normal')} className="rounded-xl border-2 border-slate-100 bg-white px-4 py-3 text-[11px] font-black uppercase shadow-xl transition-all hover:border-rose-500 md:rounded-2xl md:border-4 md:px-6 md:py-4 md:text-xs dark:bg-slate-800">
-                Attaque
-              </button>
-              <button type="button" onClick={() => onManualMove('special')} className="rounded-xl bg-rose-500 px-4 py-3 text-[11px] font-black uppercase text-white shadow-xl transition-all hover:scale-105 md:rounded-2xl md:px-6 md:py-4 md:text-xs">
-                Special
-              </button>
-            </div>
+      {/* Actions */}
+      {!state.winner && (
+        <div className="mx-auto w-full max-w-xl rounded-2xl border-2 border-sky-200 bg-white p-4 text-center shadow-lg md:rounded-3xl md:p-5 dark:border-sky-900/60 dark:bg-slate-900">
+          {controlsOwner ? (
+            <>
+              <p className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400 md:text-xs">Tour de {controlsOwner}</p>
+              <div className="grid grid-cols-2 gap-3 md:gap-4">
+                <button type="button" onClick={() => onManualMove('normal')} className="rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3 text-xs font-black uppercase transition-colors hover:border-brand-500 hover:text-brand-500 md:rounded-2xl md:py-4 md:text-sm dark:border-slate-700 dark:bg-slate-800">
+                  Attaque
+                </button>
+                <button type="button" onClick={() => onManualMove('special')} className="rounded-xl bg-brand-500 px-4 py-3 text-xs font-black uppercase text-white shadow-lg shadow-brand-500/25 transition-colors hover:bg-brand-600 md:rounded-2xl md:py-4 md:text-sm">
+                  Special
+                </button>
+              </div>
+            </>
+          ) : (
+            <p role="status" className="py-2 text-[10px] font-black uppercase tracking-widest text-slate-400 md:text-xs">{waitingMessage}</p>
           )}
-        </Motion.div>
-
-        <div className="rounded-full border-4 border-white bg-rose-500 px-4 py-1 text-sm font-black italic text-white shadow-xl lg:hidden">
-          VS
         </div>
+      )}
 
-        <div className="absolute left-1/2 top-1/2 z-20 hidden -translate-x-1/2 -translate-y-1/2 rounded-full border-8 border-white bg-rose-500 p-6 text-3xl font-black italic text-white shadow-2xl animate-bounce lg:block">
-          VS
-        </div>
-
-        <Motion.div animate={state.attackAnim?.target === 'enemy' ? shakeAnimation : {}} className={`w-full space-y-3 text-center transition-all duration-500 md:space-y-6 ${!isPlayerTurn ? 'scale-[1.02] md:scale-110' : 'opacity-40 grayscale blur-[1px]'}`}>
-          <div className="relative">
-            <div className={`absolute inset-0 scale-150 rounded-full blur-3xl transition-all ${!isPlayerTurn ? 'bg-rose-500/30' : 'bg-transparent'}`} />
-
-            {/* Pop-up Damage Enemy */}
-            <AnimatePresence>
-               {damagePopups.filter(p => p.target === 'enemy').map(p => (
-                  <Motion.div key={p.id} initial={{ opacity: 0, y: 0, scale: 0.5 }} animate={{ opacity: 1, y: -40, scale: 1.2 }} exit={{ opacity: 0 }} className={`absolute left-1/2 top-0 z-50 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-3xl font-black md:text-5xl drop-shadow-2xl ${p.isSuper ? 'text-amber-400' : p.isResisted ? 'text-slate-400' : 'text-rose-500'}`}>
-                     -{p.damage}
-                  </Motion.div>
-               ))}
-            </AnimatePresence>
-
-            <Motion.img key={eActive?.id} initial={{ x: 50 }} animate={{ x: 0 }} src={getShowdownSprite(eActive?.id)} onError={(e) => { e.target.onError = null; e.target.src = eActive?.image; }} alt={eActive?.nom} className="relative mx-auto h-24 w-24 object-contain drop-shadow-2xl sm:h-32 sm:w-32 md:h-64 md:w-64 lg:w-80" />
-          </div>
-          <div role="progressbar" aria-label={`Vie de ${eActive?.nom ?? 'Adversaire'}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(eActive?.currentHP || 0)} className="relative mx-auto h-4 w-full max-w-sm overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-lg md:h-6 md:border-4 dark:bg-slate-800">
-            <Motion.div animate={{ width: eActive ? `${eActive.currentHP}%` : '0%' }} className="h-full bg-gradient-to-r from-rose-500 to-orange-400" />
-            <span className="absolute inset-0 flex items-center justify-center text-[8px] font-black md:text-[10px]">{Math.round(eActive?.currentHP || 0)}%</span>
-          </div>
-          <div className="text-base font-black uppercase tracking-tighter sm:text-lg md:text-2xl">{eActive?.nom}</div>
-
-          {showEnemyControls && (
-            <div className="mt-3 grid w-full max-w-sm grid-cols-2 gap-2 md:mt-4 md:gap-4">
-              <button type="button" onClick={() => onManualMove('normal')} className="rounded-xl border-2 border-slate-100 bg-white px-4 py-3 text-[11px] font-black uppercase shadow-xl transition-all hover:border-rose-500 md:rounded-2xl md:border-4 md:px-6 md:py-4 md:text-xs dark:bg-slate-800">
-                Attaque
-              </button>
-              <button type="button" onClick={() => onManualMove('special')} className="rounded-xl bg-rose-500 px-4 py-3 text-[11px] font-black uppercase text-white shadow-xl transition-all hover:scale-105 md:rounded-2xl md:px-6 md:py-4 md:text-xs">
-                Special
-              </button>
-            </div>
-          )}
-        </Motion.div>
-      </div>
-
-      <div className="overflow-hidden rounded-[2rem] border-t-8 border-rose-500 bg-slate-900 p-6 text-white shadow-2xl md:rounded-[4rem] md:p-10">
-        <div className="mb-6 flex flex-col items-start justify-between gap-4 md:mb-10 md:flex-row md:items-center">
-          <h4 className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-500 md:text-sm">
-            <Activity size={18} className="text-rose-500" /> Journal de Combat
-          </h4>
-        </div>
-        <div role="log" aria-live="polite" aria-relevant="additions text" className="max-h-[38vh] space-y-3 overflow-y-auto pr-1 custom-scrollbar md:max-h-none md:space-y-6">
-          {[...state.logs].reverse().map((log, index) => (
-            <Motion.div key={`${log}-${index}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`rounded-xl border-l-4 p-4 md:rounded-2xl ${index === 0 ? 'border-rose-500 bg-rose-500/10 text-base md:text-lg font-bold text-rose-500' : 'border-slate-800 bg-white/5 text-xs md:text-sm text-slate-400'}`}>
+      {/* Journal : le plus récent en haut */}
+      <div className="rounded-[2rem] border-2 border-slate-100 bg-white p-5 shadow-lg md:rounded-[3rem] md:p-8 dark:border-slate-800 dark:bg-slate-900">
+        <h4 className="mb-4 flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400 md:text-sm">
+          <Activity size={18} className="text-brand-500" /> Journal de Combat
+        </h4>
+        <div role="log" aria-live="polite" aria-relevant="additions text" className="max-h-[32vh] space-y-2 overflow-y-auto pr-1 custom-scrollbar md:max-h-none md:space-y-3">
+          {state.logs.map((log, index) => (
+            <div key={`${log}-${index}`} className={`rounded-xl border-l-4 p-3 md:p-4 ${index === 0 ? 'border-brand-500 bg-brand-500/10 text-sm font-bold text-brand-600 md:text-base dark:text-brand-400' : 'border-slate-200 bg-slate-50 text-xs text-slate-500 md:text-sm dark:border-slate-800 dark:bg-slate-800/40 dark:text-slate-400'}`}>
               {log}
-            </Motion.div>
+            </div>
           ))}
         </div>
       </div>

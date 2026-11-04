@@ -76,7 +76,7 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
     >
       <div aria-hidden="true" className="absolute inset-0 bg-slate-950/90 backdrop-blur-3xl" onClick={onClose} />
       <Motion.div ref={modalRef} tabIndex={-1} initial={{ scale: 0.9 }} animate={{ scale: 1 }} className={`relative flex w-full max-w-5xl flex-col gap-6 rounded-[2rem] border-4 p-4 shadow-2xl sm:gap-8 sm:rounded-[3rem] sm:p-6 md:p-10 ${isDarkMode ? 'border-slate-800 bg-slate-900 text-white' : 'border-slate-100 bg-white text-slate-900'}`}>
-        <button type="button" aria-label="Fermer la comparaison" onClick={onClose} className="absolute right-4 top-4 rounded-full bg-rose-500 p-2.5 text-white transition-transform hover:scale-110 active:scale-95 sm:right-6 sm:top-6 sm:p-3">
+        <button type="button" aria-label="Fermer la comparaison" onClick={onClose} className="absolute right-4 top-4 rounded-full bg-brand-500 p-2.5 text-white transition-transform hover:scale-110 active:scale-95 sm:right-6 sm:top-6 sm:p-3">
           <X size={24} />
         </button>
 
@@ -96,7 +96,7 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
                 onChange={(event) => setSearchTerm(event.target.value)}
                 aria-label="Rechercher un Pokemon a comparer"
                 placeholder="Rechercher..."
-                className={`w-full rounded-2xl border-2 py-3 pl-12 pr-4 text-sm font-bold shadow-lg ring-rose-500/20 focus:ring-4 ${isDarkMode ? 'border-slate-800 bg-slate-950 text-white' : 'border-slate-100 bg-slate-50 text-slate-900'}`}
+                className={`w-full rounded-2xl border-2 py-3 pl-12 pr-4 text-sm font-bold shadow-lg ring-brand-500/20 focus:ring-4 ${isDarkMode ? 'border-slate-800 bg-slate-950 text-white' : 'border-slate-100 bg-slate-50 text-slate-900'}`}
               />
             </div>
 
@@ -108,7 +108,7 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
                   aria-label={`Comparer avec ${pokemon.nom}`}
                   key={pokemon.id}
                   onClick={() => setSelectedPokemon(pokemon)}
-                  className={`flex items-center gap-3 rounded-2xl border-2 p-3 text-left transition-all ${selectedPokemon?.id === pokemon.id ? 'border-rose-500 bg-rose-500 text-white' : isDarkMode ? 'border-transparent bg-slate-900 hover:border-rose-500' : 'border-transparent bg-white hover:border-rose-500'}`}
+                  className={`flex items-center gap-3 rounded-2xl border-2 p-3 text-left transition-all ${selectedPokemon?.id === pokemon.id ? 'border-brand-500 bg-brand-500 text-white' : isDarkMode ? 'border-transparent bg-slate-900 hover:border-brand-500' : 'border-transparent bg-white hover:border-brand-500'}`}
                 >
                   <img src={pokemon.image} alt={pokemon.nom} className="h-12 w-12 object-contain" />
                   <div>
@@ -123,31 +123,31 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
           <div className="space-y-6 sm:space-y-8">
             <div className="grid items-center gap-4 sm:gap-6 md:grid-cols-3 relative">
               <div aria-live="polite" className="text-center group relative cursor-pointer" onClick={playCryP1}>
-                <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/5 rounded-full transition-all blur-xl" />
+                <div className="absolute inset-0 bg-brand-500/0 group-hover:bg-brand-500/5 rounded-full transition-all blur-xl" />
                 <img src={p1.image} alt={p1.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40 relative z-10 transition-transform group-hover:scale-110" />
                 <h4 className="text-xl font-black sm:text-2xl flex justify-center items-center gap-2">{p1.nom} <Volume2 size={16} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" /></h4>
                 <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Base stat total: {totalP1}</p>
               </div>
 
               <div className="text-center flex flex-col items-center gap-4">
-                 <div className="text-3xl font-black italic text-rose-500 sm:text-4xl md:text-5xl drop-shadow-lg">VS</div>
+                 <div className="text-3xl font-black italic text-brand-500 sm:text-4xl md:text-5xl drop-shadow-lg">VS</div>
                  
                  {/* Tactique Avancée */}
                  <div className={`p-4 rounded-3xl border-2 flex flex-col gap-2 shadow-xl ${isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
                     <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 justify-center"><Swords size={12} /> Avantage Tactique <ShieldAlert size={12} /></div>
                     <div className="flex justify-between items-center gap-4 w-full px-2">
-                       <span className={`text-sm font-black ${p1Advantage > 1 ? 'text-emerald-500' : p1Advantage < 1 ? 'text-rose-500' : 'text-slate-500'}`}>x{p1Advantage}</span>
+                       <span className={`text-sm font-black ${p1Advantage > 1 ? 'text-emerald-500' : p1Advantage < 1 ? 'text-brand-500' : 'text-slate-500'}`}>x{p1Advantage}</span>
                        <div className="h-1 flex-1 bg-slate-200 dark:bg-slate-800 rounded-full relative overflow-hidden">
                           <div className={`absolute inset-y-0 left-0 bg-emerald-500 transition-all`} style={{ width: `${Math.min(100, (p1Advantage / Math.max(0.1, p2Advantage)) * 50)}%` }} />
-                          <div className={`absolute inset-y-0 right-0 bg-rose-500 transition-all`} style={{ width: `${Math.min(100, (p2Advantage / Math.max(0.1, p1Advantage)) * 50)}%` }} />
+                          <div className={`absolute inset-y-0 right-0 bg-brand-500 transition-all`} style={{ width: `${Math.min(100, (p2Advantage / Math.max(0.1, p1Advantage)) * 50)}%` }} />
                        </div>
-                       <span className={`text-sm font-black ${p2Advantage > 1 ? 'text-emerald-500' : p2Advantage < 1 ? 'text-rose-500' : 'text-slate-500'}`}>x{p2Advantage}</span>
+                       <span className={`text-sm font-black ${p2Advantage > 1 ? 'text-emerald-500' : p2Advantage < 1 ? 'text-brand-500' : 'text-slate-500'}`}>x{p2Advantage}</span>
                     </div>
                  </div>
               </div>
 
               <div aria-live="polite" className="text-center group relative cursor-pointer" onClick={playCryP2}>
-                <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/5 rounded-full transition-all blur-xl" />
+                <div className="absolute inset-0 bg-brand-500/0 group-hover:bg-brand-500/5 rounded-full transition-all blur-xl" />
                 <img src={p2.image} alt={p2.nom} className="mx-auto mb-3 h-24 w-24 object-contain sm:mb-4 sm:h-32 sm:w-32 md:h-40 md:w-40 relative z-10 transition-transform group-hover:scale-110" />
                 <h4 className="text-xl font-black sm:text-2xl flex justify-center items-center gap-2">{p2.nom} <Volume2 size={16} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" /></h4>
                 <p className="mt-1 text-xs font-black uppercase tracking-widest text-slate-400">Base stat total: {totalP2}</p>
@@ -165,7 +165,7 @@ const ComparisonModal = ({ p1, pokemons, isDarkMode, onClose }) => {
                     <div className="text-center">
                       <div className="text-[9px] font-black uppercase tracking-widest text-slate-400 md:text-[10px]">{stat}</div>
                       <div className="relative mt-2 h-1 rounded-full bg-slate-200 dark:bg-slate-800">
-                        <div className={`absolute inset-y-0 ${diff > 0 ? 'right-1/2 bg-emerald-500' : 'left-1/2 bg-rose-500'}`} style={{ width: `${magnitude}%` }} />
+                        <div className={`absolute inset-y-0 ${diff > 0 ? 'right-1/2 bg-emerald-500' : 'left-1/2 bg-brand-500'}`} style={{ width: `${magnitude}%` }} />
                       </div>
                     </div>
                     <div className={`text-left text-lg font-black sm:text-xl md:text-2xl ${diff < 0 ? 'text-emerald-500' : 'text-slate-400'}`}>{p2.base[stat]}</div>

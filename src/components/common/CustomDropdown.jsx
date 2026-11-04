@@ -9,7 +9,7 @@ import { ChevronDown } from 'lucide-react';
 const CustomDropdown = ({ options, value, onChange, icon: TriggerIcon, label, isDarkMode, typeColors }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectedLabel = options.find(o => o.value === value)?.label || label;
-  const iconNode = TriggerIcon ? React.createElement(TriggerIcon, { size: 18, className: isOpen ? 'text-rose-500' : 'text-slate-400' }) : null;
+  const iconNode = TriggerIcon ? React.createElement(TriggerIcon, { size: 18, className: isOpen ? 'text-brand-500' : 'text-slate-400' }) : null;
   const dropdownId = `dropdown-${label.toLowerCase().replace(/\s+/g, '-')}`;
 
   useEffect(() => {
@@ -35,14 +35,14 @@ const CustomDropdown = ({ options, value, onChange, icon: TriggerIcon, label, is
         aria-label={`${label}: ${selectedLabel}`}
         onClick={() => setIsOpen(!isOpen)}
         className={`flex w-full min-w-0 items-center justify-between gap-3 px-4 py-3 rounded-2xl text-sm font-black transition-all shadow-xl border-2 sm:px-5 ${
-          isOpen ? 'border-rose-500 ring-4 ring-rose-500/10' : 'border-transparent'
+          isOpen ? 'border-brand-500 ring-4 ring-brand-500/10' : 'border-transparent'
         } ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
       >
         <span className="flex min-w-0 items-center gap-3">
           {iconNode}
           <span className="truncate uppercase tracking-widest">{selectedLabel}</span>
         </span>
-        <ChevronDown size={16} className={`ml-2 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-rose-500' : 'text-slate-400'}`} />
+        <ChevronDown size={16} className={`ml-2 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-brand-500' : 'text-slate-400'}`} />
       </button>
 
       <AnimatePresence>
@@ -71,7 +71,7 @@ const CustomDropdown = ({ options, value, onChange, icon: TriggerIcon, label, is
                     onClick={() => { onChange(opt.value); setIsOpen(false); }}
                     className={`w-full flex items-center gap-3 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${
                       value === opt.value 
-                        ? 'bg-rose-500 text-white shadow-lg' 
+                        ? 'bg-brand-500 text-white shadow-lg' 
                         : isDarkMode ? 'hover:bg-white/10 text-slate-300' : 'hover:bg-slate-50 text-slate-600'
                     }`}
                   >

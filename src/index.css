@@ -5,6 +5,50 @@
   --dark-mode: class;
   --animate-shine: shine var(--duration) infinite linear;
 
+  /* ── Charte graphique ───────────────────────────────────────────
+     Amber Red   → accent principal (boutons, onglet actif, alertes)
+     Sky Blue    → accent secondaire (lueurs, stats, infos)
+     Cloudy White → fonds clairs ; son pendant sombre (nuit bleutée) pour le dark mode */
+
+  /* Amber Red (classes `brand-*`) */
+  --color-brand-50: #fff3ee;
+  --color-brand-100: #ffe2d6;
+  --color-brand-200: #ffc3ac;
+  --color-brand-300: #ff9b79;
+  --color-brand-400: #f67049;
+  --color-brand-500: #e8472a;
+  --color-brand-600: #c93720;
+  --color-brand-700: #a52c1a;
+  --color-brand-800: #862619;
+  --color-brand-900: #6e241a;
+  --color-brand-950: #3b0f0a;
+
+  /* Sky Blue (remplace l'échelle `sky` de Tailwind) */
+  --color-sky-50: #f0f9fe;
+  --color-sky-100: #ddf1fb;
+  --color-sky-200: #bce4f6;
+  --color-sky-300: #87ceeb;
+  --color-sky-400: #55b6df;
+  --color-sky-500: #2e9bcb;
+  --color-sky-600: #1f7dab;
+  --color-sky-700: #1d6489;
+  --color-sky-800: #1d526f;
+  --color-sky-900: #1c455c;
+  --color-sky-950: #112c3d;
+
+  /* Neutres : Cloudy White en clair, nuit bleutée en sombre (remplace `slate`) */
+  --color-slate-50: #f5f8fb;
+  --color-slate-100: #eaf0f5;
+  --color-slate-200: #d9e3ec;
+  --color-slate-300: #bac9d8;
+  --color-slate-400: #8a9bad;
+  --color-slate-500: #66788b;
+  --color-slate-600: #4d5e70;
+  --color-slate-700: #3a4a5b;
+  --color-slate-800: #243445;
+  --color-slate-900: #152233;
+  --color-slate-950: #0b1523;
+
   @keyframes shine {
     0% {
       background-position: 0% 50%;
@@ -19,13 +63,17 @@
 }
 
 :root {
+  --brand: #e8472a;
+  --sky: #87ceeb;
+  --cloud: #f5f8fb;
+  --night: #0b1523;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #f3f4f6;
+  background-color: var(--cloud);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -34,8 +82,8 @@
 }
 
 html.dark {
-  background-color: #030712;
-  color: #f3f4f6;
+  background-color: var(--night);
+  color: var(--cloud);
 }
 
 html, body {
@@ -65,7 +113,7 @@ body {
 }
 
 :where(button, [role="button"], input, select, textarea, a):focus-visible {
-  outline: 3px solid #f43f5e;
+  outline: 3px solid var(--brand);
   outline-offset: 3px;
 }
 
@@ -77,11 +125,11 @@ body {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(244, 63, 94, 0.2);
+  background: rgba(232, 71, 42, 0.25);
   border-radius: 10px;
 }
 .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-  background: rgba(244, 63, 94, 0.5);
+  background: rgba(232, 71, 42, 0.55);
 }
 
 #root {
@@ -113,3 +161,18 @@ body {
 .stat-medium { background-color: #EAB308; }
 .stat-high { background-color: #84CC16; }
 .stat-max { background-color: #22C55E; }
+
+/* Fond de l'application : Cloudy White avec une lueur Sky Blue (et une touche Amber Red) */
+.app-backdrop {
+  background:
+    radial-gradient(1100px 560px at 88% -8%, rgba(135, 206, 235, 0.38), transparent 62%),
+    radial-gradient(820px 460px at -8% 108%, rgba(232, 71, 42, 0.07), transparent 62%),
+    var(--cloud);
+}
+
+.dark .app-backdrop {
+  background:
+    radial-gradient(1100px 560px at 88% -8%, rgba(46, 155, 203, 0.22), transparent 62%),
+    radial-gradient(820px 460px at -8% 108%, rgba(232, 71, 42, 0.10), transparent 62%),
+    var(--night);
+}

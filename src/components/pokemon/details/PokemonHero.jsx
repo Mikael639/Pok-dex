@@ -78,7 +78,7 @@ export default function PokemonHero({ pokemon }) {
             scale: { duration: 3.6, repeat: Infinity, ease: 'easeInOut' },
             opacity: { duration: 3.6, repeat: Infinity, ease: 'easeInOut' },
           }}
-          className="absolute h-48 w-48 rounded-full border border-cyan-300/10 sm:h-56 sm:w-56 md:h-64 md:w-64"
+          className="absolute h-48 w-48 rounded-full border border-sky-300/10 sm:h-56 sm:w-56 md:h-64 md:w-64"
         />
         <Motion.div
           animate={{
@@ -110,7 +110,7 @@ export default function PokemonHero({ pokemon }) {
           ))}
         </div>
         <div className="flex justify-center gap-3">
-          <button type="button" aria-label="Ecouter le cri" onClick={playCry} className={`rounded-xl p-2.5 shadow-md backdrop-blur-xl transition-all ${isPlaying ? 'animate-pulse bg-rose-500 text-white' : 'bg-white/10 hover:bg-white/20'}`}>
+          <button type="button" aria-label="Ecouter le cri" onClick={playCry} className={`rounded-xl p-2.5 shadow-md backdrop-blur-xl transition-all ${isPlaying ? 'animate-pulse bg-brand-500 text-white' : 'bg-white/10 hover:bg-white/20'}`}>
             <Volume2 size={18} />
           </button>
           <button type="button" aria-label={isShiny ? 'Afficher la version classique' : 'Afficher la version shiny'} onClick={() => setIsShiny(!isShiny)} className={`rounded-xl p-2.5 shadow-md backdrop-blur-xl transition-all ${isShiny ? 'bg-amber-400 text-slate-900' : 'bg-white/10 hover:bg-white/20'}`}>

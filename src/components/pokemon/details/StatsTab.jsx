@@ -25,7 +25,7 @@ export default function StatsTab({ pokemon, pokemons, isDarkMode, evoChain, load
           <button type="button" aria-label={isFavorite ? `Retirer ${pokemon.nom} des favoris` : `Ajouter ${pokemon.nom} aux favoris`} onClick={onToggleFavorite} className={`rounded-2xl p-3 shadow-lg transition-all ${isFavorite ? 'bg-amber-400 text-white shadow-amber-400/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700'}`}>
             <Star size={20} fill={isFavorite ? 'white' : 'none'} />
           </button>
-          <button type="button" onClick={onCatch} className={`flex min-w-0 items-center justify-center gap-2 rounded-2xl px-4 py-3 font-black shadow-lg transition-all sm:px-6 ${isCaught ? 'bg-rose-500 text-white shadow-rose-500/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700'}`}>
+          <button type="button" onClick={onCatch} className={`flex min-w-0 items-center justify-center gap-2 rounded-2xl px-4 py-3 font-black shadow-lg transition-all sm:px-6 ${isCaught ? 'bg-brand-500 text-white shadow-brand-500/20' : 'bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700'}`}>
             <Heart size={20} fill={isCaught ? 'white' : 'none'} /> <span className="truncate text-xs sm:text-sm md:text-base">{isCaught ? 'LIBERER' : 'CAPTURER'}</span>
           </button>
           <button type="button" onClick={onCompare} className="col-span-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-100 px-4 py-3 font-black text-slate-500 shadow-lg transition-all hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 sm:col-auto sm:w-auto sm:px-5">
@@ -52,7 +52,7 @@ export default function StatsTab({ pokemon, pokemons, isDarkMode, evoChain, load
         <h4 className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">Efficacite subie</h4>
         <div className="flex flex-wrap gap-1.5">
           {Object.entries(weaknesses).sort((a, b) => b[1] - a[1]).map(([t, m]) => (
-            <div key={t} className={`flex items-center gap-1.5 rounded-lg px-2 py-1 text-[9px] font-black shadow-sm ${m > 1 ? 'bg-rose-500/10 text-rose-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
+            <div key={t} className={`flex items-center gap-1.5 rounded-lg px-2 py-1 text-[9px] font-black shadow-sm ${m > 1 ? 'bg-brand-500/10 text-brand-600' : 'bg-emerald-500/10 text-emerald-600'}`}>
               <span>{t}</span>
               <span className="rounded bg-white/50 px-1 py-0.5 text-[8px] dark:bg-black/20">x{m}</span>
             </div>
@@ -63,11 +63,11 @@ export default function StatsTab({ pokemon, pokemons, isDarkMode, evoChain, load
       <div className="mt-5 border-t border-slate-100 pb-2 pt-4 dark:border-slate-800 sm:pb-4">
         <h4 className="mb-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Lignee Evolutive</h4>
         {loadingEvo ? (
-          <div role="status" className={`relative overflow-hidden rounded-[2rem] border px-4 py-5 sm:px-6 ${isDarkMode ? 'border-cyan-400/10 bg-slate-950/70' : 'border-rose-100 bg-gradient-to-br from-rose-50 via-white to-sky-50'}`}>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_35%)]" />
+          <div role="status" className={`relative overflow-hidden rounded-[2rem] border px-4 py-5 sm:px-6 ${isDarkMode ? 'border-sky-400/10 bg-slate-950/70' : 'border-brand-100 bg-gradient-to-br from-brand-50 via-white to-sky-50'}`}>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(135,206,235,0.12),_transparent_35%)]" />
             <div className="relative flex flex-col items-center justify-center text-center">
               <PokeBallLoader size={78} showText={false} />
-              <span className="text-[9px] font-black uppercase tracking-[0.42em] text-cyan-400/80">Evolution Scan</span>
+              <span className="text-[9px] font-black uppercase tracking-[0.42em] text-sky-400/80">Evolution Scan</span>
             </div>
           </div>
         ) : (
@@ -77,10 +77,10 @@ export default function StatsTab({ pokemon, pokemons, isDarkMode, evoChain, load
                 {i > 0 && (
                   <div className="flex flex-col items-center">
                     <ChevronRight size={16} className="text-slate-300" />
-                    {evo.condition && <span className="mt-1 text-[7px] font-black uppercase text-rose-500">{evo.condition}</span>}
+                    {evo.condition && <span className="mt-1 text-[7px] font-black uppercase text-brand-500">{evo.condition}</span>}
                   </div>
                 )}
-                <button type="button" disabled={evo.id === pokemon.id} onClick={() => { const p = pokemons.find((x) => x.id === evo.id); if (p) onNavigate(p); }} className={`group relative rounded-2xl border-2 p-2 transition-all ${evo.id === pokemon.id ? 'cursor-default border-rose-500 bg-rose-50' : 'cursor-pointer border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
+                <button type="button" disabled={evo.id === pokemon.id} onClick={() => { const p = pokemons.find((x) => x.id === evo.id); if (p) onNavigate(p); }} className={`group relative rounded-2xl border-2 p-2 transition-all ${evo.id === pokemon.id ? 'cursor-default border-brand-500 bg-brand-50' : 'cursor-pointer border-transparent hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
                   <img src={evo.image} alt={evo.nom} className="h-14 w-14 object-contain transition-transform group-hover:scale-110" />
                 </button>
               </React.Fragment>

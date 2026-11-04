@@ -6,7 +6,7 @@ import React from 'react';
  */
 export const QuickCard = ({ icon, title, text, onClick }) => {
   return (
-    <button type="button" onClick={onClick} className="w-full text-left p-10 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-800 hover:border-rose-500/50 transition-all cursor-pointer group relative overflow-hidden">
+    <button type="button" onClick={onClick} className="w-full text-left p-10 bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-800 hover:border-brand-500/50 transition-all cursor-pointer group relative overflow-hidden">
        <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">{icon}</div>
        <div className="p-5 bg-slate-50 dark:bg-slate-800 rounded-2xl inline-block mb-8 group-hover:scale-110 transition-transform shadow-inner">{icon}</div>
        <h4 className="text-xl font-black dark:text-white mb-3 tracking-tight uppercase leading-tight">{title}</h4>

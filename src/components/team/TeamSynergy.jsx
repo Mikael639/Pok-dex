@@ -49,7 +49,7 @@ export default function TeamSynergy({ team, isDarkMode }) {
        <div className="grid gap-8 md:grid-cols-2">
           {/* Section Faiblesses / Alertes */}
           <div className="space-y-4">
-             <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-rose-500">
+             <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-brand-500">
                 <TrendingDown size={16} /> Points Faibles Globaux
              </h3>
              {criticalWeaknesses.length > 0 ? (
@@ -59,13 +59,13 @@ export default function TeamSynergy({ team, isDarkMode }) {
                         initial={{ x: -20, opacity: 0 }} 
                         animate={{ x: 0, opacity: 1 }} 
                         key={type} 
-                        className="flex items-center justify-between rounded-2xl bg-rose-500/10 p-4 border border-rose-500/20"
+                        className="flex items-center justify-between rounded-2xl bg-brand-500/10 p-4 border border-brand-500/20"
                       >
                          <div className="flex items-center gap-3">
-                            <ShieldAlert className="text-rose-500" size={20} />
+                            <ShieldAlert className="text-brand-500" size={20} />
                             <span className="font-black uppercase tracking-widest text-[10px] md:text-xs" style={{ color: TYPE_COLORS[type] }}>Equipe sensible au {type}</span>
                          </div>
-                         <div className="text-lg font-black text-rose-600">{count} / {team.length}</div>
+                         <div className="text-lg font-black text-brand-600">{count} / {team.length}</div>
                       </Motion.div>
                    ))}
                 </div>

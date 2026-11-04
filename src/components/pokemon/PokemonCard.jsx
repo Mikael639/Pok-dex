@@ -10,17 +10,17 @@ import ShineBorder from '../magicui/ShineBorder';
 function PokeBallBadge({ isCaught }) {
   return (
     <div className="relative mx-auto mt-6 h-11 w-11">
-      <div className={`absolute inset-0 rounded-full blur-xl ${isCaught ? 'bg-rose-500/30' : 'bg-rose-400/18'}`} />
+      <div className={`absolute inset-0 rounded-full blur-xl ${isCaught ? 'bg-brand-500/30' : 'bg-brand-400/18'}`} />
       <div className="relative h-full w-full overflow-hidden rounded-full border-[3px] border-slate-950 shadow-[0_10px_25px_rgba(15,23,42,0.18)]">
-        <div className={`absolute inset-x-0 top-0 h-1/2 ${isCaught ? 'bg-gradient-to-b from-rose-400 to-rose-600' : 'bg-gradient-to-b from-rose-300 to-rose-500'}`} />
+        <div className={`absolute inset-x-0 top-0 h-1/2 ${isCaught ? 'bg-gradient-to-b from-brand-400 to-brand-600' : 'bg-gradient-to-b from-brand-300 to-brand-500'}`} />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-white" />
         <div className="absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 bg-slate-950" />
         <div className="absolute left-1/2 top-1/2 z-10 h-4.5 w-4.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-slate-950 bg-white">
-          <div className={`absolute inset-[2px] rounded-full ${isCaught ? 'bg-rose-200' : 'bg-slate-200'}`} />
+          <div className={`absolute inset-[2px] rounded-full ${isCaught ? 'bg-brand-200' : 'bg-slate-200'}`} />
         </div>
       </div>
       {isCaught && (
-        <div className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-300/40 blur-sm" />
+        <div className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-300/40 blur-sm" />
       )}
     </div>
   );
@@ -79,7 +79,7 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
          type="button"
          aria-label={`Voir ${pokemon?.nom}`}
          onClick={(event) => { event.stopPropagation(); onClick(); }}
-         className="absolute inset-0 z-10 rounded-[3rem] focus-visible:outline-none focus-visible:ring-4 ring-rose-500/20"
+         className="absolute inset-0 z-10 rounded-[3rem] focus-visible:outline-none focus-visible:ring-4 ring-brand-500/20"
        />
        <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
           <Motion.button
@@ -98,7 +98,7 @@ const PokemonCard = ({ pokemon, isCaught, isFavorite, isDarkMode, onClick, onCat
             aria-label={isCaught ? `Retirer ${pokemon?.nom} de l equipe` : `Ajouter ${pokemon?.nom} a l equipe`}
             whileTap={{ scale: 0.8 }}
             onClick={(e) => { e.stopPropagation(); onCatch(); }}
-            className={`p-3 rounded-full transition-all shadow-md ${isCaught ? 'bg-rose-500 text-white' : 'bg-slate-100/10 dark:bg-slate-800/10 backdrop-blur-sm text-slate-400 hover:text-rose-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+            className={`p-3 rounded-full transition-all shadow-md ${isCaught ? 'bg-brand-500 text-white' : 'bg-slate-100/10 dark:bg-slate-800/10 backdrop-blur-sm text-slate-400 hover:text-brand-500 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
           >
              <Heart size={22} fill={isCaught ? 'white' : 'none'} />
           </Motion.button>

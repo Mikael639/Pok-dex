@@ -21,7 +21,7 @@ export default function InfosTab({ pokemon, technicalData }) {
         <div className="absolute -right-4 -top-4 opacity-5">
           <BookOpen size={120} />
         </div>
-        <h3 className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-rose-500">
+        <h3 className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand-500">
           <BookOpen size={14} /> Description
         </h3>
         <p className="relative z-10 text-sm font-medium leading-relaxed text-slate-600 dark:text-slate-300">
@@ -36,15 +36,15 @@ export default function InfosTab({ pokemon, technicalData }) {
           <div className="flex justify-center py-8"><PokeBallLoader size={40} showText={false} /></div>
         ) : (
           <div className="grid grid-cols-3 gap-3">
-            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-rose-500/20 dark:border-slate-800 dark:bg-slate-900/50">
+            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-brand-500/20 dark:border-slate-800 dark:bg-slate-900/50">
               <span className="mb-1 text-[9px] font-black uppercase tracking-widest text-slate-400">Taille</span>
               <span className="text-lg font-black">{technicalData.height} m</span>
             </div>
-            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-rose-500/20 dark:border-slate-800 dark:bg-slate-900/50">
+            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-brand-500/20 dark:border-slate-800 dark:bg-slate-900/50">
               <span className="mb-1 text-[9px] font-black uppercase tracking-widest text-slate-400">Poids</span>
               <span className="text-lg font-black">{technicalData.weight} kg</span>
             </div>
-            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-rose-500/20 dark:border-slate-800 dark:bg-slate-900/50">
+            <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 transition-all hover:border-brand-500/20 dark:border-slate-800 dark:bg-slate-900/50">
               <span className="mb-1 text-[9px] font-black uppercase tracking-widest text-slate-400">Catégorie</span>
               <span className="text-[10px] font-black text-center uppercase leading-tight">{technicalData.genus.replace('Pokémon ', '')}</span>
             </div>
@@ -60,21 +60,21 @@ export default function InfosTab({ pokemon, technicalData }) {
           <div className="grid grid-cols-2 gap-4">
             <div className="rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase text-slate-400">
-                <Target size={14} className="text-rose-500" /> Capture
+                <Target size={14} className="text-brand-500" /> Capture
               </div>
               <div className="text-xl font-black">{technicalData.captureRate}</div>
               <p className="text-[8px] font-bold uppercase text-slate-500">Taux de base</p>
             </div>
             <div className="rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase text-slate-400">
-                <Smile size={14} className="text-rose-500" /> Bonheur
+                <Smile size={14} className="text-brand-500" /> Bonheur
               </div>
               <div className="text-xl font-black">{technicalData.baseHappiness}</div>
               <p className="text-[8px] font-bold uppercase text-slate-500">Base amitié</p>
             </div>
             <div className="col-span-2 rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase text-slate-400">
-                <TrendingUp size={14} className="text-rose-500" /> Croissance
+                <TrendingUp size={14} className="text-brand-500" /> Croissance
               </div>
               <div className="text-sm font-black uppercase">{technicalData.growthRate}</div>
               <p className="text-[8px] font-bold uppercase text-slate-500">Vitesse de progression</p>
@@ -91,7 +91,7 @@ export default function InfosTab({ pokemon, technicalData }) {
           <div className="space-y-4">
             <div className="rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/50">
               <div className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase text-slate-400">
-                <Dna size={14} className="text-rose-500" /> Groupes d'œufs
+                <Dna size={14} className="text-brand-500" /> Groupes d'œufs
               </div>
               <div className="flex flex-wrap gap-2">
                 {technicalData.eggGroups.map(group => (
@@ -109,13 +109,13 @@ export default function InfosTab({ pokemon, technicalData }) {
                   <div className="text-center text-sm font-black uppercase text-slate-500">Asexué</div>
                 ) : (
                   <div className="flex h-4 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-                    <div style={{ width: `${(8 - technicalData.genderRate) * 12.5}%` }} className="bg-blue-400" />
-                    <div style={{ width: `${technicalData.genderRate * 12.5}%` }} className="bg-rose-400" />
+                    <div style={{ width: `${(8 - technicalData.genderRate) * 12.5}%` }} className="bg-sky-400" />
+                    <div style={{ width: `${technicalData.genderRate * 12.5}%` }} className="bg-brand-400" />
                   </div>
                 )}
                 <div className="mt-2 flex justify-between text-[8px] font-black">
-                  <span className="text-blue-500">♂ {(8 - technicalData.genderRate) * 12.5}%</span>
-                  <span className="text-rose-500">♀ {technicalData.genderRate * 12.5}%</span>
+                  <span className="text-sky-500">♂ {(8 - technicalData.genderRate) * 12.5}%</span>
+                  <span className="text-brand-500">♀ {technicalData.genderRate * 12.5}%</span>
                 </div>
               </div>
               <div className="rounded-2xl border-2 border-slate-50 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/50">

@@ -62,7 +62,7 @@ const PokemonDetails = ({ pokemon, isDarkMode, pokemons, onClose, onNavigate, on
               <button
                 key={tab}
                 onClick={() => setActiveSubTab(tab)}
-                className={`flex-1 rounded-xl py-2 text-[10px] font-black uppercase tracking-widest transition-all sm:text-xs ${activeSubTab === tab ? 'bg-white shadow-sm dark:bg-slate-700 text-rose-500' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
+                className={`flex-1 rounded-xl py-2 text-[10px] font-black uppercase tracking-widest transition-all sm:text-xs ${activeSubTab === tab ? 'bg-white shadow-sm dark:bg-slate-700 text-brand-500' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}
               >
                 {tab}
               </button>

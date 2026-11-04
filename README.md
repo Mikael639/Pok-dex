@@ -8,15 +8,12 @@ Poké-Master est un Pokédex moderne construit avec React et Vite. L'application
 - Collection de 1025 Pokémon avec recherche, tri, filtres par type et génération
 - Fiches détaillées avec navigation, comparaison et ajout aux favoris
 - Gestion d'équipe jusqu'à 6 Pokémon avec analyse de synergie
-- Arène de combat avec plusieurs modes
+- Arène de combat (J1 vs IA, PvP local, spectateur) avec sprites animés
 - Mini-jeux inclus :
-  - `Master Type`
   - `Silhouette`
   - `Poké-Memory`
   - `Evolution Rush`
-  - `Stat Clash`
-  - `Pokédle Daily`
-  - `Cry Quiz`
+  - `Cry Quiz` (« Qui est-ce ? »)
 
 ## Captures d'écran
 
@@ -36,9 +33,15 @@ Poké-Master est un Pokédex moderne construit avec React et Vite. L'application
 
 ![Menu de l'arène de combat](./screenshots/readme-battle.png)
 
-### Pokédle Daily
+## Charte graphique
 
-![Écran Pokédle Daily](./screenshots/readme-pokedle.png)
+| Rôle | Couleur | Utilisation |
+|---|---|---|
+| Amber Red | `#E8472A` (classes `brand-*`) | Accent principal : boutons, onglet actif, alertes |
+| Sky Blue | `#87CEEB` (classes `sky-*`) | Accent secondaire : lueurs, statistiques, ciel de l'arène |
+| Cloudy White | `#F5F8FB` (classes `slate-*`) | Fonds clairs ; son pendant « nuit bleutée » en mode sombre |
+
+Les échelles sont définies une seule fois dans `src/index.css` (bloc `@theme`) : changer une valeur suffit à recolorer toute l'application.
 
 ## Stack technique
 

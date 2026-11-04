@@ -1,4 +1,4 @@
-import { EVOLUTION_RUSH_DIFFICULTIES, STAT_CLASH_OPTIONS } from '../constants/gameMeta';
+import { EVOLUTION_RUSH_DIFFICULTIES } from '../constants/gameMeta';
 
 export const getTodayKey = () => {
   const now = new Date();
@@ -11,8 +11,6 @@ export const getTodayKey = () => {
 export const createDailyActivityState = (date = getTodayKey()) => ({
   date,
   viewedPokemonIds: [],
-  quizAnswered: false,
-  statClashRevealed: false,
   evolutionValidated: false,
   completedChallengeIds: []
 });
@@ -58,42 +56,6 @@ export const getInitialEvolutionRushBestStreaks = () => {
   } catch {
     return defaults;
   }
-};
-
-export const getPokemonStatValue = (pokemon, keys) => {
-  for (const key of keys) {
-    const value = pokemon?.base?.[key];
-    if (typeof value === 'number') return value;
-  }
-  return 0;
-};
-
-export const createStatClashRound = (pokemonList) => {
-  if (pokemonList.length < 2) return null;
-  for (let attempt = 0; attempt < 60; attempt += 1) {
-    const left = pokemonList[Math.floor(Math.random() * pokemonList.length)];
-    let right = pokemonList[Math.floor(Math.random() * pokemonList.length)];
-    while (right.id === left.id) {
-      right = pokemonList[Math.floor(Math.random() * pokemonList.length)];
-    }
-    const stat = STAT_CLASH_OPTIONS[Math.floor(Math.random() * STAT_CLASH_OPTIONS.length)];
-    const leftValue = getPokemonStatValue(left, stat.keys);
-    const rightValue = getPokemonStatValue(right, stat.keys);
-    if (leftValue !== rightValue) {
-      return {
-        left, right, statId: stat.id, statLabel: stat.label, leftValue, rightValue,
-        correctId: leftValue > rightValue ? left.id : right.id
-      };
-    }
-  }
-  const [left, right] = pokemonList;
-  const stat = STAT_CLASH_OPTIONS[0];
-  const leftValue = getPokemonStatValue(left, stat.keys);
-  const rightValue = getPokemonStatValue(right, stat.keys);
-  return {
-    left, right, statId: stat.id, statLabel: stat.label, leftValue, rightValue,
-    correctId: leftValue === rightValue ? null : leftValue > rightValue ? left.id : right.id
-  };
 };
 
 export const getEvolutionRushChain = async (pokemonId, pokemonList) => {
