@@ -35,8 +35,6 @@ export default function Header({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const activeTabTitle = TAB_TITLES[activeTab] ?? activeTab.toUpperCase();
 
-  const [showFilters, setShowFilters] = useState(false);
-  const filtersActive = typeFilter !== 'Tous' || sortBy !== 'id' || activeRegion;
 
   const randomButton = (
     <button type="button" aria-label="Afficher un Pokemon aleatoire" onClick={getRandomPokemon} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-lg transition-all hover:scale-105 active:scale-95 dark:bg-white dark:text-slate-900 sm:h-12 sm:w-12">
@@ -67,7 +65,7 @@ export default function Header({
 
         {showBrowseControls ? (
           <div className="flex w-full flex-wrap items-center gap-2 lg:gap-3">
-            <div className={`${showFilters ? 'grid' : 'hidden'} absolute inset-x-0 top-full z-40 mt-2 grid-cols-1 gap-2 rounded-2xl border-2 border-slate-100 bg-white p-3 shadow-2xl dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-3 lg:static lg:mt-0 lg:flex lg:flex-wrap lg:w-auto lg:rounded-none lg:border-0 lg:min-w-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:dark:bg-transparent`}>
+            <div className="order-last grid w-full grid-cols-2 gap-2 [&>*:last-child]:col-span-2 sm:grid-cols-3 sm:[&>*:last-child]:col-span-1 lg:order-none lg:flex lg:w-auto lg:flex-wrap lg:gap-3">
               <CustomDropdown isDarkMode={isDarkMode} icon={Filter} label="Type" value={typeFilter} onChange={(v) => { setTypeFilter(v); setPage(1); }} typeColors={TYPE_COLORS} options={[{ value: 'Tous', label: 'Tous les Types' }, ...Object.keys(TYPE_COLORS).map(t => ({ value: t, label: t }))]} />
               <CustomDropdown isDarkMode={isDarkMode} icon={Globe} label="Region" value={activeRegion || 'Tous'} onChange={(v) => { setActiveRegion(v === 'Tous' ? null : v); setPage(1); }} options={[{ value: 'Tous', label: 'Toutes les Régions' }, ...POKEMON_GENERATIONS.map((g, i) => ({ value: g.gen, label: REGION_NAMES[i] }))]} />
               <CustomDropdown isDarkMode={isDarkMode} icon={Activity} label="Trier" value={sortBy} onChange={(v) => { setSortBy(v); setPage(1); }} options={[{ value: 'id', label: 'N° Pokédex' }, { value: 'nom', label: 'Nom (A-Z)' }, { value: 'hp', label: 'Points de Vie' }, { value: 'attack', label: 'Attaque' }, { value: 'speed', label: 'Vitesse' }]} />
@@ -92,10 +90,6 @@ export default function Header({
               </AnimatePresence>
             </div>
 
-            <button type="button" aria-expanded={showFilters} aria-label="Afficher les filtres" onClick={() => setShowFilters((v) => !v)} className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-2 shadow-lg transition-all sm:h-12 sm:w-12 lg:hidden ${showFilters ? 'border-brand-500 bg-brand-500 text-white' : 'border-transparent bg-white text-slate-500 dark:bg-slate-900'}`}>
-              <Filter size={18} />
-              {filtersActive && !showFilters && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-brand-500" />}
-            </button>
             <button type="button" aria-pressed={isFavoritesOnly} aria-label={isFavoritesOnly ? 'Afficher tous les Pokemon' : 'Afficher uniquement les favoris'} onClick={() => setIsFavoritesOnly(!isFavoritesOnly)} className={`flex h-11 shrink-0 items-center justify-center gap-2 rounded-2xl border-2 px-3 text-sm font-black shadow-lg transition-all sm:h-12 lg:px-4 ${isFavoritesOnly ? 'border-brand-500 bg-brand-500 text-white' : 'border-transparent bg-white text-slate-400 dark:bg-slate-900'}`}>
               <Heart size={18} fill={isFavoritesOnly ? 'currentColor' : 'none'} /><span className="hidden uppercase tracking-widest lg:inline">Favoris</span>
             </button>
