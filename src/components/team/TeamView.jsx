@@ -1,6 +1,6 @@
 import React from 'react';
 import { Users } from 'lucide-react';
-import PokemonCard from '../pokemon/PokemonCard';
+import PokemonTile from '../pokemon/PokemonTile';
 import TeamSynergy from './TeamSynergy';
 
 /**
@@ -21,7 +21,7 @@ export default function TeamView({ team, favorites, isDarkMode, onSelect, onCatc
     <div className="flex h-full min-h-[26rem] flex-col gap-2 sm:gap-3">
       <div className="grid min-h-0 flex-1 grid-cols-3 grid-rows-2 gap-2 sm:gap-3 lg:grid-cols-6 lg:grid-rows-1">
         {team.map((p) => (
-          <PokemonCard
+          <PokemonTile
             key={p.id}
             pokemon={p}
             isDarkMode={isDarkMode}
