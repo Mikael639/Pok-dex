@@ -2,17 +2,18 @@
 import React from 'react';
 
 /**
- * Affichage factice (Skeleton) d'une tuile Pokémon, utilisé pendant le chargement.
+ * Affichage factice (Skeleton) utilisé pendant le chargement des Pokémon.
  */
 export const PokemonSkeleton = () => {
   return (
-    <div className="flex h-full min-h-0 flex-col gap-2 rounded-2xl border-2 border-transparent bg-white p-3 shadow-md dark:bg-slate-900 sm:rounded-3xl">
-      <div className="skeleton-box mx-auto min-h-0 w-3/4 flex-1 rounded-full bg-slate-100 dark:bg-slate-800" />
-      <div className="skeleton-box mx-auto h-4 w-2/3 rounded-lg bg-slate-100 dark:bg-slate-800" />
-      <div className="mx-auto flex gap-1">
-        <div className="skeleton-box h-4 w-10 rounded-md bg-slate-100 dark:bg-slate-800" />
-        <div className="skeleton-box h-4 w-10 rounded-md bg-slate-100 dark:bg-slate-800" />
-      </div>
+    <div className="p-8 rounded-[3rem] bg-white dark:bg-slate-900 border-4 border-transparent shadow-xl relative overflow-hidden">
+       <div className="relative mb-8 mt-4 h-48 bg-slate-100 dark:bg-slate-800 rounded-full w-48 mx-auto skeleton-box" />
+       <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-3/4 mb-4 skeleton-box" />
+       <div className="flex gap-2">
+          <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-16 skeleton-box" />
+          <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded-xl w-16 skeleton-box" />
+       </div>
     </div>
   );
 };
+

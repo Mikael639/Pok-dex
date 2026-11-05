@@ -225,7 +225,7 @@ function App() {
             )}
 
             {isCollectionView && (
-              <Motion.div key="collection" className="h-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <Motion.div key="collection" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <PokemonBrowser
                   pokemons={regionalFilteredPokemons}
                   loading={loading}
