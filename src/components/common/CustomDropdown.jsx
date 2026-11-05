@@ -26,7 +26,7 @@ const CustomDropdown = ({ options, value, onChange, icon: TriggerIcon, label, is
   }, [isOpen]);
 
   return (
-    <div className="relative z-20 w-full sm:w-auto">
+    <div className="relative z-20 w-full sm:w-auto lg:w-56">
       <button 
         type="button"
         aria-haspopup="listbox"
@@ -34,7 +34,7 @@ const CustomDropdown = ({ options, value, onChange, icon: TriggerIcon, label, is
         aria-controls={dropdownId}
         aria-label={`${label}: ${selectedLabel}`}
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex w-full min-w-0 items-center justify-between gap-3 px-4 py-3 rounded-2xl text-sm font-black transition-all shadow-xl border-2 sm:px-5 ${
+        className={`flex w-full min-w-0 items-center justify-between gap-3 px-4 py-3 rounded-2xl text-sm font-black transition-all shadow-xl border-2 sm:px-4 ${
           isOpen ? 'border-brand-500 ring-4 ring-brand-500/10' : 'border-transparent'
         } ${isDarkMode ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}`}
       >

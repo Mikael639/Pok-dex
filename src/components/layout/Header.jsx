@@ -46,7 +46,7 @@ export default function Header({
 
   return (
     <header className="relative z-30 mb-2 shrink-0 sm:mb-4 lg:mb-5">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 lg:flex-nowrap lg:gap-6">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 lg:gap-x-6">
         <button type="button" aria-label="Ouvrir le menu" onClick={() => setIsMobileMenuOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-2 border-slate-100 bg-white shadow-lg dark:border-slate-800 dark:bg-slate-900 lg:hidden">
           <Menu size={22} />
         </button>
@@ -66,14 +66,14 @@ export default function Header({
         </div>
 
         {showBrowseControls ? (
-          <div className="flex w-full items-center gap-2 lg:w-auto lg:flex-none lg:gap-3">
-            <div className={`${showFilters ? 'grid' : 'hidden'} absolute inset-x-0 top-full z-40 mt-2 grid-cols-1 gap-2 rounded-2xl border-2 border-slate-100 bg-white p-3 shadow-2xl dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-3 lg:left-auto lg:w-[44rem]`}>
+          <div className="flex w-full flex-wrap items-center gap-2 lg:gap-3">
+            <div className={`${showFilters ? 'grid' : 'hidden'} absolute inset-x-0 top-full z-40 mt-2 grid-cols-1 gap-2 rounded-2xl border-2 border-slate-100 bg-white p-3 shadow-2xl dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-3 lg:static lg:mt-0 lg:flex lg:flex-wrap lg:w-auto lg:rounded-none lg:border-0 lg:min-w-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:dark:bg-transparent`}>
               <CustomDropdown isDarkMode={isDarkMode} icon={Filter} label="Type" value={typeFilter} onChange={(v) => { setTypeFilter(v); setPage(1); }} typeColors={TYPE_COLORS} options={[{ value: 'Tous', label: 'Tous les Types' }, ...Object.keys(TYPE_COLORS).map(t => ({ value: t, label: t }))]} />
               <CustomDropdown isDarkMode={isDarkMode} icon={Globe} label="Region" value={activeRegion || 'Tous'} onChange={(v) => { setActiveRegion(v === 'Tous' ? null : v); setPage(1); }} options={[{ value: 'Tous', label: 'Toutes les Régions' }, ...POKEMON_GENERATIONS.map((g, i) => ({ value: g.gen, label: REGION_NAMES[i] }))]} />
               <CustomDropdown isDarkMode={isDarkMode} icon={Activity} label="Trier" value={sortBy} onChange={(v) => { setSortBy(v); setPage(1); }} options={[{ value: 'id', label: 'N° Pokédex' }, { value: 'nom', label: 'Nom (A-Z)' }, { value: 'hp', label: 'Points de Vie' }, { value: 'attack', label: 'Attaque' }, { value: 'speed', label: 'Vitesse' }]} />
             </div>
 
-            <div className="relative min-w-0 flex-1 lg:w-72 lg:flex-none">
+            <div className="relative min-w-0 flex-1 lg:w-56 lg:flex-none lg:order-first xl:w-72">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input type="text" placeholder="Rechercher..." onFocus={() => setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 120)} aria-label="Rechercher un Pokemon" aria-expanded={showSuggestions && searchQuery.length >= 2} aria-controls="pokemon-search-suggestions" className="h-11 w-full rounded-2xl border-none bg-white pl-11 pr-3 text-sm font-bold shadow-lg ring-brand-500/20 focus:ring-4 dark:bg-slate-900 sm:h-12" value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value); setPage(1); setShowSuggestions(true); }} />
               <AnimatePresence>
@@ -92,7 +92,7 @@ export default function Header({
               </AnimatePresence>
             </div>
 
-            <button type="button" aria-expanded={showFilters} aria-label="Afficher les filtres" onClick={() => setShowFilters((v) => !v)} className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-2 shadow-lg transition-all sm:h-12 sm:w-12 ${showFilters ? 'border-brand-500 bg-brand-500 text-white' : 'border-transparent bg-white text-slate-500 dark:bg-slate-900'}`}>
+            <button type="button" aria-expanded={showFilters} aria-label="Afficher les filtres" onClick={() => setShowFilters((v) => !v)} className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-2 shadow-lg transition-all sm:h-12 sm:w-12 lg:hidden ${showFilters ? 'border-brand-500 bg-brand-500 text-white' : 'border-transparent bg-white text-slate-500 dark:bg-slate-900'}`}>
               <Filter size={18} />
               {filtersActive && !showFilters && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-brand-500" />}
             </button>
